@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicalservice.mapper.CaseMapper">
+    <resultMap id="CaseResultMap" type="com.example.medicalservice.domain.Case">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="course_id" jdbcType="INTEGER" property="courseId" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+        <result column="case_name" jdbcType="VARCHAR" property="caseName" />
+        <result column="case_desc" jdbcType="INTEGER" property="caseDesc" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+        <collection property="caseImages" javaType="list" ofType="com.example.medicalservice.domain.CaseImage">
+            <id column="id" property="id"></id>
+            <result column="id" property="id"></result>
+            <result column="case_id" property="caseId"></result>
+            <result column="image_url" property="imageUrl"></result>
+        </collection>
+        <collection property="caseFiles" javaType="list" ofType="com.example.medicalservice.domain.CaseFile">
+            <id column="id2" property="id2"></id>
+            <result column="id" property="id"></result>
+            <result column="case_id" property="caseId"></result>
+            <result column="file_url" property="fileUrl"></result>
+        </collection>
+    </resultMap>
+    <resultMap id="CaseImageResultMap" type="com.example.medicalservice.domain.CaseImage">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="case_id" jdbcType="INTEGER" property="caseId"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+    </resultMap>
+    <resultMap id="CaseFileResultMap" type="com.example.medicalservice.domain.CaseFile">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="case_id" jdbcType="INTEGER" property="caseId"/>
+        <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
+        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+    </resultMap>
+</mapper>
