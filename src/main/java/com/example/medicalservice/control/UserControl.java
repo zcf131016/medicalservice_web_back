@@ -16,8 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserControl {
+
     @Autowired
     UserService userService;
+
     @ApiOperation(value = "查找所有用户")
     @ResponseBody
     @GetMapping("/findAllUser")
