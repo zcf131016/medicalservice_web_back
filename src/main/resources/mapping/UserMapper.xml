@@ -18,4 +18,7 @@
     <select id="findAllUser" resultMap="BaseResultMap">
         select * from  users
     </select>
+    <select id="getUser" parameterType="String" resultMap="BaseResultMap">
+        select * from users where username = #{username}
+    </select>
 </mapper>
