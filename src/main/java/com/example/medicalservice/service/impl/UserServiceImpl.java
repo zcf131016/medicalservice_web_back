@@ -9,10 +9,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     UserMapper userMapper;
+
     @Override
     public List<User> findAllUser() {
         return userMapper.findAllUser();
     }
+
+    @Override
+    public User getUser(String username) {return userMapper.getUser(username);}
+
 }
