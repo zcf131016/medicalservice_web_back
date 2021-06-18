@@ -57,14 +57,14 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.out.println("获取用户权限信息");
-        String username = JWTUtil.getUsername(principalCollection.toString());
+        String username = principalCollection.toString();
         User user = userService.getUser(username);
         Role userRole = roleService.getRole(user.getRoleId());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRole(userRole.getDesc());
         Set<String> permission = new HashSet<>(Arrays.asList(userRole.getPerms().split(",")));
         simpleAuthorizationInfo.addStringPermissions(permission);
+
         return simpleAuthorizationInfo;
     }
 
@@ -90,7 +90,6 @@ public class ShiroRealm extends AuthorizingRealm {
         if (!JWTUtil.verify(token, username, user.getPassWord())) { // 密码错误
             throw new AuthenticationException("token 已过期或用户名密码错误，请重新登录！");
         }
-
-        return new SimpleAuthenticationInfo(token, token, "shiro_realm");
+        return new SimpleAuthenticationInfo(username, token, "shiro_realm");
     }
 }

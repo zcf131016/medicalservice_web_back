@@ -5,10 +5,10 @@ import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class UserControl {
     @Autowired
     UserService userService;
 
-    @RequiresAuthentication
+    @RequiresRoles("admin")
     @ApiOperation(value = "查找所有用户")
     @ResponseBody
     @GetMapping("/findAllUser")
@@ -31,12 +31,17 @@ public class UserControl {
         return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询所有用户成功");
     }
 
+
     @ApiOperation(value = "按用户名查找用户")
     @ResponseBody
     @GetMapping("/getUser/{username}")
     public Result getUser(@PathVariable("username") String username) {
         User user = userService.getUser(username);
-        return Result.success().setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.hasRole("admin")) {
+            return Result.success().setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+        }
+        return Result.failure(ResultCodeEnum.FORBIDDEN);
     }
 }
 

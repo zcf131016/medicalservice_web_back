@@ -12,6 +12,7 @@ public enum ResultCodeEnum {
     RegisterAlreadyExist("103","注册用户已存在"),
     LoginError("100","登陆失败"),
     TokenError("-2","令牌验证失败"),
+    ILLEGAL_REQUEST("401","非法请求"),
     CREATED("201", "创建成功"),
     DELETED("204", "删除成功"),
     BAD_REQUEST("400", "请求参数有误"),
