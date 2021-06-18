@@ -54,6 +54,7 @@ public class ShiroRealm extends AuthorizingRealm {
     }
 
 
+
     /*
         用户权限信息
      */
