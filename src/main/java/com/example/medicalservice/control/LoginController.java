@@ -6,9 +6,8 @@ import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Lin YuHang
@@ -32,5 +31,17 @@ public class LoginController {
         } else {
             return Result.success().setCode(ResultCodeEnum.LoginError.getCode()).setMsg("登录失败！");
         }
+    }
+
+    @PostMapping("/register")
+    public Result regisger(@RequestParam("username") String username,
+                           @RequestParam("password") String password) {
+        return Result.success().setCode(ResultCodeEnum.Register.getCode()).setMsg("注册成功!");
+    }
+
+    @GetMapping("/401")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Result unauthorized() {
+        return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST);
     }
 }
