@@ -5,6 +5,6 @@ import com.example.medicalservice.domain.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> findAllUser();
+    public List<User> findAllUser();
     User getUser(String username);
 }

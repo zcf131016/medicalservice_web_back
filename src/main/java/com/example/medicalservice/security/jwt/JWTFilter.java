@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
 
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
@@ -44,10 +45,10 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     protected boolean executeLogin(ServletRequest request, ServletResponse response) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String authorization = httpServletRequest.getHeader("Authorization");
-//        System.out.println(request.toString());
         JWTToken token = new JWTToken(authorization);
         // 提交给realm进行登入，委托ShiroManager执行，如果错误他会抛出异常并被捕获
-        getSubject(request, response).login(token);
+        Subject subject = getSubject(request, response);
+        subject.login(token);
 
         // 如果没有抛出异常则代表登入成功，返回true
         return true;
@@ -68,6 +69,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response); // 登录抛出异常说明登录失败
             } catch (Exception e) {
+                response401(request,response);
                 return false;
             }
         }
@@ -112,7 +114,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     private void response401(ServletRequest req, ServletResponse resp) {
         try {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
-            httpServletResponse.sendRedirect("/401");
+            String result = JSON.toJSONString(Result.failure(ResultCodeEnum.ILLEGAL_REQUEST));
+            httpServletResponse.getWriter().println();
         } catch (IOException e) {
 //            LOGGER.error(e.getMessage());
         }
