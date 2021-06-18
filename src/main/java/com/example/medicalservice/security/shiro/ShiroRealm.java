@@ -6,6 +6,7 @@ import com.example.medicalservice.security.jwt.JWTToken;
 import com.example.medicalservice.security.jwt.JWTUtil;
 import com.example.medicalservice.service.RoleService;
 import com.example.medicalservice.service.UserService;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -14,6 +15,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,8 +59,8 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        String username = principalCollection.toString();
-        User user = userService.getUser(username);
+        Subject subject = SecurityUtils.getSubject();
+        User user = userService.getUser(subject.getPrincipal().toString());
         Role userRole = roleService.getRole(user.getRoleId());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRole(userRole.getDesc());
