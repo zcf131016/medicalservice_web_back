@@ -20,6 +20,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.example.medicalservice.domain
+  config-location: classpath:SqlMapConfig.xml
 
 #showSql
 logging:
@@ -28,6 +29,5 @@ logging:
       example:
        medicalservice:
           mapper : debug
-
 
 
