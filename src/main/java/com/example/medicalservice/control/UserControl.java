@@ -4,6 +4,7 @@ import com.example.medicalservice.domain.User;
 import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import com.github.pagehelper.PageHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
@@ -23,11 +24,12 @@ public class UserControl {
     @Autowired
     UserService userService;
 
-    @RequiresRoles("admin")
+    @RequiresRoles("teacher")
     @ApiOperation(value = "查找所有用户")
     @ResponseBody
     @GetMapping("/findAllUser")
     public Result getAllUser() {
+        PageHelper.startPage(1,2);
         List<User> users = userService.findAllUser();
         int Count = users.size();
         return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询所有用户成功");
