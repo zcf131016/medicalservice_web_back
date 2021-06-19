@@ -34,7 +34,7 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public Result regisger(@RequestParam("username") String username,
+    public Result register(@RequestParam("username") String username,
                            @RequestParam("password") String password) {
         return Result.success().setCode(ResultCodeEnum.Register.getCode()).setMsg("注册成功!");
     }
