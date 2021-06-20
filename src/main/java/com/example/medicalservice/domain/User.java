@@ -17,6 +17,9 @@ public class User {
     String grade;
     String title;
     private Date creatTime;
+    String realName;
+    String avatar;
+
 
     @Override
     public String toString() {
@@ -33,11 +36,29 @@ public class User {
                 ", grade='" + grade + '\'' +
                 ", title='" + title + '\'' +
                 ", creatTime=" + creatTime +
+                ", realName='" + realName + '\'' +
+                ", avatar='" + avatar + '\'' +
                 '}';
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public Date getCreatTime() {
         return creatTime;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getRealName() {
+        return realName;
     }
 
     public void setCreatTime(Date creatTime) {
