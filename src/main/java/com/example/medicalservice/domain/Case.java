@@ -16,6 +16,10 @@ public class Case {
    private List<CaseFile> caseFiles;
    private Date creatTime;
     private String caseDesc;
+    private String creatTeacher;
+    private String medHistory;
+    private String thinking;
+
     @Override
     public String toString() {
         return "Case{" +
@@ -23,12 +27,39 @@ public class Case {
                 ", caseId=" + caseId +
                 ", caseName='" + caseName + '\'' +
                 ", courseId=" + courseId +
+                ", courseName='" + courseName + '\'' +
                 ", caseImages=" + caseImages +
                 ", caseFiles=" + caseFiles +
                 ", creatTime=" + creatTime +
-                ", courseName='" + courseName + '\'' +
                 ", caseDesc='" + caseDesc + '\'' +
+                ", creatTeacher='" + creatTeacher + '\'' +
+                ", medHistory='" + medHistory + '\'' +
+                ", thinking='" + thinking + '\'' +
                 '}';
+    }
+
+    public void setCreatTeacher(String creatTeacher) {
+        this.creatTeacher = creatTeacher;
+    }
+
+    public void setMedHistory(String medHistory) {
+        this.medHistory = medHistory;
+    }
+
+    public void setThinking(String thinking) {
+        this.thinking = thinking;
+    }
+
+    public String getCreatTeacher() {
+        return creatTeacher;
+    }
+
+    public String getMedHistory() {
+        return medHistory;
+    }
+
+    public String getThinking() {
+        return thinking;
     }
 
     public Date getCreatTime() {

@@ -2,11 +2,13 @@ package com.example.medicalservice.util;
 
 import java.util.Random;
 
+
 /**
  * @DESCRIPTION:
  * @USER: zcf
  * @DATE: 2021/6/19 14:30
  */
+
 public class RandomUtil {
     /**
      * 生成指定位数的随机数
@@ -21,5 +23,4 @@ public class RandomUtil {
         }
         return Integer.valueOf(val);
     }
-
 }
