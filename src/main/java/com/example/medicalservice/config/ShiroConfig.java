@@ -22,7 +22,7 @@ import java.util.Map;
  * @date 2021/6/17 9:42
  */
 @Configuration
-public class ShiroConfig {
+public class  ShiroConfig {
 
     @Bean("securityManager")
     public DefaultWebSecurityManager getManager(ShiroRealm realm) {
@@ -61,6 +61,7 @@ public class ShiroConfig {
         filterRuleMap.put("/**", "jwt");
         // 访问Login不通过我们的Filter
         filterRuleMap.put("/login", "anon");
+        filterRuleMap.put("/register", "anon");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }

@@ -14,11 +14,57 @@
         <result column="grade" jdbcType="VARCHAR" property="grade" />
         <result column="title" jdbcType="VARCHAR" property="title" />
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.User">
+        INSERT into
+            users(username,password,user_id,sex,phone,email,role_id,department,grade,title,real_name,avatar) values
+            (#{userName},#{passWord},#{userId},#{sex},#{phone},#{email},#{roleId},#{department},#{grade},#{title},#{realName},#{avatar});
+
+    </insert>
+
+
+    <update id="updateUser" parameterType="com.example.medicalservice.domain.User">
+        UPDATE users
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName!=null">username=#{userName},</if>
+            <if test="passWord!=null">password=#{passWord},</if>
+            <if test="sex!=null">sex=#{sex},</if>
+            <if test="phone!=null">phone=#{phone},</if>
+            <if test="email!=null">email=#{email},</if>
+            <if test="department!=null">department=#{department},</if>
+            <if test="grade!=null">grade=#{grade},</if>
+            <if test="title!=null">title=#{title},</if>
+            <if test="realName!=null">real_name=#{realName},</if>
+            <if test="avatar!=null">avatar=#{avatar},</if>
+        </trim>
+        where user_id = #{userId}
+
+    </update>
+
+    <delete id="deleteUserByUserId" parameterType="java.lang.Integer">
+        delete from users where user_id = #{userId}
+    </delete>
+
     <select id="findAllUser" resultMap="BaseResultMap">
         select * from  users
     </select>
-    <select id="getUser" parameterType="String" resultMap="BaseResultMap">
+
+    <select id="getUser" resultType="com.example.medicalservice.domain.User" parameterType="java.lang.String">
         select * from users where username = #{username}
     </select>
+
+    <select id="getUserByUserId" resultType="com.example.medicalservice.domain.User"  parameterType="java.lang.Integer">
+        select * from users where user_id = #{userId}
+    </select>
+
+
 </mapper>
+
+
+
+
+
+
