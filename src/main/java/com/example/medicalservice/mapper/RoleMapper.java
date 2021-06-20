@@ -9,6 +9,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface RoleMapper {
+
+    //查询角色
     Role getRole(Integer roleId);
+
     String getDesc(Integer roleId);
+
+
 }
