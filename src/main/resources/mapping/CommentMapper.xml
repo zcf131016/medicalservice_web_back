@@ -4,16 +4,46 @@
     <resultMap id="CommentReplyResultMap" type="com.example.medicalservice.domain.CommentReply">
         <result column="id" jdbcType="INTEGER" property="id" />
         <result column="case_id" jdbcType="INTEGER" property="caseId" />
-        <result column="comment_id" jdbcType="INTEGER" property="commentId" />
         <result column="content" jdbcType="VARCHAR" property="content" />
-        <result column="form_id" jdbcType="VARCHAR" property="formId" />
-        <result column="form_name" jdbcType="VARCHAR" property="formName" />
-        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
-    </resultMap>
-    <resultMap id="SubCommentReply" type="com.example.medicalservice.domain.SubCommentReply">
-        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="from_id" jdbcType="VARCHAR" property="fromId" />
+        <result column="from_avatar" jdbcType="VARCHAR" property="fromAvatar" />
+        <result column="from_name" jdbcType="VARCHAR" property="fromName" />
         <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-        <result column="child_id" jdbcType="INTEGER" property="childId" />
+        <result column="have_reply" jdbcType="INTEGER" property="haveReply" />
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
     </resultMap>
+    <insert id="insertComment" parameterType="com.example.medicalservice.domain.CommentReply">
+        INSERT INTO  comment_reply(
+        case_id, content, from_id, from_avatar, from_name, parent_id
+	    )VALUES (
+	      #{caseId},
+	      #{content},
+	      #{fromId},
+	      #{fromAvatar},
+	      #{fromName},
+	      #{parentId}
+	    )
+    </insert>
+    <update id="updateComment" parameterType="com.example.medicalservice.domain.CommentReply">
+        update comment_reply
+        <set>
+            <if test="content!=null">
+                content = #{content}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteComment" parameterType="java.lang.Integer">
+        delete from comment_reply where id=#{id}
+    </delete>
+    <select id="getComments" resultType="com.example.medicalservice.domain.CommentReply"
+            parameterType="java.lang.Integer">
+        select * from comment_reply where case_id=#{caseId}
+    </select>
+    <select id="getCommentById" resultType="com.example.medicalservice.domain.CommentReply"
+            parameterType="java.lang.Integer">
+        select * from comment_reply where id=#{id}
+    </select>
+
+
 </mapper>
