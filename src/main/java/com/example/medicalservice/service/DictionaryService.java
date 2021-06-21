@@ -1,32 +1,27 @@
-package com.example.medicalservice.mapper;
+package com.example.medicalservice.service;
 
 import com.example.medicalservice.domain.DictionaryDetail;
 import com.example.medicalservice.domain.DictionaryType;
 import com.example.medicalservice.domain.Page;
-import com.example.medicalservice.domain.User;
-import org.apache.ibatis.annotations.Mapper;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @DESCRIPTION:
  * @USER: 11364
- * @DATE: 2021/6/20 16:07
+ * @DATE: 2021/6/20 16:17
  */
 
-@Mapper
-public interface DictionaryMapper {
+public interface DictionaryService {
 
-    //新增字典类型
+
     int insertDictionaryType(DictionaryType dictionaryType);
 
-    //查看所有数据字典类型
     List<DictionaryType> getAllDictionaryType();
 
-    //分页查询所有数据字典类型
-    List<DictionaryType> selectAllDictionaryType(Page page);
-
+    //分页查询用户
+    PageInfo selectAllDictionaryType(Page page);
 
     //查看数据字典类型根据typecode
     DictionaryType getDictionaryTypeBytypeCode(String typeCode);
@@ -40,7 +35,6 @@ public interface DictionaryMapper {
     //删除数据字典类型
     int deleteDictionaryType(DictionaryType dictionaryType);
 
-
     //新增数据字典值
     int insertDictionaryDetail(DictionaryDetail dictionaryDetail);
 
@@ -50,8 +44,9 @@ public interface DictionaryMapper {
     //删除数据字典值根据value
     int deleteDictionaryDetailByValue(DictionaryDetail dictionaryDetail);
 
-    //更新数据字典值
+    //修改数据字典值
     int updateDictionaryDetail(DictionaryDetail dictionaryDetail);
+
 
     //查看字典数据值根据value
     DictionaryDetail getDictionaryDetailByValue(Integer value);
@@ -65,8 +60,9 @@ public interface DictionaryMapper {
     //查询所有数据类型包括值
     List<DictionaryType> getAllDictionary();
 
-    //分页查询所有数据字典类型
-    List<DictionaryType> selectAllDictionary(Page page);
+    //分页查询查询所有数据类型包括值
+    PageInfo selectAllDictionary(Page page);
+
 
 
 

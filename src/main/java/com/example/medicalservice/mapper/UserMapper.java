@@ -1,9 +1,11 @@
 package com.example.medicalservice.mapper;
 
+import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @DESCRIPTION:
@@ -32,9 +34,18 @@ public interface UserMapper {
     //查询用户根据userid
     User getUserByUserId(Integer userId);
 
+    //分页查询
+    List<User> selectAllUser(Page page);
 
-
-
-
-
+    //查询用户根据realname
+    User getUserByRealName(String realName);
 }
+
+
+
+
+
+
+
+
+

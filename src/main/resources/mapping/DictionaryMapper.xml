@@ -12,6 +12,7 @@
             <result property="id" jdbcType="INTEGER" column="id"></result>
             <result property="name" jdbcType="VARCHAR" column="name"></result>
             <result property="value" jdbcType="INTEGER" column="value"></result>
+            <result property="isDefault" jdbcType="INTEGER" column="is_default"/>
         </collection>
     </resultMap>
     <resultMap type="com.example.medicalservice.domain.DictionaryDetail" id="DictionaryDetailResultMap">
@@ -20,5 +21,100 @@
         <result property="name" jdbcType="VARCHAR" column="name"/>
         <result property="value" jdbcType="INTEGER" column="value"/>
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+        <result property="isDefault" jdbcType="INTEGER" column="isDefault"/>
     </resultMap>
+
+    <insert id="insertDictionaryType" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.DictionaryType">
+        INSERT into
+            dictionary_type(type_name,type_code) values
+            (#{typeName},#{typeCode});
+    </insert>
+
+    <insert id="insertDictionaryDetail" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.DictionaryDetail">
+        insert into
+            dictionary_detail(type_code,name,value,is_default) values
+            (#{typeCode},#{name},#{value},#{isDefault});
+    </insert>
+
+    <update id="updateDictionaryType" parameterType="com.example.medicalservice.domain.DictionaryType">
+        UPDATE dictionary_type
+        <trim prefix="set" suffixOverrides=",">
+            <if test="typeName!=null">type_name=#{typeName},</if>
+            <if test="typeCode!=null">type_code=#{typeCode},</if>
+        </trim>
+        where sortNum = #{sortNum} and itemKey=#{itemKey}
+    </update>
+    <update id="updateDictionaryDetail" parameterType="com.example.medicalservice.domain.DictionaryDetail">
+        UPDATE dictionary_detail
+        <trim prefix="set" suffixOverrides=",">
+            <if test="value!=null">value=#{value},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="isDefault!=null">is_default=#{isDefault},</if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteDictionaryType" parameterType="com.example.medicalservice.domain.DictionaryType">
+        delete from dictionary_type where type_code=#{typeCode}
+    </delete>
+
+    <delete id="deleteDictionaryDetailByValue"  parameterType="com.example.medicalservice.domain.DictionaryDetail">
+        delete from dictionary_detail where value=#{value}
+    </delete>
+
+    <delete id="deleteDictionaryDetailByTypeCode" parameterType="com.example.medicalservice.domain.DictionaryDetail">
+        delete from dictionary_detail where type_code=#{typeCode}
+    </delete>
+
+
+    <select id="getAllDictionaryType" resultType="com.example.medicalservice.domain.DictionaryType">
+        select * from  dictionary_type
+    </select>
+
+    <select id="getDictionaryTypeBytypeCode" resultType="com.example.medicalservice.domain.DictionaryType"
+            parameterType="java.lang.String">
+        select * from dictionary_type where type_code = #{typeCode}
+    </select>
+
+    <select id="getDictionaryTypeBytypeName" resultType="com.example.medicalservice.domain.DictionaryType"
+            parameterType="java.lang.String">
+        select * from dictionary_type where type_name = #{typeName}
+    </select>
+    <select id="selectAllDictionaryType" resultType="com.example.medicalservice.domain.DictionaryType"
+            parameterType="com.example.medicalservice.domain.Page">
+        select * from  dictionary_type
+    </select>
+
+    <select id="getDictionaryDetailByValue" resultType="com.example.medicalservice.domain.DictionaryDetail"
+            parameterType="java.lang.Integer">
+        select  * from dictionary_detail where  value=#{value}
+    </select>
+
+    <select id="getDictionaryDetailByName" resultType="com.example.medicalservice.domain.DictionaryDetail"
+            parameterType="java.lang.String">
+        select  * from dictionary_detail where  name=#{name}
+    </select>
+
+    <select id="getDictionaryDetailByTypeCode" resultType="com.example.medicalservice.domain.DictionaryDetail"
+            parameterType="java.lang.String">
+        select * from dictionary_detail where type_code= #{typeCode}
+    </select>
+
+    <select id="getAllDictionary" resultMap="DictionaryTypeResultMap">
+        select t.type_name,t.type_code,d.value,d.name,d.isDefault
+        from (
+            select * from dictionary_type
+                 )as t
+        left join dictionary_detail as d on d.type_code=t.type_code
+    </select>
+    <select id="selectAllDictionary" resultMap="DictionaryTypeResultMap"
+            parameterType="com.example.medicalservice.domain.Page">
+        select t.type_name,t.type_code,d.value,d.name,d.isDefault
+        from (
+                 select * from dictionary_type
+             )as t
+                 left join dictionary_detail as d on d.type_code=t.type_code
+    </select>
+
+
 </mapper>
