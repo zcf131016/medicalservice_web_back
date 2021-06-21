@@ -60,6 +60,14 @@
         select * from users where user_id = #{userId}
     </select>
 
+    <select id="selectAllUser" resultType="com.example.medicalservice.domain.User">
+        select * from users
+    </select>
+
+    <select id="getUserByRealName" resultType="com.example.medicalservice.domain.User" parameterType="java.lang.String">
+        select * from users where real_name = #{realName}
+    </select>
+
 
 </mapper>
 

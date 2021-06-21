@@ -4,8 +4,9 @@ import io.swagger.annotations.ApiModel;
 
 import java.util.Date;
 import java.util.List;
-@ApiModel
+@ApiModel(value = "字典类型实体")
 public class DictionaryType {
+
     private Integer id;
     private String typeCode;
     private String typeName;
