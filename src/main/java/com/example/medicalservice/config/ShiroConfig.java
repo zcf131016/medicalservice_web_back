@@ -60,8 +60,7 @@ public class  ShiroConfig {
         // 所有请求通过我们自己的JWT Filter
         filterRuleMap.put("/**", "jwt");
         // 访问Login不通过我们的Filter
-        filterRuleMap.put("/login", "anon");
-        filterRuleMap.put("/register", "anon");
+        filterRuleMap.put("/401", "anon");
         factoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return factoryBean;
     }

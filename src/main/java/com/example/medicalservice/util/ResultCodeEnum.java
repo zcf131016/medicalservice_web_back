@@ -10,7 +10,7 @@ public enum ResultCodeEnum {
     Register("101","注册成功"),
     RegisterError("102","注册失败"),
     RegisterAlreadyExist("103","注册用户已存在"),
-    LoginError("100","登陆失败"),
+    LoginError("104","登陆失败"),
     TokenError("-2","令牌验证失败"),
     ILLEGAL_REQUEST("401","非法请求"),
     CREATED("201", "创建成功"),
