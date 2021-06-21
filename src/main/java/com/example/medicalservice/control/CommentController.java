@@ -7,6 +7,9 @@ import com.example.medicalservice.service.CommentReplyService;
 import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -20,6 +23,7 @@ import java.util.List;
  * @author Lin YuHang
  * @date 2021/6/19 16:14
  */
+@Api(tags = "评论接口")
 @RestController
 @RequiresRoles(value = {"admin","teacher","student"}, logical = Logical.OR)
 @RequestMapping("/comment")
@@ -31,12 +35,15 @@ public class CommentController {
     UserService userService;
 
 
+    @ApiOperation(value = "根据案例id获取评论")
+    @ApiParam(name="caseId",type = "Integer")
     @GetMapping("/getComments/{caseId}")
     Result getComments(@PathVariable Integer caseId) {
         List<Comment> comments = commentReplyService.getComments(caseId);
         return Result.success().setData(comments).setCode(ResultCodeEnum.OK.getCode()).setMsg("评论获取成功!");
     }
 
+    @ApiOperation(value = "添加评论")
     @PostMapping("/addComment")
     Result addComment(@RequestBody CommentReply commentReply) {
         commentReplyService.insertComment(commentReply);
@@ -46,6 +53,7 @@ public class CommentController {
     /*
         只有自己能删除自己的评论, 管理员可删除所有
      */
+    @ApiOperation(value="根据评论id删除评论",notes = "只有自己能删除自己的评论")
     @DeleteMapping("/deleteComment/{id}")
     Result deleteComment(@PathVariable Integer id) {
         Subject subject = SecurityUtils.getSubject();

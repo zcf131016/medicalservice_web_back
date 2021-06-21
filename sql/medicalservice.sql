@@ -1,21 +1,36 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : zcf001
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50732
+ Source Server Version : 50719
  Source Host           : localhost:3306
  Source Schema         : medicalservice
 
  Target Server Type    : MySQL
- Target Server Version : 50732
+ Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 19/06/2021 19:00:34
+ Date: 21/06/2021 15:18:06
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for approve_request
+-- ----------------------------
+DROP TABLE IF EXISTS `approve_request`;
+CREATE TABLE `approve_request`  (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `course_id` int(16) NOT NULL,
+  `course_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `student_id` int(16) NOT NULL,
+  `student_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `is_approved` int(1) UNSIGNED ZEROFILL NOT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for case
@@ -25,10 +40,13 @@ CREATE TABLE `case`  (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `case_id` int(16) NULL DEFAULT NULL COMMENT '案例id',
   `case_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '案例名',
-  `course_id` int(16) NULL DEFAULT NULL COMMENT '课程id',
+  `course_id` int(16) NOT NULL COMMENT '课程id',
   `course_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程名',
   `case_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '案例描述',
   `creat_time` datetime(6) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6),
+  `creat_trecher` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `med_history` varchar(800) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `thinking` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -67,17 +85,17 @@ CREATE TABLE `comment_reply`  (
   `from_id` int(16) NOT NULL COMMENT '评论者id',
   `creat_time` datetime(6) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '创建时间',
   `from_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评论者名称',
-  `from_avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论者头像',
-  `have_reply` int(1) UNSIGNED ZEROFILL NOT NULL DEFAULT 0 COMMENT '是否有回复内容',
+  `from_avatar` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '评论者头像',
+  `have_reply` int(1) UNSIGNED ZEROFILL NULL DEFAULT 0 COMMENT '是否有回复内容',
   `parent_id` int(16) NULL DEFAULT NULL COMMENT '父评论id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comment_reply
 -- ----------------------------
-INSERT INTO `comment_reply` VALUES (1, 1, 'helloworld', 1, '2021-06-19 15:46:29.521595', 'liam', NULL, 1, NULL);
-INSERT INTO `comment_reply` VALUES (2, 1, 'nihao', 2, '2021-06-19 15:46:08.132444', 'bob', NULL, 0, 1);
+INSERT INTO `comment_reply` VALUES (1, 1, '< 该评论已被作者删除！>', 2, '2021-06-20 09:00:18.477951', 'ewertewr', NULL, 1, NULL);
+INSERT INTO `comment_reply` VALUES (2, 1, 'ewfwefwefwf', 2, '2021-06-20 08:40:58.000000', 'sdgr', NULL, 0, 1);
 
 -- ----------------------------
 -- Table structure for course
@@ -132,8 +150,9 @@ CREATE TABLE `dictionary_detail`  (
   `id` int(16) NOT NULL,
   `type_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典编码如sex',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典具体名字如男，女',
-  `value` int(2) NULL DEFAULT NULL COMMENT '字典值数字如1，2',
-  `creat_time` datetime(6) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6),
+  `value` int(16) NULL DEFAULT NULL COMMENT '字典值数字如1，2',
+  `creat_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `is_default` int(255) UNSIGNED ZEROFILL NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -166,19 +185,7 @@ CREATE TABLE `roles`  (
 -- ----------------------------
 INSERT INTO `roles` VALUES (1, 0, 'admin', '/login,/home');
 INSERT INTO `roles` VALUES (2, 1, 'teacher', '/login');
-INSERT INTO `roles` VALUES (3, 2, 'student', NULL);
-
--- ----------------------------
--- Table structure for sub_comment_reply
--- ----------------------------
-DROP TABLE IF EXISTS `sub_comment_reply`;
-CREATE TABLE `sub_comment_reply`  (
-  `id` int(16) NOT NULL AUTO_INCREMENT,
-  `parent_id` int(16) NULL DEFAULT NULL COMMENT '父id',
-  `child_id` int(16) NULL DEFAULT NULL COMMENT '子id',
-  `creat_time` datetime(6) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+INSERT INTO `roles` VALUES (3, 2, 'student', '123');
 
 -- ----------------------------
 -- Table structure for users
@@ -198,21 +205,16 @@ CREATE TABLE `users`  (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '职称',
   `creat_time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `real_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `avatar` mediumtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `avatar` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
   PRIMARY KEY (`id`, `username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-
-INSERT INTO `users` VALUES (1, 'xxx', '123456', NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, '2021-06-19 11:22:54', NULL, NULL);
-INSERT INTO `users` VALUES (5, 'zcf', '1234567', 461306772, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `users` VALUES (6, 'nan', '1234567', 377684865, NULL, NULL, NULL, 2, NULL, NULL, NULL, '2021-06-19 20:24:43', NULL, '377682224865');
-INSERT INTO `users` VALUES (7, 'zcf11233', '1234567gdfgdf', 459814826, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `users` VALUES (8, 'zcf1', '1234567gdfgdf', 706611906, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `users` VALUES (9, 'lyh', '20032119', 45415607, '0', '12345678909', '1234567@qq.com', 0, '外科', '主治医师', 'AAA', '2021-06-20 09:42:45', '林默默', '111111111');
-INSERT INTO `users` VALUES (10, 'zwl', '1111111', 775589316, '0', '12345671119', '1234227@qq.com', 2, '外科', '小主治医师', 'bbb', NULL, '朱默默', 'aaaaaaaaa');
-
+INSERT INTO `users` VALUES (1, 'xxx', '123456', 0, '1', '1383838338', '66666@gmail.com', 0, '1', '1', 'xxxxx', '2021-06-16 18:54:43', NULL, NULL);
+INSERT INTO `users` VALUES (2, 'xxxx', '123456', 1, '1', NULL, NULL, 0, '1', '1', 'xx', '2021-06-20 10:06:06', NULL, NULL);
+INSERT INTO `users` VALUES (3, 'xxxxx', '123456', 2, '1', NULL, NULL, 1, '1', '1', 'xx', '2021-06-19 09:53:04', NULL, NULL);
+INSERT INTO `users` VALUES (4, 'lyh', '12345678', 3, '1', NULL, NULL, 1, '1', '1', 'xxxx', '2021-06-20 09:30:13', NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,5 +1,7 @@
 package com.example.medicalservice.domain;
 
+import io.swagger.annotations.ApiModel;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * @author Lin YuHang
  * @date 2021/6/19 16:31
  */
+@ApiModel(value="Comment对象", description="真实返回的评论类型")
 public class Comment {
     Integer id;
     Integer caseId;
