@@ -1,6 +1,8 @@
 package com.example.medicalservice.service;
 
+import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.User;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -27,6 +29,12 @@ public interface UserService {
 
     //查询用户根据userid
     User getUserByUserId(Integer userId);
+
+    //分页查询用户
+    PageInfo selectAllUser(Page page);
+
+    //查询用户根据realname
+    User getUserByRealName(String realName);
 
 
 }

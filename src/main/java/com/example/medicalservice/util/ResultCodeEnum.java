@@ -26,6 +26,7 @@ public enum ResultCodeEnum {
     NOT_IMPLEMENTED("501", "业务异常");
 
 
+
     private String code;
     private String msg;
 

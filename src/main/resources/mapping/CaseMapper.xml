@@ -49,6 +49,7 @@
 <!--        <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>-->
 <!--        <result column="creat_time" jdbcType="DATE" property="creatTime"/>-->
 <!--    </resultMap>-->
+
     <!--查询案例，但是不涉及到案例图片及文件 -->
 <!--    <select id="findAllCase" resultMap="CaseResultMap">-->
 <!--        select a.id,a.case_id,a.case_name,a.course_id,a.creat_time,a.creat_teacher-->

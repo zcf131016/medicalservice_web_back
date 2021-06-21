@@ -3,13 +3,22 @@ package com.example.medicalservice.domain;
 import io.swagger.annotations.ApiModel;
 
 import java.util.Date;
-@ApiModel
+@ApiModel(value = "字典详情实体")
 public class DictionaryDetail {
     private  Integer id;
     private String typeCode;
     private String name;
     private Integer value;
     private Date creatTime;
+    private  Integer isDefault;
+
+    public Integer getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Integer isDefault) {
+        this.isDefault = isDefault;
+    }
 
     @Override
     public String toString() {
@@ -19,6 +28,7 @@ public class DictionaryDetail {
                 ", name='" + name + '\'' +
                 ", value=" + value +
                 ", creatTime=" + creatTime +
+                ", isDefault=" + isDefault +
                 '}';
     }
 
