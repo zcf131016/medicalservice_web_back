@@ -57,7 +57,6 @@ public class LoginController {
         }catch (UserFriendException e){
             return Result.success().setCode(ResultCodeEnum.RegisterAlreadyExist.getCode()).setMsg(e.getMsg());
         }
-
         return Result.success().setCode(ResultCodeEnum.Register.getCode()).setMsg("注册成功");
     }
 

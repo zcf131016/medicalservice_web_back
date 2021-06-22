@@ -62,7 +62,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response); // 登录抛出异常说明登录失败
             } catch (Exception e) {
-//                response401(request,response);
                 return false;
             }
         }
@@ -85,7 +84,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
     /**
      * 对跨域提供支持
      */
-
     @Override
     public boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -109,7 +107,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             HttpServletResponse httpServletResponse = (HttpServletResponse) resp;
             httpServletResponse.sendRedirect("/401");
         } catch (IOException e) {
-//            LOGGER.error(e.getMessage());
+            LOGGER.error(() -> e.getMessage());
         }
     }
 }
