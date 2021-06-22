@@ -96,4 +96,41 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserByRealName(realName);
     }
 
+    @Override
+    public List<User> findAllTeacher() {
+        return userMapper.findAllTeacher();
+    }
+
+    @Override
+    public List<User> findAllStudent() {
+        return userMapper.findAllStudent();
+    }
+
+    @Override
+    public PageInfo selectAllTeacher(Page page) {
+        //设置页码和每页个数
+        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        //查询符合条件的记录
+        List<User> users = userMapper.selectAllTeacher(page);
+        System.out.println(users);
+        //将查询到的信息封装到PageInfo
+        PageInfo pageInfo = new PageInfo(users);
+        //返回PageInfo类型数据
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo selectAllStudent(Page page) {
+        //设置页码和每页个数
+        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        //查询符合条件的记录
+        List<User> users = userMapper.selectAllStudent(page);
+        System.out.println(users);
+        //将查询到的信息封装到PageInfo
+        PageInfo pageInfo = new PageInfo(users);
+        //返回PageInfo类型数据
+        return pageInfo;
+
+    }
+
 }
