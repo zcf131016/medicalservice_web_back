@@ -46,6 +46,7 @@ public class CommentController {
     @ApiOperation(value = "添加评论")
     @PostMapping("/addComment")
     Result addComment(@RequestBody CommentReply commentReply) {
+        if(commentReply.getContent() == null || commentReply.getContent() == "") return Result.failure(ResultCodeEnum.CREATE_FAILED).setMsg("内容为空，评论失败");
         commentReplyService.insertComment(commentReply);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论成功！");
     }
