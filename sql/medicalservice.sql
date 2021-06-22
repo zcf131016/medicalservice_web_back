@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 22/06/2021 15:26:19
+ Date: 22/06/2021 16:13:11
 */
 
 SET NAMES utf8mb4;
@@ -132,7 +132,7 @@ CREATE TABLE `course`  (
   `course_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程名',
   `teacher_id` int(16) NULL DEFAULT NULL COMMENT '创建老师id',
   `course_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程描述',
-  `course_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程状态',
+  `course_state` int(1) NULL DEFAULT NULL COMMENT '课程状态',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -140,9 +140,9 @@ CREATE TABLE `course`  (
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES (1, 10000, '数据结构', 1000, '就是数据结构', '1', '2021-06-22 14:17:05.000000');
-INSERT INTO `course` VALUES (2, 10001, '操作系统', 1000, '操作系统呀', '1', '2021-06-22 14:19:17.000000');
-INSERT INTO `course` VALUES (3, 10002, '计算机网络', 1000, '计网呀', '0', '2021-06-22 14:19:54.000000');
+INSERT INTO `course` VALUES (1, 10000, '数据结构', 1000, '就是数据结构', 1, '2021-06-22 14:17:05.000000');
+INSERT INTO `course` VALUES (2, 10001, '操作系统', 1000, '操作系统呀', 1, '2021-06-22 14:19:17.000000');
+INSERT INTO `course` VALUES (3, 10002, '计算机网络', 1000, '计网呀', 0, '2021-06-22 14:19:54.000000');
 
 -- ----------------------------
 -- Table structure for course_student
@@ -288,7 +288,6 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'admin', 'admin', 888888888, '1', '1383838338', '66666@gmail.com', 0, '1', '1', 'xxxxx', '2021-06-16 18:54:43', NULL, NULL);
 INSERT INTO `users` VALUES (2, 'xxxx', '123456', 100000000, '1', '132342345', '324141@qq.com', 0, '1', '1', 'xx', '2021-06-20 10:06:06', NULL, NULL);
 INSERT INTO `users` VALUES (3, 'xxxxx', '123456', 222222222, '1', NULL, NULL, 1, '1', '1', 'xx', '2021-06-19 09:53:04', NULL, NULL);
 INSERT INTO `users` VALUES (4, 'lyh', '12345678', 333333333, '1', NULL, NULL, 1, '1', '1', 'xxxx', '2021-06-20 09:30:13', NULL, NULL);
