@@ -99,25 +99,15 @@ public class DictionaryController {
 
     @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "分页查找所有字典类型")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
             @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
     })
     @ResponseBody
-    @GetMapping("/selectAllDictionaryType")
-    public Result selectAllDictionaryType(@RequestBody Page page) {
-        //数据绑定：包括分页信息，条件，
-        JSONObject json = new JSONObject();
-        try {
-            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
-            PageInfo<User> pageInfo= dictionaryService.selectAllDictionaryType(page);
-            //将查出的信息封装为json
-            json.put("pageInfo", pageInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //想页面返回信息
-        //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
+    @GetMapping("/selectAllDictionaryType/{pageNum}/{pageSize}")
+    public Result selectAllDictionaryType(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+
+        List<DictionaryType> dictionaryTypes = dictionaryService.selectAllDictionaryType(pageNum,pageSize);
+        return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
@@ -229,25 +219,14 @@ public class DictionaryController {
 
     @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "分页查询全部数据字典类型和值")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
             @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
     })
     @ResponseBody
-    @GetMapping("/selectAllDictionary")
-    public Result selectAllDictionary(@RequestBody Page page) {
-        //数据绑定：包括分页信息，条件，
-        JSONObject json = new JSONObject();
-        try {
-            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
-            PageInfo<User> pageInfo= dictionaryService.selectAllDictionary(page);
-            //将查出的信息封装为json
-            json.put("pageInfo", pageInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //想页面返回信息
-        //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
+    @GetMapping ("/selectAllDictionary/{pageNum}/{pageSize}")
+    public Result selectAllDictionary(@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
+        List<DictionaryType>dictionaryTypes = dictionaryService.selectAllDictionary(pageNum,pageSize);
+        return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
     }
 
     /*@RequiresRoles(value={"teacher","admin"},logical= Logical.OR)

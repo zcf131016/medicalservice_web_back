@@ -42,16 +42,15 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public PageInfo selectAllDictionaryType(Page page) {
+    public List<DictionaryType> selectAllDictionaryType(Integer pageNum, Integer pageSize) {
         //设置页码和每页个数
-        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        PageHelper.startPage( pageNum, pageSize);
         //查询符合条件的记录
-        List<DictionaryType> dictionaryTypes = dictionaryMapper.selectAllDictionaryType(page);
+        List<DictionaryType> dictionaryTypes = dictionaryMapper.selectAllDictionaryType();
         System.out.println(dictionaryTypes);
-        //将查询到的信息封装到PageInfo
-        PageInfo pageInfo = new PageInfo(dictionaryTypes);
+
         //返回PageInfo类型数据
-        return pageInfo;
+        return dictionaryTypes;
     }
 
     @Override
@@ -141,16 +140,13 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public PageInfo selectAllDictionary(Page page) {
+    public List<DictionaryType> selectAllDictionary(Integer pageNum, Integer pageSize) {
         //设置页码和每页个数
-        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        PageHelper.startPage(pageNum,pageSize);
         //查询符合条件的记录
-        List<DictionaryType> dictionaryTypes = dictionaryMapper.selectAllDictionary(page);
+        List<DictionaryType> dictionaryTypes = dictionaryMapper.selectAllDictionary();
         System.out.println(dictionaryTypes);
-        //将查询到的信息封装到PageInfo
-        PageInfo pageInfo = new PageInfo(dictionaryTypes);
-        //返回PageInfo类型数据
-        return pageInfo;
+        return dictionaryTypes;
     }
 
     /*@Override

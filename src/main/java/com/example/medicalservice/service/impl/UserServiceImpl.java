@@ -76,16 +76,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo  selectAllUser(Page page) {
+    public List<User>  selectAllUser(Integer pageNum,Integer pageSize) {
+        //List<User> users = userMapper.selectAllUser();
+        //System.out.println(users);
         //设置页码和每页个数
-        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        //System.out.println(page.getCurrentPage());
+        PageHelper.startPage(pageNum,pageSize);
         //查询符合条件的记录
-        List<User> users = userMapper.selectAllUser(page);
-        System.out.println(users);
+        List<User> users = userMapper.selectAllUser();
+        //System.out.println(users);
         //将查询到的信息封装到PageInfo
-        PageInfo pageInfo = new PageInfo(users);
+        //PageInfo pageInfo = new PageInfo(users);
         //返回PageInfo类型数据
-        return pageInfo;
+        return users;
 
     }
 
@@ -108,29 +111,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo selectAllTeacher(Page page) {
+    public List<User> selectAllTeacher(Integer pageNum,Integer pageSize) {
         //设置页码和每页个数
-        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        PageHelper.startPage(pageNum,pageSize);
         //查询符合条件的记录
-        List<User> users = userMapper.selectAllTeacher(page);
-        System.out.println(users);
+        List<User> users = userMapper.selectAllTeacher();
+        //System.out.println(users);
         //将查询到的信息封装到PageInfo
-        PageInfo pageInfo = new PageInfo(users);
+        //PageInfo pageInfo = new PageInfo(users);
         //返回PageInfo类型数据
-        return pageInfo;
+        return users;
     }
 
     @Override
-    public PageInfo selectAllStudent(Page page) {
+    public List<User> selectAllStudent(Integer pageNum,Integer pageSize) {
         //设置页码和每页个数
-        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        PageHelper.startPage(pageNum,pageSize);
         //查询符合条件的记录
-        List<User> users = userMapper.selectAllStudent(page);
+        List<User> users = userMapper.selectAllStudent();
         System.out.println(users);
         //将查询到的信息封装到PageInfo
         PageInfo pageInfo = new PageInfo(users);
         //返回PageInfo类型数据
-        return pageInfo;
+        return users;
 
     }
 
