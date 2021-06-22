@@ -15,4 +15,5 @@ public interface CommentReplyService {
     CommentReply getComment(Integer id);
     void insertComment(CommentReply commentReply);
     void deleteComment(Integer id);
+    void updateComment(CommentReply commentReply);
 }

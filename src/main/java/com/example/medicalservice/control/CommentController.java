@@ -70,4 +70,16 @@ public class CommentController {
         }
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除评论成功！");
     }
+
+    @ApiOperation(value="修改评论", notes = "只有自己能修改评论")
+    @PutMapping("/modifyComment")
+    Result modifyComment(@RequestBody CommentReply commentReply) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = userService.getUser(subject.getPrincipal().toString());
+        if(user.getId() == commentReply.getFromId() || subject.hasRole("admin")) {
+            commentReplyService.updateComment(commentReply);
+            return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论修改成功!");
+        }
+        return Result.failure(ResultCodeEnum.UNAUTHORIZED);
+    }
 }

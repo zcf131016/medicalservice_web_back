@@ -61,6 +61,13 @@ public class CommentReplyServiceImpl implements CommentReplyService {
 
     @Override
     public void insertComment(CommentReply commentReply) {
+        if(commentReply.getParentId() != null){
+           CommentReply parentComment = getComment(commentReply.getParentId());
+           if(parentComment != null) {
+               parentComment.setHaveReply(1);
+               commentMapper.updateComment(parentComment);
+           }
+        }
         commentMapper.insertComment(commentReply);
     }
 
@@ -73,5 +80,10 @@ public class CommentReplyServiceImpl implements CommentReplyService {
             commentReply.setContent("< 该评论已被作者删除！>");
             commentMapper.updateComment(commentReply);
         }
+    }
+
+    @Override
+    public void updateComment(CommentReply commentReply) {
+        commentMapper.updateComment(commentReply);
     }
 }

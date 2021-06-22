@@ -26,11 +26,10 @@
     </insert>
     <update id="updateComment" parameterType="com.example.medicalservice.domain.CommentReply">
         update comment_reply
-        <set>
-            <if test="content!=null">
-                content = #{content}
-            </if>
-        </set>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="content!=null">content=#{content},</if>
+            <if test="haveReply!=null">have_reply=#{haveReply}</if>
+        </trim>
         where id = #{id}
     </update>
     <delete id="deleteComment" parameterType="java.lang.Integer">

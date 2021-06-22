@@ -4,13 +4,26 @@
     <resultMap id="RoleResultMap" type="com.example.medicalservice.domain.Role">
         <result column="id" jdbcType="INTEGER" property="id" />
         <result column="role_id" jdbcType="INTEGER" property="roleId" />
-        <result column="desc" jdbcType="VARCHAR" property="Desc" />
-        <result column="perms" jdbcType="VARCHAR" property="Perms" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="perms" jdbcType="VARCHAR" property="perms" />
     </resultMap>
+    <insert id="addRole" parameterType="com.example.medicalservice.domain.Role">
+        INSERT INTO  roles(
+        role_id,description,perms
+	    )VALUES (
+	      #{roleId},
+	      #{description},
+	      #{perms}
+	    )
+    </insert>
+    <delete id="deleteRole" parameterType="java.lang.Integer">
+        delete * from roles where role_id = #{roleId}
+    </delete>
 
     <select id="getRole" parameterType="int" resultMap="RoleResultMap">
         select * from roles where role_id = #{roleId}
     </select>
-
-
+    <select id="getAllRole" resultType="com.example.medicalservice.domain.Role">
+        select * from roles
+    </select>
 </mapper>
