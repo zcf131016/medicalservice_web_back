@@ -35,7 +35,7 @@ public interface UserMapper {
     User getUserByUserId(Integer userId);
 
     //分页查询
-    List<User> selectAllUser(Page page);
+    List<User> selectAllUser();
 
     //查询用户根据realname
     User getUserByRealName(String realName);
@@ -47,10 +47,10 @@ public interface UserMapper {
     List<User> findAllStudent();
 
     //分页查询所有老师
-    List<User> selectAllStudent(Page page);
+    List<User> selectAllStudent();
 
     //分页查询所有学生
-    List<User> selectAllTeacher(Page page);
+    List<User> selectAllTeacher();
 
 
 

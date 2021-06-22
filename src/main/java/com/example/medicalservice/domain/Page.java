@@ -6,16 +6,16 @@ package com.example.medicalservice.domain;
  * @DATE: 2021/6/20 20:21
  */
 public class Page {
-    int PageNum;
+    int currentPage;;
 
     int pageSize;
 
     public int getCurrentPage() {
-        return PageNum;
+        return currentPage;
     }
 
     public void setCurrentPage(int currentPage) {
-        this.PageNum = currentPage;
+        this.currentPage = currentPage;
     }
 
     public int getPageSize() {
@@ -25,5 +25,4 @@ public class Page {
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
-
 }

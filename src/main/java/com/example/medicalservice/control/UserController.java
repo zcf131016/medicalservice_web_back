@@ -119,25 +119,15 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "分页查找所有用户")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
             @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
     })
     @ResponseBody
-    @GetMapping("/selectAllUser")
-    public Result selectAllUser(@RequestBody Page page) {
-        //数据绑定：包括分页信息，条件，
-        JSONObject json = new JSONObject();
-        try {
-            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
-            PageInfo<User> pageInfo= userService.selectAllUser(page);
-            //将查出的信息封装为json
-            json.put("pageInfo", pageInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //想页面返回信息
-        //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
+    @PostMapping ("/selectAllUser/{pageNum}/{pageSize}")
+    public Result selectAllUser(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+
+        List<User> users = userService.selectAllUser(pageNum,pageSize);
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
@@ -179,48 +169,26 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "分页查找所有教师")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
             @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
     })
     @ResponseBody
-    @GetMapping("/selectAllTeacher")
-    public Result selectAllTeacher(@RequestBody Page page) {
-        //数据绑定：包括分页信息，条件，
-        JSONObject json = new JSONObject();
-        try {
-            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
-            PageInfo<User> pageInfo= userService.selectAllTeacher(page);
-            //将查出的信息封装为json
-            json.put("pageInfo", pageInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //想页面返回信息
-        //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
+    @PostMapping ("/selectAllTeacher/{pageNum}/{pageSize}")
+    public Result selectAllTeacher(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        List<User> users = userService.selectAllTeacher(pageNum,pageSize);
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "分页查找所有学生")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
             @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
     })
     @ResponseBody
-    @GetMapping("/selectAllStudent")
-    public Result selectAllStudent(@RequestBody Page page) {
-        //数据绑定：包括分页信息，条件，
-        JSONObject json = new JSONObject();
-        try {
-            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
-            PageInfo<User> pageInfo= userService.selectAllStudent(page);
-            //将查出的信息封装为json
-            json.put("pageInfo", pageInfo);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //想页面返回信息
-        //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
+    @PostMapping("/selectAllStudent/{pageNum}/{pageSize}")
+    public Result selectAllStudent(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        List<User> users = userService.selectAllStudent(pageNum,pageSize);
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
@@ -229,7 +197,6 @@ public class UserController {
     @ResponseBody
     @GetMapping("/getUserByUserIdArray")
     public Result getUserByUserIdArray(@RequestBody User user) {
-
 
         List<User> users = userService.getUserByUserIdArray(user.getUserIds());
         int Count = users.size();

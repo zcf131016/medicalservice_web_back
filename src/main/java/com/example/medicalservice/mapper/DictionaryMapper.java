@@ -25,7 +25,7 @@ public interface DictionaryMapper {
     List<DictionaryType> getAllDictionaryType();
 
     //分页查询所有数据字典类型
-    List<DictionaryType> selectAllDictionaryType(Page page);
+    List<DictionaryType> selectAllDictionaryType();
 
 
     //查看数据字典类型根据typecode
@@ -66,7 +66,7 @@ public interface DictionaryMapper {
     List<DictionaryType> getAllDictionary();
 
     //分页查询所有数据字典类型
-    List<DictionaryType> selectAllDictionary(Page page);
+    List<DictionaryType> selectAllDictionary();
 
     //查询所有数据类型包括值根据类型
     List<DictionaryType> getAllDictionaryByTypeCode(String typeCode);

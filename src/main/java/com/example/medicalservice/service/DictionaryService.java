@@ -20,8 +20,8 @@ public interface DictionaryService {
 
     List<DictionaryType> getAllDictionaryType();
 
-    //分页查询用户
-    PageInfo selectAllDictionaryType(Page page);
+    //分页查询字典类型
+    List<DictionaryType> selectAllDictionaryType(Integer pageNum,Integer pageSize );
 
     //查看数据字典类型根据typecode
     DictionaryType getDictionaryTypeBytypeCode(String typeCode);
@@ -61,7 +61,7 @@ public interface DictionaryService {
     List<DictionaryType> getAllDictionary();
 
     //分页查询查询所有数据类型包括值
-    PageInfo selectAllDictionary(Page page);
+    List<DictionaryType> selectAllDictionary(Integer pageNum,Integer pageSize);
 
     /*//查询所有数据类型包括值根据类型
     List<DictionaryType> getAllDictionaryByTypeCode(String typeCode);*/

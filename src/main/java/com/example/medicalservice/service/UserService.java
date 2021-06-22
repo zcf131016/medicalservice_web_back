@@ -31,7 +31,7 @@ public interface UserService {
     User getUserByUserId(Integer userId);
 
     //分页查询用户
-    PageInfo selectAllUser(Page page);
+    List<User> selectAllUser(Integer pageNum,Integer pageSize);
 
     //查询用户根据realname
     User getUserByRealName(String realName);
@@ -43,10 +43,10 @@ public interface UserService {
     List<User> findAllStudent();
 
     //分页查询所有老师
-    PageInfo selectAllTeacher(Page page);
+    List<User> selectAllTeacher(Integer pageNum,Integer pageSize);
 
     //分页查询所有学生
-    PageInfo selectAllStudent(Page page);
+    List<User> selectAllStudent(Integer pageNum,Integer pageSize);
 
     //查询用户根据userid数组
     List<User> getUserByUserIdArray(Integer [] userIds);
