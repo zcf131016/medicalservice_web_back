@@ -7,12 +7,14 @@ import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import com.fasterxml.jackson.databind.deser.impl.PropertyValueBuffer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.annotation.Logical;
@@ -22,6 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,6 +42,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    HttpServletRequest request;
 
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
@@ -78,6 +87,8 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "查询用户根据userid")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="userId", value="用户id"),
+    })
     @ResponseBody
     @GetMapping("/getUserByUserId/{userId}")
     public Result getUserByUserId(@PathVariable("userId")Integer userId) {
@@ -93,6 +104,7 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "查询用户根据username")
+    @ApiImplicitParam(required = true,name ="username",value = "username")
     @ResponseBody
     @GetMapping("/getUserByUserName/{username}")
     public Result getUserByUserName(@PathVariable("username")String username) {
@@ -107,6 +119,9 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "分页查找所有用户")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
     @ResponseBody
     @GetMapping("/selectAllUser")
     public Result selectAllUser(@RequestBody Page page) {
@@ -127,16 +142,19 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "查询用户根据realname")
+    @ApiImplicitParam(required = true,name ="realName",value = "真实姓名")
     @ResponseBody
-    @GetMapping("/getUserByRealName/{realName}")
-    public Result getUserByRealName(@PathVariable("realName")String realName) {
+    @GetMapping("/getUserByRealName")
+    public Result getUserByRealName(@RequestBody User user){
+
+       String realName = user.getRealName();
         try {
             userService.getUserByRealName(realName);
         }catch (UserFriendException e){
             return Result.failure(ResultCodeEnum.BAD_REQUEST).setMsg("用户不存在！");
         }
-        User user = userService.getUserByRealName(realName);
-        return Result.success().setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+        User user1 = userService.getUserByRealName(realName);
+        return Result.success().setData(user1).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
@@ -161,6 +179,9 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "分页查找所有教师")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
     @ResponseBody
     @GetMapping("/selectAllTeacher")
     public Result selectAllTeacher(@RequestBody Page page) {
@@ -181,6 +202,9 @@ public class UserController {
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
     @ApiOperation(value = "分页查找所有学生")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
     @ResponseBody
     @GetMapping("/selectAllStudent")
     public Result selectAllStudent(@RequestBody Page page) {
@@ -198,6 +222,23 @@ public class UserController {
         //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
         return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
     }
+
+    @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
+    @ApiOperation(value = "查询用户根据userid数组")
+    @ApiImplicitParam(required = true,name ="userIds",value = "userId数组")
+    @ResponseBody
+    @GetMapping("/getUserByUserIdArray")
+    public Result getUserByUserIdArray(@RequestBody User user) {
+
+
+        List<User> users = userService.getUserByUserIdArray(user.getUserIds());
+        int Count = users.size();
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询学生成功！");
+    }
+
+
+
+
 
 
 

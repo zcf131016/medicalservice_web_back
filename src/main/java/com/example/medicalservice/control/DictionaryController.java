@@ -12,6 +12,8 @@ import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -33,7 +35,12 @@ public class DictionaryController {
     @Autowired
     DictionaryService dictionaryService;
 
+
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "新增数据字典类型")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "typeCode",value = "类型编码"),
+            @ApiImplicitParam(required = true,name = "typeName",value = "类型名")
+    })
     @ResponseBody
     @PostMapping("/insertDictionaryType")
     public Result insertDictionaryType(@RequestBody DictionaryType dictionaryType) {
@@ -47,6 +54,7 @@ public class DictionaryController {
 
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询全部数据字典类型")
     @ResponseBody
     @GetMapping("/getAllDictionaryType")
@@ -57,8 +65,9 @@ public class DictionaryController {
         return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询所有数据类型成功");
     }
 
-    //@RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询字典类型根据typecode")
+    @ApiImplicitParam(required = true,value = "typeCode",name = "类型编码")
     @ResponseBody
     @GetMapping("/getDictionaryTypeBytypeCode/{typeCode}")
     public Result getDictionaryTypeBytypeCode(@PathVariable("typeCode")String typeCode) {
@@ -72,8 +81,9 @@ public class DictionaryController {
 
     }
 
-    //@RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询字典类型根据typename")
+    @ApiImplicitParam(required = true,value = "typeName",name = "类型名")
     @ResponseBody
     @GetMapping("/getDictionaryTypeBytypeName/{typeName}")
     public Result getDictionaryTypeBytypeName(@PathVariable("typeName")String typeName) {
@@ -87,7 +97,11 @@ public class DictionaryController {
     }
 
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "分页查找所有字典类型")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
     @ResponseBody
     @GetMapping("/selectAllDictionaryType")
     public Result selectAllDictionaryType(@RequestBody Page page) {
@@ -106,7 +120,12 @@ public class DictionaryController {
         return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "新增数据字典值")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "typeCode",value = "数据类型"),
+            @ApiImplicitParam(required = true,name = "value",value = "数据值"),
+            @ApiImplicitParam(required = true,name = "name",value = "数据名")
+    })
     @ResponseBody
     @PostMapping("/insertDictionaryDetail")
     public Result insertDictionaryDetail(@RequestBody DictionaryDetail dictionaryDetail) {
@@ -119,7 +138,9 @@ public class DictionaryController {
 
 
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "删除数据值根据typecode")
+    @ApiImplicitParam(required = true,value = "typeCode",name = "类型名")
     @ResponseBody
     @DeleteMapping("/deleteDictionaryDetailByTypeCode")
     public Result deleteDictionaryDetailByTypeCode(@RequestBody DictionaryDetail dictionaryDetail){
@@ -128,7 +149,9 @@ public class DictionaryController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "删除数据值根据value")
+    @ApiImplicitParam(required = true,value = "value",name = "值")
     @ResponseBody
     @DeleteMapping("/deleteDictionaryDetailByValue")
     public Result deleteDictionaryDetailByValue(@RequestBody DictionaryDetail dictionaryDetail){
@@ -138,6 +161,7 @@ public class DictionaryController {
     }
 
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "更新数据值")
     @ResponseBody
     @PutMapping("/updateDictionaryDetail")
@@ -147,7 +171,9 @@ public class DictionaryController {
 
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询数据值根据value")
+    @ApiImplicitParam(required = true,value = "value",name = "值")
     @ResponseBody
     @GetMapping("/getDictionaryDetailByValue/{value}")
     public Result getDictionaryDetailByValue(@PathVariable("value")Integer value) {
@@ -161,8 +187,9 @@ public class DictionaryController {
 
     }
 
-    //@RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询数据值根据name")
+    @ApiImplicitParam(required = true,value = "name",name = "数据名")
     @ResponseBody
     @GetMapping("/getDictionaryDetailByName/{name}")
     public Result getDictionaryDetailByName(@PathVariable("name")String name) {
@@ -175,7 +202,9 @@ public class DictionaryController {
         return Result.success().setData(dictionaryDetail).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询数据值根据typeCode")
+    @ApiImplicitParam(required = true,value = "typeCode",name = "类型编码")
     @ResponseBody
     @GetMapping("/getDictionaryDetailByTypeCode/{typeCode}")
     public Result getDictionaryDetailByTypeCode(@PathVariable("typeCode")String typeCode) {
@@ -188,6 +217,7 @@ public class DictionaryController {
         return Result.success().setData(dictionaryDetails).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询全部数据字典类型和值")
     @ResponseBody
     @GetMapping("/getAllDictionary")
@@ -197,7 +227,11 @@ public class DictionaryController {
         return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询所有数据类型成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "分页查询全部数据字典类型和值")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "currentPage",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
     @ResponseBody
     @GetMapping("/selectAllDictionary")
     public Result selectAllDictionary(@RequestBody Page page) {
@@ -215,6 +249,21 @@ public class DictionaryController {
         //return Result.success().setData(json.toJSONString()).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
         return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型成功");
     }
+
+    /*@RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
+    @ApiOperation(value = "查询全部数据字典类型和值typeCode")
+    @ApiImplicitParam(required = true,value = "typeCode",name = "类型编码")
+    @ResponseBody
+    @GetMapping("/getAllDictionaryByTypeCode/{typeCode}")
+    public Result getAllDictionaryByTypeCode(@PathVariable("typeCode")String typeCode) {
+        try {
+            dictionaryService.getAllDictionaryByTypeCode(typeCode);
+        } catch (UserFriendException e) {
+            return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("数据类型查询不存在！");
+        }
+        List<DictionaryType> dictionaryTypes = dictionaryService.getAllDictionaryByTypeCode(typeCode);
+        return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+    }*/
 
     }
 
