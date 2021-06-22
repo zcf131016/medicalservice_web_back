@@ -36,5 +36,17 @@ public interface UserService {
     //查询用户根据realname
     User getUserByRealName(String realName);
 
+    //查询所有老师
+    List<User> findAllTeacher();
+
+    //查询所有学生
+    List<User> findAllStudent();
+
+    //分页查询所有老师
+    PageInfo selectAllTeacher(Page page);
+
+    //分页查询所有学生
+    PageInfo selectAllStudent(Page page);
+
 
 }
