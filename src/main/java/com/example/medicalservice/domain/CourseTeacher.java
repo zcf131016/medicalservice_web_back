@@ -3,6 +3,8 @@ package com.example.medicalservice.domain;
 import io.swagger.annotations.ApiModel;
 
 import java.util.Date;
+import java.util.List;
+
 @ApiModel
 public class CourseTeacher {
     private Integer id;
@@ -12,13 +14,10 @@ public class CourseTeacher {
     private String teacherName;
     private Integer isCreater;
     private Date creatTime;
+    private List<CourseTeacher> courseTeachers;
 
-    public Date getCreatTime() {
-        return creatTime;
-    }
-
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
+    public List<CourseTeacher> getCourseTeachers() {
+        return courseTeachers;
     }
 
     @Override
@@ -31,7 +30,20 @@ public class CourseTeacher {
                 ", teacherName='" + teacherName + '\'' +
                 ", isCreater=" + isCreater +
                 ", creatTime=" + creatTime +
+                ", courseTeachers=" + courseTeachers +
                 '}';
+    }
+
+    public void setCourseTeachers(List<CourseTeacher> courseTeachers) {
+        this.courseTeachers = courseTeachers;
+    }
+
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
     }
 
     public Integer getId() {

@@ -215,5 +215,14 @@ public class CourseControl {
     public Result updateAR(@RequestBody ApproveRequest approveRequest) {
         return Result.success().setData(courseService.updateAR(approveRequest)).setCode(ResultCodeEnum.OK.getCode()).setMsg("审核完成");
     }
-
+    @ApiOperation(value = "通过学生号查找kc" )
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="studentId", value="学生Id"),
+    })
+    @ResponseBody
+    @GetMapping("/findCourseBySId/{studentId}")
+    public Result getCourseBySId(@PathVariable Integer studentId) {
+        List<CourseStudent> courseStudents=courseService.findCourseByStudentId(studentId);
+        int Count =courseStudents.size();
+        return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
+    }
 }
