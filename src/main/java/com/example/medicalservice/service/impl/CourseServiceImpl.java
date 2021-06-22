@@ -91,6 +91,7 @@ public class CourseServiceImpl implements CourseService {
         for (int i=0;i<courseTeachers.size();i++){
             CourseTeacher courseTeacher=courseTeachers.get(i);
             courseTeacher.setIsCreater(0);
+            courseTeacher.setTeacherName(userMapper.getUserByUserId(courseTeacher.getTeacherId()).getUserName());
             courseTeacher.setCourseId(courseTeacher1.getCourseId());
             courseTeacher.setCourseName(courseTeacher1.getCourseName());
             CourseTeacher courseTeacher2=courseMapper.findCourseTeacherByTeacherIdAndCId(courseTeacher.getTeacherId(),courseTeacher1.getCourseId());
