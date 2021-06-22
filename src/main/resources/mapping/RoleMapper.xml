@@ -16,6 +16,15 @@
 	      #{perms}
 	    )
     </insert>
+    <update id="updateRole" parameterType="com.example.medicalservice.domain.Role">
+        UPDATE roles
+        <trim prefix="set" suffixOverrides=",">
+            <if test="roleId!=null">role_id=#{roleId},</if>
+            <if test="description!=null">description=#{description},</if>
+            <if test="perms!=null">perms=#{perms},</if>
+        </trim>
+        where id = #{id}
+    </update>
     <delete id="deleteRole" parameterType="java.lang.Integer">
         delete * from roles where role_id = #{roleId}
     </delete>

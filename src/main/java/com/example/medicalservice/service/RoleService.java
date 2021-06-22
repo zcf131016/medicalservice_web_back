@@ -17,4 +17,5 @@ public interface RoleService {
     void addRole(Role role);
     PageInfo getAllRole(Page page);
     void deleteRole(Integer roleId);
+    void updateRole(Role role);
 }

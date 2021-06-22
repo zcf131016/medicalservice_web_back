@@ -77,4 +77,16 @@ public class RoleController {
         }
         return Result.success().setCode(ResultCodeEnum.DELETED.getCode());
     }
+
+    @ApiOperation(value="根据id更新角色",notes = "不是roleId")
+    @RequiresRoles("admin")
+    @PutMapping("/updateRole")
+    public Result updateRole(@RequestBody Role role) {
+        try {
+            roleService.updateRole(role);
+        } catch (UserFriendException e) {
+            return Result.failure(ResultCodeEnum.UPDATE_FAILED).setMsg("更新失败,请检查参数");
+        }
+        return Result.success().setCode(ResultCodeEnum.UPDATED.getCode()).setMsg("更新成功");
+    }
 }

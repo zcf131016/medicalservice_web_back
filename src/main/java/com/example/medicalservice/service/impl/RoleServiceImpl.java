@@ -50,4 +50,10 @@ public class RoleServiceImpl implements RoleService {
         if(role == null) throw new UserFriendException();
         roleMapper.deleteRole(roleId);
     }
+
+    @Override
+    public void updateRole(Role role) {
+        if(role.getId() == null) throw new UserFriendException();
+        roleMapper.updateRole(role);
+    }
 }

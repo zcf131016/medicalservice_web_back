@@ -16,6 +16,8 @@ public enum ResultCodeEnum {
     INQUIRE_FAILED("303","查询失败"),
     CREATED("201", "创建成功"),
     CREATE_FAILED("202", "创建失败"),
+    UPDATE_FAILED("902", "更新失败"),
+    UPDATED("901", "更新成功"),
     DELETED("204", "删除成功"),
     DELETE_FAILED("205","删除失败"),
     BAD_REQUEST("400", "请求参数有误"),
