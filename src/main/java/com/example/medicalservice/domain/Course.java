@@ -12,7 +12,7 @@ public class Course {
     private String courseName;
     private Integer teacherId;
     private String  courseDesc;
-    private String courseState;
+    private Integer courseState;
     private Date creatTime;
     private String teacherNumbers;
     private String creatTeacher;
@@ -96,11 +96,11 @@ public class Course {
         this.courseDesc = courseDesc;
     }
 
-    public String getCourseState() {
+    public Integer getCourseState() {
         return courseState;
     }
 
-    public void setCourseState(String courseState) {
+    public void setCourseState(Integer courseState) {
         this.courseState = courseState;
     }
 }
