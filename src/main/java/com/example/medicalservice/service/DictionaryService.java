@@ -63,6 +63,8 @@ public interface DictionaryService {
     //分页查询查询所有数据类型包括值
     PageInfo selectAllDictionary(Page page);
 
+    /*//查询所有数据类型包括值根据类型
+    List<DictionaryType> getAllDictionaryByTypeCode(String typeCode);*/
 
 
 

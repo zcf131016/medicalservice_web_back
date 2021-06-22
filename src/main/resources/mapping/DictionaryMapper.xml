@@ -21,7 +21,7 @@
         <result property="name" jdbcType="VARCHAR" column="name"/>
         <result property="value" jdbcType="INTEGER" column="value"/>
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
-        <result property="isDefault" jdbcType="INTEGER" column="isDefault"/>
+        <result property="isDefault" jdbcType="INTEGER" column="is_default"/>
     </resultMap>
 
     <insert id="insertDictionaryType" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.DictionaryType">
@@ -42,7 +42,7 @@
             <if test="typeName!=null">type_name=#{typeName},</if>
             <if test="typeCode!=null">type_code=#{typeCode},</if>
         </trim>
-        where sortNum = #{sortNum} and itemKey=#{itemKey}
+        where id=#{id}
     </update>
     <update id="updateDictionaryDetail" parameterType="com.example.medicalservice.domain.DictionaryDetail">
         UPDATE dictionary_detail
@@ -101,7 +101,7 @@
     </select>
 
     <select id="getAllDictionary" resultMap="DictionaryTypeResultMap">
-        select t.type_name,t.type_code,d.value,d.name,d.isDefault
+        select t.type_name,t.type_code,d.value,d.name,d.is_Default
         from (
             select * from dictionary_type
                  )as t
@@ -109,11 +109,21 @@
     </select>
     <select id="selectAllDictionary" resultMap="DictionaryTypeResultMap"
             parameterType="com.example.medicalservice.domain.Page">
-        select t.type_name,t.type_code,d.value,d.name,d.isDefault
+        select t.type_name,t.type_code,d.value,d.name,d.is_default
         from (
                  select * from dictionary_type
              )as t
                  left join dictionary_detail as d on d.type_code=t.type_code
+    </select>
+
+    <select id="getAllDictionaryByTypeCode" resultType="com.example.medicalservice.domain.DictionaryType"
+            parameterType="java.lang.String">
+        select t.type_name,t.type_code,d.value,d.name,d.is_default
+        from (
+                 select * from dictionary_type
+             )as t
+                 left join dictionary_detail as d on d.type_code=t.type_code
+        where d.type_code = #{typeCode}
     </select>
 
 

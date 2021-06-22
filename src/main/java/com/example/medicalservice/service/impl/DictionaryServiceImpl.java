@@ -153,5 +153,14 @@ public class DictionaryServiceImpl implements DictionaryService {
         return pageInfo;
     }
 
+    /*@Override
+    public List<DictionaryType> getAllDictionaryByTypeCode(String typeCode) {
+        if (dictionaryMapper.getDictionaryDetailByTypeCode(typeCode).size()==0) {
+            throw new UserFriendException("该数据类型不存在", "400");
+        }
+        return dictionaryMapper.getAllDictionaryByTypeCode(typeCode);
+
+    }*/
+
 
 }

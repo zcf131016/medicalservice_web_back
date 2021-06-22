@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -132,5 +133,16 @@ public class UserServiceImpl implements UserService {
         return pageInfo;
 
     }
+
+    @Override
+    public List<User> getUserByUserIdArray(Integer[] userIds) {
+        List<User> users = new ArrayList<>();
+        for(int i=0;i<userIds.length;i++){
+            User user = userMapper.getUserByUserId(userIds[i]);
+            users.add(user);
+        }
+        return users;
+    }
+
 
 }

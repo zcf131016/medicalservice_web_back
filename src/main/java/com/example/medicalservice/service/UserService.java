@@ -48,5 +48,9 @@ public interface UserService {
     //分页查询所有学生
     PageInfo selectAllStudent(Page page);
 
+    //查询用户根据userid数组
+    List<User> getUserByUserIdArray(Integer [] userIds);
+
+
 
 }
