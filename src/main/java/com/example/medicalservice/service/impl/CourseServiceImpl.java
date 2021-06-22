@@ -53,6 +53,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course insertCourse(Course course) {
         course.setCourseId(RandomUtil.getRandom(9));
+        course.setCourseState(1);
         courseMapper.insertCourse(course);
         CourseTeacher courseTeacher=new CourseTeacher();
         courseTeacher.setCourseId(course.getCourseId());
