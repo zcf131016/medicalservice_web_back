@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 22/06/2021 16:13:11
+ Date: 22/06/2021 16:45:12
 */
 
 SET NAMES utf8mb4;
@@ -192,14 +192,14 @@ INSERT INTO `course_teacher` VALUES (1, 10000, '数据结构', 88888888, 'admin'
 -- ----------------------------
 DROP TABLE IF EXISTS `dictionary_detail`;
 CREATE TABLE `dictionary_detail`  (
-  `id` int(16) NOT NULL,
+  `id` int(16) NOT NULL AUTO_INCREMENT,
   `type_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典编码如sex',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典具体名字如男，女',
   `value` int(16) NULL DEFAULT NULL COMMENT '字典值数字如1，2',
   `creat_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `is_default` int(1) UNSIGNED ZEROFILL NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dictionary_detail
