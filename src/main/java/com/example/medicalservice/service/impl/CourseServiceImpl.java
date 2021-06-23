@@ -207,4 +207,9 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.findCourseByStudentId(studentId);
     }
 
+    @Override
+    public List<CourseStudent> findUnjoinCourseByStudentId(Integer studentId) {
+        return courseMapper.findUnjoinCourseByStudentId(studentId);
+    }
+
 }
