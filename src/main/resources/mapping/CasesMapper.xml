@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicalservice.mapper.CasesMapper">
+    <resultMap id="CasesResultMap" type="com.example.medicalservice.domain.Cases">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="case_name" jdbcType="VARCHAR" property="caseName" />
+        <result column="course_id" jdbcType="INTEGER" property="courseId" />
+        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+        <result column="case_desc" jdbcType="VARCHAR" property="caseDesc" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+        <result column="creat_trecher" jdbcType="INTEGER" property="creatTeacher" />
+        <result column="med_history" jdbcType="VARCHAR" property="medHistory" />
+        <result column="thinking" jdbcType="VARCHAR" property="thinking" />
+        <result column="isPublish" jdbcType="INTEGER" property="isPublish" />
+    </resultMap>
+    <resultMap id="CasesImageResultMap" type="com.example.medicalservice.domain.CaseImage">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+    </resultMap>
+    <resultMap id="CasesFileResultMap" type="com.example.medicalservice.domain.CaseFile">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+    </resultMap>
+    <select id="getAllCases" resultMap="CasesResultMap">
+        select * from cases
+    </select>
+    <select id="getcasesByCourseId" resultMap="CasesResultMap">
+        select * from cases
+        where course_id = #{courseId}
+    </select>
+    <select id="getcasesBycaseName" resultMap="CasesResultMap">
+        select * from cases
+        where case_name = #{caseName}
+    </select>
+    <select id="getcasesByteacherId" resultMap="CasesResultMap">
+        select * from cases
+        where creat_trecher = #{creatTeacher}
+    </select>
+    <select id="getcasebyId" resultMap="CasesResultMap">
+        select * from cases
+        where case_id = #{caseId}
+    </select>
+    <insert id="insertCases" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.Cases">
+        insert into cases(case_id,case_name,course_id,course_name,case_desc,creat_trecher,med_history,thinking,isPublish)
+        values (#{caseId},#{caseName},#{courseId},#{courseName},#{caseDesc},#{creatTeacher},#{medHistory},#{thinking},#{isPublish})
+    </insert>
+    <delete id="deleteCasesByid" parameterType="java.lang.Integer">
+        delete from cases where case_id=#{caseId}
+    </delete>
+    <update id="updateCases" parameterType="com.example.medicalservice.domain.Cases">
+        UPDATE cases
+        <set>
+            <if test="caseName!=null">case_name = #{caseName},</if>
+            <if test="caseDesc!=null">case_desc = #{caseDesc},</if>
+            <if test="medHistory!=null">med_history = #{medHistory},</if>
+            <if test="thinking!=null">thinking = #{thinking},</if>
+            <if test="isPublish!=0">isPublish = #{isPublish}</if>
+        </set>
+        where case_id = #{caseId}
+    </update>
+    <select id="getcaseimagebyId" resultMap="CasesImageResultMap">
+        select * from case_image
+        where case_id = #{caseId}
+    </select>
+    <insert id="insertCasesImage" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseImage">
+        insert into case_image(case_id,image_url)
+        values (#{caseId},#{imageUrl})
+    </insert>
+    <select id="getcasefilebyId" resultMap="CasesFileResultMap">
+        select * from case_file
+        where case_id = #{caseId}
+    </select>
+    <insert id="insertCasesFile" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseFile">
+        insert into case_file(case_id,file_url)
+        values (#{caseId},#{fileUrl})
+    </insert>
+</mapper>

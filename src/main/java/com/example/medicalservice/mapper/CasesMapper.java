@@ -1,16 +1,20 @@
-package com.example.medicalservice.service;
+package com.example.medicalservice.mapper;
 
 import com.example.medicalservice.domain.CaseFile;
 import com.example.medicalservice.domain.CaseImage;
 import com.example.medicalservice.domain.Cases;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-public interface CaseService {
+/**
+ * @author zx
+ * @date 2021/6/22 18:59
+ */
+@Mapper
+public interface CasesMapper {
     //查找所有案例（无图片及文件）
     List<Cases> getAllCases();
-    //分页查找案例
-    List<Cases> getCasesbyPage(Integer pageNum,Integer pageSize);
     //根据courseId查找所有案例
     List<Cases> getcasesByCourseId(Integer courseId);
     //根据案例名称查找所有案例
@@ -19,7 +23,7 @@ public interface CaseService {
     List<Cases> getcasesByteacherId(Integer creatTeacher);
     //根据caseId查找案例（无图片及文件）
     Cases getcasebyId(Integer caseId);
-    //新增案例
+    //新增案例（未发布至班课）
     int insertCases(Cases cases);
     //根据案例id删除案例（图片和文件需要在control层删除）
     int deleteCasesByid(Integer caseId);
