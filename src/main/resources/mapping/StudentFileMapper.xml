@@ -18,11 +18,15 @@
 	      #{caseId},
 	      #{studentId},
 	      #{filePath},
-	      #{file_type}
+	      #{fileType}
 	    )
     </insert>
     <select id="getFileByStudentId" resultType="com.example.medicalservice.domain.StudentFile">
         select * from student_file where case_id=#{caseId} and student_id=#{studentId}
+    </select>
+    <select id="getFileById" resultType="com.example.medicalservice.domain.StudentFile"
+            parameterType="java.lang.Integer">
+        select * from student_file where id = #{id}
     </select>
 
 

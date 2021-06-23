@@ -11,4 +11,5 @@ import java.util.List;
 public interface StudentFileService {
     List<StudentFile> getFileByStudentId(Integer caseId, Integer studentId);
     void uploadFile(StudentFile studentFile);
+    StudentFile getFileById(Integer id);
 }
