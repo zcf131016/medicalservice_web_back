@@ -48,6 +48,14 @@
         delete from users where user_id = #{userId}
     </delete>
 
+    <delete id="deleteUserAllByUserIds" parameterType="java.util.List">
+        delete from
+        users  where user_id in
+        <foreach collection="userIds"  open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+    </delete>
+
     <select id="findAllUser" resultMap="BaseResultMap">
         select * from  users
     </select>

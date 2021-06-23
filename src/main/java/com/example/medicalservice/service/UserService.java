@@ -48,8 +48,11 @@ public interface UserService {
     //分页查询所有学生
     PageInfo selectAllStudent(Page page);
 
-    //查询用户根据userid数组
+    //查询用户根据userid数组(批量查询)
     List<User> getUserByUserIdArray(Integer [] userIds);
+
+    //根据useId批量删除用户
+    int deleteUserAllById(List<Integer> userIds);
 
 
 

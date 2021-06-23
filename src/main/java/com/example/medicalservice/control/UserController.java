@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -139,7 +140,7 @@ public class UserController {
             e.printStackTrace();
             return Result.failure(ResultCodeEnum.INQUIRE_FAILED);
         }
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型和值成功！");
+        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功！");
 
     }
 
@@ -238,8 +239,36 @@ public class UserController {
 
         List<User> users = userService.getUserByUserIdArray(user.getUserIds());
         int Count = users.size();
-        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询学生成功！");
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询成功！");
     }
+
+    @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
+    @ApiOperation(value = "查询用户根据realname")
+    @ApiImplicitParam(required = true,name ="realName",value = "真实姓名")
+    @ResponseBody
+    @GetMapping("/getUserByRealName/{realName}")
+    public Result getUserByRealName1(@PathVariable("realName") String realName){
+
+        try {
+            userService.getUserByRealName(realName);
+        }catch (UserFriendException e){
+            return Result.failure(ResultCodeEnum.BAD_REQUEST).setMsg("用户不存在！");
+        }
+        User user1 = userService.getUserByRealName(realName);
+        return Result.success().setData(user1).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+    }
+
+
+    @ApiOperation("根据userid批量删除用户")
+    @ApiImplicitParam(required = true,name ="userId",value = "用户id")
+    @ResponseBody
+    @DeleteMapping ("/deleteUserAllByuserId")
+    public Result deleteUserAllById(@RequestParam List<Integer> userIds){
+        System.out.println(userIds);
+
+        return Result.success().setData(userService.deleteUserAllById(userIds)).setCode(ResultCodeEnum.OK.getCode()).setMsg("批量删除成功");
+    }
+
 
 
 
