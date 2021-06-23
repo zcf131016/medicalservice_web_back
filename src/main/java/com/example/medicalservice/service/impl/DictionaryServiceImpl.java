@@ -1,9 +1,6 @@
 package com.example.medicalservice.service.impl;
 
-import com.example.medicalservice.domain.DictionaryDetail;
-import com.example.medicalservice.domain.DictionaryType;
-import com.example.medicalservice.domain.Page;
-import com.example.medicalservice.domain.User;
+import com.example.medicalservice.domain.*;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.mapper.DictionaryMapper;
 import com.example.medicalservice.service.DictionaryService;
@@ -42,15 +39,17 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public List<DictionaryType> selectAllDictionaryType(Integer pageNum, Integer pageSize) {
+    public PageInfo selectAllDictionaryType(Page page) {
+
+
         //设置页码和每页个数
-        PageHelper.startPage( pageNum, pageSize);
+        PageHelper.startPage( page.getCurrentPage(), page.getPageSize());
         //查询符合条件的记录
         List<DictionaryType> dictionaryTypes = dictionaryMapper.selectAllDictionaryType();
-        System.out.println(dictionaryTypes);
-
+        if(dictionaryTypes.size()==0) throw new UserFriendException();
+        PageInfo pageInfo = new PageInfo(dictionaryTypes);
         //返回PageInfo类型数据
-        return dictionaryTypes;
+        return pageInfo;
     }
 
     @Override
@@ -140,13 +139,14 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public List<DictionaryType> selectAllDictionary(Integer pageNum, Integer pageSize) {
+    public PageInfo selectAllDictionary(Page page) {
         //设置页码和每页个数
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
         //查询符合条件的记录
         List<DictionaryType> dictionaryTypes = dictionaryMapper.selectAllDictionary();
-        System.out.println(dictionaryTypes);
-        return dictionaryTypes;
+        if(dictionaryTypes.size()==0) throw new UserFriendException();
+        PageInfo pageInfo = new PageInfo(dictionaryTypes);
+        return pageInfo;
     }
 
     /*@Override

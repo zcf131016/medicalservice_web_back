@@ -1,5 +1,6 @@
 package com.example.medicalservice.service.impl;
 
+import com.example.medicalservice.domain.DictionaryType;
 import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
@@ -76,19 +77,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User>  selectAllUser(Integer pageNum,Integer pageSize) {
-        //List<User> users = userMapper.selectAllUser();
-        //System.out.println(users);
+    public PageInfo  selectAllUser(Page page) {
         //设置页码和每页个数
         //System.out.println(page.getCurrentPage());
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
         //查询符合条件的记录
         List<User> users = userMapper.selectAllUser();
-        //System.out.println(users);
+        if(users.size()==0) throw new UserFriendException();
         //将查询到的信息封装到PageInfo
-        //PageInfo pageInfo = new PageInfo(users);
+        PageInfo pageInfo = new PageInfo(users);
         //返回PageInfo类型数据
-        return users;
+        return pageInfo;
 
     }
 
@@ -111,29 +110,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectAllTeacher(Integer pageNum,Integer pageSize) {
+    public PageInfo selectAllTeacher(Page page) {
         //设置页码和每页个数
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
         //查询符合条件的记录
         List<User> users = userMapper.selectAllTeacher();
+        if(users.size()==0) throw new UserFriendException();
         //System.out.println(users);
-        //将查询到的信息封装到PageInfo
-        //PageInfo pageInfo = new PageInfo(users);
-        //返回PageInfo类型数据
-        return users;
-    }
-
-    @Override
-    public List<User> selectAllStudent(Integer pageNum,Integer pageSize) {
-        //设置页码和每页个数
-        PageHelper.startPage(pageNum,pageSize);
-        //查询符合条件的记录
-        List<User> users = userMapper.selectAllStudent();
-        System.out.println(users);
         //将查询到的信息封装到PageInfo
         PageInfo pageInfo = new PageInfo(users);
         //返回PageInfo类型数据
-        return users;
+        return pageInfo;
+    }
+
+
+
+    @Override
+    public PageInfo selectAllStudent(Page page) {
+        //设置页码和每页个数
+        PageHelper.startPage(page.getCurrentPage(),page.getPageSize());
+        //查询符合条件的记录
+        List<User> users = userMapper.selectAllStudent();
+        //将查询到的信息封装到PageInfo
+        PageInfo pageInfo = new PageInfo(users);
+        if(users.size()==0) throw new UserFriendException();
+        //返回PageInfo类型数据
+        return pageInfo;
 
     }
 
