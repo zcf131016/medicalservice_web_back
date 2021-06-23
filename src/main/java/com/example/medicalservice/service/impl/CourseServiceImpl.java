@@ -8,6 +8,7 @@ import com.example.medicalservice.service.CourseService;
 import com.example.medicalservice.util.RandomUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -79,11 +80,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course findCourseById(Integer courseId) {
         Course course=courseMapper.findCourseById(courseId);
-       List<CourseStudent> courseStudents=courseMapper.findCourseStudentByCourseId(courseId);
-       course.setCourseStudents(courseStudents);
-       List<Cases> cases=casesMapper.getcasesByCourseId(courseId);
-       course.setCases(cases);
-       return course;
+        return course;
     }
 
     @Override
@@ -225,6 +222,33 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<CourseStudent> findNotTeamStudentByCId(Integer courseId) {
         return courseMapper.findNotTeamStudentByCId(courseId);
+    }
+
+    @Override
+    public List<CourseStudent> findInTeamStudentByCourseId(Integer courseId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<CourseStudent> courses=courseMapper.findInTeamStudentByCourseId(courseId);
+        return courses;
+    }
+
+    @Override
+    public Integer deleteTeamByCIdTId(Integer courseId, Integer teamId) {
+        return courseMapper.upadateCourseTeam(courseId,teamId);
+    }
+
+    @Override
+    public Integer deleteOneStudentById(Integer courseId, Integer teamId, Integer studentId) {
+        return courseMapper.deleteOneStudentById(courseId,teamId,studentId);
+    }
+
+    @Override
+    public List<CourseStudent> findTeamStudent(Integer courseId, Integer teamId) {
+        return courseMapper.findTeamStudent(courseId,teamId);
+    }
+
+    @Override
+    public Integer updateOneStudentById(Integer courseId, Integer teamId, Integer studentId) {
+        return courseMapper.updateOneStudentById(courseId,teamId,studentId);
     }
 
 }

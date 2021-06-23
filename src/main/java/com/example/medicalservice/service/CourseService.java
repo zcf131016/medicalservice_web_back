@@ -4,6 +4,7 @@ import com.example.medicalservice.domain.ApproveRequest;
 import com.example.medicalservice.domain.Course;
 import com.example.medicalservice.domain.CourseStudent;
 import com.example.medicalservice.domain.CourseTeacher;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -33,4 +34,9 @@ public interface CourseService {
     List<CourseStudent> findCourseByStudentId(Integer studentId);//通过学生号查找课程
     List<Course> findUnjoinCourseByStudentId(Integer studentId);//通过学生号查找其未加入课程
     List<CourseStudent> findNotTeamStudentByCId(Integer courseId);//查看班级未分组学生名单
+    List<CourseStudent> findInTeamStudentByCourseId(Integer courseId,Integer pageNum,Integer pageSize);//分页查找已分组学生
+    Integer deleteTeamByCIdTId(Integer courseId,Integer teamId);//整组学生退出分组
+    Integer deleteOneStudentById(Integer courseId,Integer teamId,Integer studentId);//删除小组里的单个学生
+    List<CourseStudent> findTeamStudent(Integer courseId,Integer teamId);//查询分组里的学生
+    Integer updateOneStudentById(Integer courseId,Integer teamId,Integer studentId);//变更单个小组成员
 }

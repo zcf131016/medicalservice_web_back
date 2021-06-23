@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@Api("课程管理")
+@Api(tags = "课程管理")
 @RestController
 @RequestMapping("/course")
 public class CourseControl {
@@ -39,9 +39,6 @@ public class CourseControl {
     @GetMapping("/findCourseByCourseId/{courseId}")
     public Result getCourseByCourseId(@PathVariable Integer courseId) {
         Course courses=courseService.findCourseById(courseId);
-        if (courses==null){
-            return Result.failure(ResultCodeEnum.CREATED).setMsg("此课程为空请输入正确的课程号");
-        }
         return Result.success().setData(courses).setCode(ResultCodeEnum.OK.getCode()).setMsg("根据课程Id查找课程成功");
     }
     @ApiOperation(value = "通过课程名称查找课程" )
@@ -215,7 +212,7 @@ public class CourseControl {
     public Result updateAR(@RequestBody ApproveRequest approveRequest) {
         return Result.success().setData(courseService.updateAR(approveRequest)).setCode(ResultCodeEnum.OK.getCode()).setMsg("审核完成");
     }
-    @ApiOperation(value = "通过学生号查找kc" )
+    @ApiOperation(value = "通过学生号查找已加入课程" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="studentId", value="学生Id"),
     })
     @ResponseBody
@@ -225,7 +222,7 @@ public class CourseControl {
         int Count =courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
     }
-    @ApiOperation(value = "通过学生号查找UnjionCourse" )
+    @ApiOperation(value = "通过学生号查找未加入课程学生" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="studentId", value="学生Id"),
     })
     @ResponseBody
@@ -235,14 +232,6 @@ public class CourseControl {
         int Count =courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
     }
-    @ApiOperation(value = "查看课程未分组学生" )
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程Id"),
-    })
-    @ResponseBody
-    @GetMapping("/findNotTeamStudentByCourseId/{courseId}")
-    public Result getNotTeamStudentByCId(@PathVariable Integer courseId) {
-        List<CourseStudent> courseStudents=courseService.findNotTeamStudentByCId(courseId);
-        int Count = courseStudents.size();
-        return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找学生成功");
-    }
+
+
 }
