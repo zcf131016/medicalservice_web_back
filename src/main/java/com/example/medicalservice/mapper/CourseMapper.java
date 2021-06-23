@@ -37,4 +37,5 @@ public interface CourseMapper {
     List<ApproveRequest> findARByStudentId(Integer studentId);
     Integer updateAR(ApproveRequest approveRequest);
     List<CourseStudent> findCourseByStudentId(Integer studentId);
+    List<CourseStudent> findUnjoinCourseByStudentId(Integer studentId);
 }

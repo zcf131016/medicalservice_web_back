@@ -33,7 +33,7 @@ public class CourseControl {
         return Result.success().setData(courses).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("分页查找课程成功");
     }
     @ApiOperation(value = "通过课程id查找课程" )
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId",dataType = "INTEGER",value="课程id"),
     })
     @ResponseBody
     @GetMapping("/findCourseByCourseId/{courseId}")
@@ -78,7 +78,7 @@ public class CourseControl {
     @ResponseBody
     @PostMapping("/deleteCourse/{courseId}")
     public Result deleteCourseById(@PathVariable Integer courseId) {
-        return Result.success().setData(courseService.deleteCourseById(courseId)).setCode(ResultCodeEnum.OK.getCode()).setMsg("修改课程成功");
+        return Result.success().setData(courseService.deleteCourseById(courseId)).setCode(ResultCodeEnum.OK.getCode()).setMsg("课程成功");
     }
     @ApiOperation(value = "添加课程老师")
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
@@ -222,6 +222,16 @@ public class CourseControl {
     @GetMapping("/findCourseBySId/{studentId}")
     public Result getCourseBySId(@PathVariable Integer studentId) {
         List<CourseStudent> courseStudents=courseService.findCourseByStudentId(studentId);
+        int Count =courseStudents.size();
+        return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
+    }
+    @ApiOperation(value = "通过学生号查找UnjionCourse" )
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="studentId", value="学生Id"),
+    })
+    @ResponseBody
+    @GetMapping("/findUnjoinCourseBySId/{studentId}")
+    public Result getUnjoinCourseBySId(@PathVariable Integer studentId) {
+        List<CourseStudent> courseStudents=courseService.findUnjoinCourseByStudentId(studentId);
         int Count =courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
     }
