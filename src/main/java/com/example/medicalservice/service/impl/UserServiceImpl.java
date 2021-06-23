@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -147,6 +148,11 @@ public class UserServiceImpl implements UserService {
             users.add(user);
         }
         return users;
+    }
+
+    @Override
+    public int deleteUserAllById(List<Integer> userIds) {
+        return userMapper.deleteUserAllByUserIds(userIds);
     }
 
 

@@ -52,6 +52,10 @@ public interface UserMapper {
     //分页查询所有学生
     List<User> selectAllTeacher();
 
+    //根据userId批量删除
+    int deleteUserAllByUserIds(List<Integer> userIds);
+
+
 
 
 
