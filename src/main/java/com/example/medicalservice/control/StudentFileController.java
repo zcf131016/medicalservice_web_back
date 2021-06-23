@@ -54,7 +54,7 @@ public class StudentFileController {
                 dest.getParentFile().mkdirs();
             }
             try {
-                file.transferTo(dest);
+                file.transferTo(dest); // 存入服务器
                 StudentFile studentFile = new StudentFile();
                 studentFile.setCaseId(caseId);
                 studentFile.setStudentId(studentId);
