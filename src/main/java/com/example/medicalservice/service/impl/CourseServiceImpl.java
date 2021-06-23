@@ -1,9 +1,7 @@
 package com.example.medicalservice.service.impl;
 
-import com.example.medicalservice.domain.ApproveRequest;
-import com.example.medicalservice.domain.Course;
-import com.example.medicalservice.domain.CourseStudent;
-import com.example.medicalservice.domain.CourseTeacher;
+import com.example.medicalservice.domain.*;
+import com.example.medicalservice.mapper.CasesMapper;
 import com.example.medicalservice.mapper.CourseMapper;
 import com.example.medicalservice.mapper.UserMapper;
 import com.example.medicalservice.service.CourseService;
@@ -25,6 +23,8 @@ public class CourseServiceImpl implements CourseService {
     CourseMapper courseMapper;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    CasesMapper casesMapper;
     @Override
     public List<Course> findAllCourse(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
@@ -78,7 +78,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course findCourseById(Integer courseId) {
-        return courseMapper.findCourseById(courseId);
+        Course course=courseMapper.findCourseById(courseId);
+       List<CourseStudent> courseStudents=courseMapper.findCourseStudentByCourseId(courseId);
+       course.setCourseStudents(courseStudents);
+       List<Cases> cases=casesMapper.getcasesByCourseId(courseId);
+       course.setCases(cases);
+       return course;
     }
 
     @Override
@@ -215,6 +220,11 @@ public class CourseServiceImpl implements CourseService {
             courses.get(i).setCreatTeacher(userMapper.getUserByUserId(course.getTeacherId()).getUserName());
         }
         return courses;
+    }
+
+    @Override
+    public List<CourseStudent> findNotTeamStudentByCId(Integer courseId) {
+        return courseMapper.findNotTeamStudentByCId(courseId);
     }
 
 }

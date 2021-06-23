@@ -16,6 +16,8 @@ public class Course {
     private Date creatTime;
     private String teacherNumbers;
     private String creatTeacher;
+    private List<Cases> cases;
+    private List<CourseStudent> courseStudents;
 
     @Override
     public String toString() {
@@ -25,11 +27,29 @@ public class Course {
                 ", courseName='" + courseName + '\'' +
                 ", teacherId=" + teacherId +
                 ", courseDesc='" + courseDesc + '\'' +
-                ", courseState='" + courseState + '\'' +
+                ", courseState=" + courseState +
                 ", creatTime=" + creatTime +
                 ", teacherNumbers='" + teacherNumbers + '\'' +
                 ", creatTeacher='" + creatTeacher + '\'' +
+                ", cases=" + cases +
+                ", courseStudents=" + courseStudents +
                 '}';
+    }
+
+    public List<Cases> getCases() {
+        return cases;
+    }
+
+    public void setCases(List<Cases> cases) {
+        this.cases = cases;
+    }
+
+    public List<CourseStudent> getCourseStudents() {
+        return courseStudents;
+    }
+
+    public void setCourseStudents(List<CourseStudent> courseStudents) {
+        this.courseStudents = courseStudents;
     }
 
     public String getTeacherNumbers() {
