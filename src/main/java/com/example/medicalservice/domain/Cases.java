@@ -32,6 +32,8 @@ public class Cases {
   private String thinking;
   @ApiModelProperty(value = "是否发布，1表示未发布，2表示已发布")
   private Integer isPublish;//1表示未发布，2表示已发布
+  @ApiModelProperty(value = "教师名称")
+  private String teacherName;
 
 //  @Override
 //  public String toString() {
@@ -86,7 +88,16 @@ public class Cases {
             ", medHistory='" + medHistory + '\'' +
             ", thinking='" + thinking + '\'' +
             ", isPublish=" + isPublish +
+            ", teacherName='" + teacherName + '\'' +
             '}';
+  }
+
+  public void setTeacherName(String teacherName) {
+    this.teacherName = teacherName;
+  }
+
+  public String getTeacherName() {
+    return teacherName;
   }
 
   public void setCaseImages(List<CaseImage> caseImages) {

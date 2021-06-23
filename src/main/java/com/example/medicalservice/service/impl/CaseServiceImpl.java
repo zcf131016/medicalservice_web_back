@@ -20,31 +20,46 @@ public class CaseServiceImpl implements CaseService {
     CasesMapper casesMapper;
 
     @Override
-    public List<Cases> getAllCases(){ return casesMapper.getAllCases();}
+    public List<Cases> getAllCases() {
+        return casesMapper.getAllCases();
+    }
 
     @Override
-    public List<Cases> getCasesbyPage(Integer pageNum,Integer pageSize){
-        PageHelper.startPage(pageNum,pageSize);
-        List<Cases> casesList=casesMapper.getAllCases();
+    public List<Cases> getCasesbyPage(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Cases> casesList = casesMapper.getAllCases();
         return casesList;
     }
-    @Override
-    public List<Cases> getcasesByCourseId(Integer courseId){ return casesMapper.getcasesByCourseId(courseId);}
 
     @Override
-    public List<Cases> getcasesBycaseName(String caseName){ return casesMapper.getcasesBycaseName(caseName);}
-    @Override
-    public List<Cases> getcasesByteacherId(Integer creatTeacher){ return casesMapper.getcasesByteacherId(creatTeacher);}
-    @Override
-    public Cases getcasebyId(Integer caseId){return casesMapper.getcasebyId(caseId);}
+    public List<Cases> getcasesByCourseId(Integer courseId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Cases> casesList = casesMapper.getcasesByCourseId(courseId);
+        return casesList;
+    }
 
     @Override
-    public int insertCases(Cases cases){
-        if(cases.getCaseName()==null){
+    public List<Cases> getcasesBycaseName(String caseName) {
+        return casesMapper.getcasesBycaseName(caseName);
+    }
+
+    @Override
+    public List<Cases> getcasesByteacherId(Integer creatTeacher) {
+        return casesMapper.getcasesByteacherId(creatTeacher);
+    }
+
+    @Override
+    public Cases getcasebyId(Integer caseId) {
+        return casesMapper.getcasebyId(caseId);
+    }
+
+    @Override
+    public int insertCases(Cases cases) {
+        if (cases.getCaseName() == null) {
             throw new UserFriendException("案例名称不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
-        } else if(cases.getCourseId()==0){
+        } else if (cases.getCourseId() == 0) {
             throw new UserFriendException("课程id不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
-        } else if(cases.getCreatTeacher()==null){
+        } else if (cases.getCreatTeacher() == null) {
             throw new UserFriendException("创建老师不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
         }
         cases.setCaseId(RandomUtil.getRandom(9));//生成9位的caseid
@@ -52,35 +67,39 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public int deleteCasesByid(Integer caseId){
+    public int deleteCasesByid(Integer caseId) {
         return casesMapper.deleteCasesByid(caseId);
     }
 
     @Override
-    public int updateCases(Cases cases){
-        if(cases.getCaseName()==null){
+    public int updateCases(Cases cases) {
+        if (cases.getCaseName() == null) {
             throw new UserFriendException("案例名称不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
         }
         return casesMapper.updateCases(cases);
     }
 
     @Override
-    public List<CaseImage> getcaseimagebyId(Integer caseId){
+    public List<CaseImage> getcaseimagebyId(Integer caseId) {
         return casesMapper.getcaseimagebyId(caseId);
     }
 
     @Override
-    public int insertCasesImage(CaseImage caseImage){
+    public int insertCasesImage(CaseImage caseImage) {
         return casesMapper.insertCasesImage(caseImage);
     }
 
     @Override
-    public List<CaseFile> getcasefilebyId(Integer caseId){
+    public List<CaseFile> getcasefilebyId(Integer caseId) {
         return casesMapper.getcasefilebyId(caseId);
     }
 
+    public CaseFile downloadcasefilebyId(Integer id) {
+        return casesMapper.downloadcasefilebyId(id);
+    }
+
     @Override
-    public int insertCasesFile(CaseFile caseFile){
+    public int insertCasesFile(CaseFile caseFile) {
         return casesMapper.insertCasesFile(caseFile);
     }
 }
