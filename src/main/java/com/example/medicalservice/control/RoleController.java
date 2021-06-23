@@ -51,8 +51,11 @@ public class RoleController {
 
     @ApiOperation(value="获取所有角色")
     @RequiresRoles("admin")
-    @GetMapping("/getAllRole")
-    public Result getAllRole(@RequestBody Page page) {
+    @GetMapping("/getAllRole/{pageNum}/{pageSize}")
+    public Result getAllRole(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize) {
+        Page page = new Page();
+        page.setCurrentPage(pageNum);
+        page.setPageSize(pageSize);
         JSONObject json = new JSONObject();
         try {
             //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
@@ -63,7 +66,7 @@ public class RoleController {
             e.printStackTrace();
             return Result.failure(ResultCodeEnum.INQUIRE_FAILED);
         }
-        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("角色查询成功！");
+        return Result.success().setData(json.get("pageInfo")).setCode(ResultCodeEnum.OK.getCode()).setMsg("角色查询成功！");
     }
 
     @ApiOperation(value="根据角色id删除角色")
