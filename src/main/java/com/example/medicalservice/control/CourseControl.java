@@ -235,4 +235,14 @@ public class CourseControl {
         int Count =courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
     }
+    @ApiOperation(value = "查看课程未分组学生" )
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程Id"),
+    })
+    @ResponseBody
+    @GetMapping("/findNotTeamStudentByCourseId/{courseId}")
+    public Result getNotTeamStudentByCId(@PathVariable Integer courseId) {
+        List<CourseStudent> courseStudents=courseService.findNotTeamStudentByCId(courseId);
+        int Count = courseStudents.size();
+        return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找学生成功");
+    }
 }

@@ -29,7 +29,8 @@ public interface CourseService {
     Integer insertApproveRequest(ApproveRequest approveRequest);//学生提交课程请求
     List<ApproveRequest> getRAByCourseId(Integer courseId);//通过课程号查找请求
     List<ApproveRequest> getRAByStudentId(Integer studentId);//通过学生号查找请求
-    Integer updateAR(ApproveRequest approveRequest);//
-    List<CourseStudent> findCourseByStudentId(Integer studentId);
-    List<Course> findUnjoinCourseByStudentId(Integer studentId);
+    Integer updateAR(ApproveRequest approveRequest);//老师审批请求
+    List<CourseStudent> findCourseByStudentId(Integer studentId);//通过学生号查找课程
+    List<Course> findUnjoinCourseByStudentId(Integer studentId);//通过学生号查找其未加入课程
+    List<CourseStudent> findNotTeamStudentByCId(Integer courseId);//查看班级未分组学生名单
 }

@@ -93,7 +93,7 @@
         delete from course_student where course_id=#{courseId} and student_id=#{studentId}
     </delete>
     <select id="findCourseStudentByCId" resultMap="CourseStudentResultMap">
-        select * from course_student where course_id=#{courseId} and team_id=-1
+        select * from course_student where course_id=#{courseId}
     </select>
     <update id="updateCourseStudent" parameterType="com.example.medicalservice.domain.CourseStudent">
         UPDATE  course_student
@@ -130,5 +130,14 @@
         select * from  course where course_id not in (
             select course_id from course_student where student_id=#{studentId}
             )
+    </select>
+    <select id="findCourseStudentByCourseId" resultMap="CourseStudentResultMap">
+        select * from course_student where student_id not in (
+            select student_id from course_student where  course_id=#{courseId} and team_id=-1
+            )
+      order by team_id
+    </select>
+    <select id="findNotTeamStudentByCId" resultMap="CourseStudentResultMap">
+        select * from course_student where course_id=#{courseId} and team_id=-1
     </select>
 </mapper>
