@@ -48,6 +48,14 @@
         delete from users where user_id = #{userId}
     </delete>
 
+    <delete id="deleteUserAllByUserIds" parameterType="java.util.List">
+        delete from
+        users  where user_id in
+        <foreach collection="userIds"  open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+    </delete>
+
     <select id="findAllUser" resultMap="BaseResultMap">
         select * from  users
     </select>
@@ -58,6 +66,28 @@
 
     <select id="getUserByUserId" resultType="com.example.medicalservice.domain.User"  parameterType="java.lang.Integer">
         select * from users where user_id = #{userId}
+    </select>
+
+    <select id="selectAllUser" resultType="com.example.medicalservice.domain.User">
+        select * from users
+    </select>
+
+    <select id="getUserByRealName" resultType="com.example.medicalservice.domain.User" parameterType="java.lang.String">
+        select * from users where real_name = #{realName}
+    </select>
+
+    <select id="findAllTeacher" resultType="com.example.medicalservice.domain.User">
+        select * from users where role_id = 1
+    </select>
+
+    <select id="findAllStudent" resultType="com.example.medicalservice.domain.User">
+        select * from users where role_id = 2
+    </select>
+    <select id="selectAllStudent" resultType="com.example.medicalservice.domain.User" parameterType="com.example.medicalservice.domain.Page">
+        select * from users where role_id = 2
+    </select>
+    <select id="selectAllTeacher" resultType="com.example.medicalservice.domain.User" parameterType="com.example.medicalservice.domain.Page">
+        select * from users where role_id = 1
     </select>
 
 

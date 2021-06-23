@@ -2,6 +2,7 @@ package com.example.medicalservice.domain;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.Arrays;
 import java.util.Date;
 @ApiModel
 public class User {
@@ -19,7 +20,16 @@ public class User {
     private Date creatTime;
     String realName;
     String avatar;
+    Integer[] userIds;
 
+
+    public Integer[] getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(Integer[] userIds) {
+        this.userIds = userIds;
+    }
 
     @Override
     public String toString() {
@@ -38,6 +48,7 @@ public class User {
                 ", creatTime=" + creatTime +
                 ", realName='" + realName + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", userIds=" + Arrays.toString(userIds) +
                 '}';
     }
 

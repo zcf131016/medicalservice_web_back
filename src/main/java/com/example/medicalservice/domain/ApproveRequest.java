@@ -1,49 +1,29 @@
 package com.example.medicalservice.domain;
 
-import io.swagger.annotations.ApiModel;
-
 import java.util.Date;
-import java.util.List;
 
-@ApiModel
-public class CourseStudent {
+public class ApproveRequest {
     private Integer id;
+    private Integer arId;
     private Integer courseId;
+    private Integer isApproved;
     private Integer studentId;
     private String courseName;
     private String studentName;
-    private Integer teamId;
-    private Date creatTime;
-    private List<CourseStudent> courseStudents;
+    private Date createTime;
 
     @Override
     public String toString() {
-        return "CourseStudent{" +
+        return "ApproveRequest{" +
                 "id=" + id +
+                ", arId=" + arId +
                 ", courseId=" + courseId +
+                ", isApproved=" + isApproved +
                 ", studentId=" + studentId +
                 ", courseName='" + courseName + '\'' +
                 ", studentName='" + studentName + '\'' +
-                ", teamId=" + teamId +
-                ", creatTime=" + creatTime +
-                ", courseStudents=" + courseStudents +
+                ", createTime=" + createTime +
                 '}';
-    }
-
-    public List<CourseStudent> getCourseStudents() {
-        return courseStudents;
-    }
-
-    public void setCourseStudents(List<CourseStudent> courseStudents) {
-        this.courseStudents = courseStudents;
-    }
-
-    public Date getCreatTime() {
-        return creatTime;
-    }
-
-    public void setCreatTime(Date creatTime) {
-        this.creatTime = creatTime;
     }
 
     public Integer getId() {
@@ -54,12 +34,28 @@ public class CourseStudent {
         this.id = id;
     }
 
+    public Integer getArId() {
+        return arId;
+    }
+
+    public void setArId(Integer arId) {
+        this.arId = arId;
+    }
+
     public Integer getCourseId() {
         return courseId;
     }
 
     public void setCourseId(Integer courseId) {
         this.courseId = courseId;
+    }
+
+    public Integer getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(Integer isApproved) {
+        this.isApproved = isApproved;
     }
 
     public Integer getStudentId() {
@@ -86,11 +82,11 @@ public class CourseStudent {
         this.studentName = studentName;
     }
 
-    public Integer getTeamId() {
-        return teamId;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

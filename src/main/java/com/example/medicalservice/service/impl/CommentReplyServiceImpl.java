@@ -2,8 +2,11 @@ package com.example.medicalservice.service.impl;
 
 import com.example.medicalservice.domain.Comment;
 import com.example.medicalservice.domain.CommentReply;
+import com.example.medicalservice.domain.User;
 import com.example.medicalservice.mapper.CommentMapper;
+import com.example.medicalservice.mapper.UserMapper;
 import com.example.medicalservice.service.CommentReplyService;
+import com.example.medicalservice.service.UserService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class CommentReplyServiceImpl implements CommentReplyService {
 
     @Autowired
     CommentMapper commentMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
 
     @Override
@@ -61,6 +67,15 @@ public class CommentReplyServiceImpl implements CommentReplyService {
 
     @Override
     public void insertComment(CommentReply commentReply) {
+        if(commentReply.getParentId() != null){
+           CommentReply parentComment = getComment(commentReply.getParentId());
+           if(parentComment != null) {
+               parentComment.setHaveReply(1);
+               commentMapper.updateComment(parentComment);
+           }
+        }
+        User user = userMapper.getUserByUserId(commentReply.getFromId());
+        commentReply.setFromAvatar(user.getAvatar());
         commentMapper.insertComment(commentReply);
     }
 
@@ -73,5 +88,10 @@ public class CommentReplyServiceImpl implements CommentReplyService {
             commentReply.setContent("< 该评论已被作者删除！>");
             commentMapper.updateComment(commentReply);
         }
+    }
+
+    @Override
+    public void updateComment(CommentReply commentReply) {
+        commentMapper.updateComment(commentReply);
     }
 }

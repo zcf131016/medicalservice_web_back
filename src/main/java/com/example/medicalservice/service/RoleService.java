@@ -1,7 +1,12 @@
 package com.example.medicalservice.service;
 
+import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.Role;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Lin YuHang
@@ -9,5 +14,8 @@ import org.springframework.stereotype.Service;
  */
 public interface RoleService {
     Role getRole(Integer roleId);
-    String getDesc(Integer roleId);
+    void addRole(Role role);
+    PageInfo getAllRole(Page page);
+    void deleteRole(Integer roleId);
+    void updateRole(Role role);
 }

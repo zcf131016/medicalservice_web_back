@@ -11,17 +11,21 @@ import io.swagger.annotations.ApiModel;
 public class Role {
     Integer id;
     Integer roleId;
-    String Desc;
-    String Perms;
+    String description;
+    String perms;
 
-    @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", roleId=" + roleId +
-                ", Desc='" + Desc + '\'' +
-                ", Perms='" + Perms + '\'' +
-                '}';
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+
+
+    public String getPerms() {
+        return perms;
     }
 
     public void setId(Integer id) {
@@ -32,27 +36,15 @@ public class Role {
         this.roleId = roleId;
     }
 
-    public void setDesc(String desc) {
-        Desc = desc;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setPerms(String perms) {
-        Perms = perms;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public String getDesc() {
-        return Desc;
-    }
-
-    public String getPerms() {
-        return Perms;
+        this.perms = perms;
     }
 }

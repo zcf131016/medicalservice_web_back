@@ -6,7 +6,10 @@ import com.example.medicalservice.security.jwt.JWTUtil;
 import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Lin YuHang//zcf
  * @date 2021/6/17 15:02
  */
+@Api(tags = "登录注册相关")
 @RestController
 public class LoginController {
 
@@ -22,36 +26,38 @@ public class LoginController {
     private UserService userService;
 
 
+    @ApiOperation(value="登录接口")
+    @ResponseBody
     @PostMapping("/login")
-    public Result login(@RequestParam("username") String username,
-                        @RequestParam("password") String password) {
-        System.out.println(username+password);
+    public Result login(@RequestBody User users) {
+        String username = users.getUserName();
+        String password = users.getPassWord();
         User user = userService.getUser(username);
-        if (user.getPassWord().equals(password)) {
+        if (user != null && user.getPassWord().equals(password)) {
             System.out.println("登录成功");
             String token = JWTUtil.sign(username, password);
-            return Result.success().setToken(token).setCode(ResultCodeEnum.OK.getCode()).setMsg("登录成功！");
+            user.setPassWord(null);
+            return Result.success().setToken(token).setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("登录成功！");
         } else {
             return Result.success().setCode(ResultCodeEnum.LoginError.getCode()).setMsg("登录失败！");
         }
     }
 
     @ApiOperation(value = "注册用户")
+    @ApiResponses({
+            @ApiResponse(code=101,message="注册成功"),
+            @ApiResponse(code=103,message="用户已存在")
+    })
     @ResponseBody
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-//        if(userService.getUser(user.getUserName())!=null){
-//            return Result.success().setCode(ResultCodeEnum. RegisterAlreadyExist.getCode()).setMsg("注册用户已存在");
-//        }
-       // System.out.println(user.toString());
+
         try{
             userService.insertUser(user);
         }catch (UserFriendException e){
-            return Result.success().setCode(ResultCodeEnum. RegisterAlreadyExist.getCode()).setMsg("注册用户已存在");
+            return Result.success().setCode(ResultCodeEnum.RegisterAlreadyExist.getCode()).setMsg(e.getMsg());
         }
-
-        return Result.success().setCode(ResultCodeEnum. Register.getCode()).setMsg("注册成功");
-
+        return Result.success().setCode(ResultCodeEnum.Register.getCode()).setMsg("注册成功");
     }
 
     @GetMapping("/401")

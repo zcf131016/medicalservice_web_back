@@ -7,7 +7,7 @@
         <result column="teacher_id" jdbcType="INTEGER" property="teacherId" />
         <result column="course_name" jdbcType="VARCHAR" property="courseName" />
         <result column="course_desc" jdbcType="VARCHAR" property="courseDesc" />
-        <result column="course_state" jdbcType="VARCHAR" property="courseState" />
+        <result column="course_state" jdbcType="INTEGER" property="courseState" />
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
     </resultMap>
     <resultMap id="CourseStudentResultMap" type="com.example.medicalservice.domain.CourseStudent">
@@ -28,4 +28,107 @@
         <result column="iscreater" jdbcType="INTEGER" property="isCreater" />
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
     </resultMap>
+    <resultMap id="ApproveRequestResultMap" type="com.example.medicalservice.domain.ApproveRequest">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="ar_id" jdbcType="INTEGER" property="arId" />
+        <result column="course_id" jdbcType="INTEGER" property="courseId" />
+        <result column="student_id" jdbcType="INTEGER" property="studentId" />
+        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+        <result column="student_name" jdbcType="VARCHAR" property="studentName" />
+        <result column="is_approved" jdbcType="INTEGER" property="isApproved" />
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+    </resultMap>
+    <insert id="insertCourse" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.Course">
+        insert into
+            course(course_id,teacher_id,course_name,course_desc,course_state,creat_time)values
+        (#{courseId},#{teacherId},#{courseName},#{courseDesc},#{courseState},#{creatTime})
+    </insert>
+    <update id="updateCourse" parameterType="com.example.medicalservice.domain.Course">
+        UPDATE  course
+        <trim prefix="set" suffixOverrides=",">
+            <if test="courseName!=null">course_name=#{courseName},</if>
+            <if test="courseDesc!=null">course_desc=#{courseDesc},</if>
+            <if test="courseState!=null">course_state=#{courseState},</if>
+        </trim>
+        where course_id = #{courseId}
+    </update>
+    <select id="findCourseById" resultMap="CourseResultMap">
+        select * from course where course_id = #{courseId}
+    </select>
+    <select id="findAllCourse" resultMap="CourseResultMap">
+       select * from course
+    </select>
+    <delete id="deleteCourseById" parameterType="com.example.medicalservice.domain.Course">
+        delete from course where course_id = #{courseId}
+    </delete>
+    <select id="findCourseTeacherByCourseId" resultMap="CourseTeacherResultMap">
+        select * from course_teacher where course_id=#{courseId}
+    </select>
+    <insert id="insertCourseTeacher" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CourseTeacher">
+        insert into
+            course_teacher(course_id,teacher_id,course_name,teacher_name,iscreater,creat_time)values
+        (#{courseId},#{teacherId},#{courseName},#{teacherName},#{isCreater},#{creatTime})
+    </insert>
+    <select id="findCourseByTeacherId" resultMap="CourseTeacherResultMap">
+        select * from course_teacher where teacher_id=#{teacherId}
+    </select>
+    <select id="findCourseByCourseName" resultMap="CourseResultMap">
+       select * from course where course_name = #{courseName}
+    </select>
+    <select id="findCourseTeacherByTeacherIdAndCId" resultMap="CourseTeacherResultMap">
+        select * from course_teacher where teacher_id=#{teacherId} and course_id=#{courseId}
+    </select>
+    <delete id="deleteCourseTeacher" parameterType="com.example.medicalservice.domain.CourseTeacher">
+        delete from course_teacher where course_id=#{courseId} and teacher_id=#{teacherId}
+    </delete>
+    <insert id="insertCourseStudent" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CourseStudent">
+        insert into
+            course_student(course_id,student_id,course_name,student_name,team_id,creat_time)values
+        (#{courseId},#{studentId},#{courseName},#{studentName},#{teamId},#{creatTime})
+    </insert>
+    <select id="findStudentBySIdCId" resultMap="CourseStudentResultMap">
+        select * from course_student where course_id=#{courseId} and student_id=#{studentId}
+    </select>
+    <delete id="deleteCourseStudent" parameterType="com.example.medicalservice.domain.CourseStudent">
+        delete from course_student where course_id=#{courseId} and student_id=#{studentId}
+    </delete>
+    <select id="findCourseStudentByCId" resultMap="CourseStudentResultMap">
+        select * from course_student where course_id=#{courseId} and team_id=-1
+    </select>
+    <update id="updateCourseStudent" parameterType="com.example.medicalservice.domain.CourseStudent">
+        UPDATE  course_student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="teamId!=null">team_id=#{teamId},</if>
+        </trim>
+        where course_id = #{courseId} and student_id=#{studentId}
+    </update>
+    <insert id="insertApproveRequest" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.ApproveRequest">
+        insert into
+            approve_request(course_id,student_id,course_name,student_name,ar_id,is_approved,create_time)values
+        (#{courseId},#{studentId},#{courseName},#{studentName},#{arId},#{isApproved},#{createTime})
+    </insert>
+    <select id="findRepeatAR" resultMap="ApproveRequestResultMap">
+        select * from approve_request  where course_id = #{courseId} and student_id=#{studentId} and is_approved = 1
+    </select>
+    <select id="findARByCourseId" resultMap="ApproveRequestResultMap">
+        select * from approve_request  where course_id = #{courseId} and is_approved = 1
+    </select>
+    <select id="findARByStudentId" resultMap="ApproveRequestResultMap">
+        select * from approve_request  where student_id=#{studentId}
+    </select>
+    <update id="updateAR" parameterType="com.example.medicalservice.domain.ApproveRequest">
+        UPDATE  approve_request
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isApproved!=null">is_approved=#{isApproved},</if>
+        </trim>
+        where course_id = #{courseId} and student_id=#{studentId}
+    </update>
+    <select id="findCourseByStudentId" resultMap="CourseStudentResultMap">
+        select * from course_student where student_id=#{studentId}
+    </select>
+    <select id="findUnjoinCourseByStudentId" resultMap="CourseResultMap">
+        select * from  course where course_id not in (
+            select course_id from course_student where student_id=#{studentId}
+            )
+    </select>
 </mapper>

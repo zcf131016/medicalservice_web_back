@@ -6,13 +6,16 @@ import com.example.medicalservice.domain.Cases;
 import com.example.medicalservice.mapper.CasesMapper;
 import com.example.medicalservice.mapper.UserMapper;
 import org.apache.ibatis.annotations.Case;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
 
 @SpringBootTest
 class MedicalserviceApplicationTests {
@@ -22,6 +25,15 @@ class MedicalserviceApplicationTests {
     UserMapper userMapper;
     @Test
     void contextLoads() {
+        Set<Integer> set = new HashSet<>();
+        for(int i = 0;i < 100;i++) {
+            Integer num = RandomUtil.getRandom(9);
+            System.out.println(num);
+            set.add(num);
+        }
+        if(set.size() != 100) {
+            System.out.println("出现重复");
+        }
     }
     @Test
     void test(){

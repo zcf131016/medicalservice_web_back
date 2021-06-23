@@ -25,7 +25,7 @@ public class JWTUtil {
      */
     public static boolean verify(String token, String username, String secret) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret); // 加密
+            Algorithm algorithm = Algorithm.HMAC256(secret); // 加密算法
             JWTVerifier verifier = JWT.require(algorithm)
                     .withClaim("username", username)
                     .build();
