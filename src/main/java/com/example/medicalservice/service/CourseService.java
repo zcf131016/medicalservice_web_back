@@ -31,5 +31,5 @@ public interface CourseService {
     List<ApproveRequest> getRAByStudentId(Integer studentId);//通过学生号查找请求
     Integer updateAR(ApproveRequest approveRequest);//
     List<CourseStudent> findCourseByStudentId(Integer studentId);
-    List<CourseStudent> findUnjoinCourseByStudentId(Integer studentId);
+    List<Course> findUnjoinCourseByStudentId(Integer studentId);
 }

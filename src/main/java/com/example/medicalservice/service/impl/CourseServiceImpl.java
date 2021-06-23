@@ -208,8 +208,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseStudent> findUnjoinCourseByStudentId(Integer studentId) {
-        return courseMapper.findUnjoinCourseByStudentId(studentId);
+    public List<Course> findUnjoinCourseByStudentId(Integer studentId) {
+        List<Course> courses=courseMapper.findUnjoinCourseByStudentId(studentId);
+        for (int i=0;i<courses.size();i++){
+            Course course=courses.get(i);
+            courses.get(i).setCreatTeacher(userMapper.getUserByUserId(course.getTeacherId()).getUserName());
+        }
+        return courses;
     }
 
 }
