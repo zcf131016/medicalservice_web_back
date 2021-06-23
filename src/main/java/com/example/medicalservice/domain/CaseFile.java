@@ -10,6 +10,7 @@ public class CaseFile {
     private String fileUrl;
     private Date creatTime;
 
+
     public Date getCreatTime() {
         return creatTime;
     }

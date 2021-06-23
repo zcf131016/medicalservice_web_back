@@ -37,6 +37,8 @@ public interface CasesMapper {
 
     //根据案例id获取所有文件
     List<CaseFile> getcasefilebyId(Integer caseId);
+    //根据id获取指定文件
+    CaseFile downloadcasefilebyId(Integer id);
     //添加文件
     int insertCasesFile(CaseFile caseFile);
 }

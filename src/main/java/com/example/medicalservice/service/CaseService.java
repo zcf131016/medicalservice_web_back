@@ -12,7 +12,7 @@ public interface CaseService {
     //分页查找案例
     List<Cases> getCasesbyPage(Integer pageNum,Integer pageSize);
     //根据courseId查找所有案例
-    List<Cases> getcasesByCourseId(Integer courseId);
+    List<Cases> getcasesByCourseId(Integer courseId,Integer pageNum,Integer pageSize);
     //根据案例名称查找所有案例
     List<Cases> getcasesBycaseName(String caseName);
     //根据老师id查找所有案例
@@ -33,6 +33,8 @@ public interface CaseService {
 
     //根据案例id获取所有文件
     List<CaseFile> getcasefilebyId(Integer caseId);
+    //根据id获取指定文件
+    CaseFile downloadcasefilebyId(Integer id);
     //添加文件
     int insertCasesFile(CaseFile caseFile);
 }

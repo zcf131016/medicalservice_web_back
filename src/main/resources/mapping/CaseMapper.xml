@@ -76,6 +76,10 @@
         select * from case_file
         where case_id = #{caseId}
     </select>
+    <select id="downloadcasefilebyId" resultMap="CasesFileResultMap">
+        select * from case_file
+        where id = #{id}
+    </select>
     <insert id="insertCasesFile" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseFile">
         insert into case_file(case_id,file_url)
         values (#{caseId},#{fileUrl})
