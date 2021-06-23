@@ -1,73 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.medicalservice.mapper.CaseMapper">
-<!--    <resultMap id="CaseResultMap" type="com.example.medicalservice.domain.Case">-->
-<!--        <result column="id" jdbcType="INTEGER" property="id" />-->
-<!--        <result column="course_id" jdbcType="INTEGER" property="courseId" />-->
-<!--        <result column="case_id" jdbcType="INTEGER" property="caseId" />-->
-<!--        <result column="course_name" jdbcType="VARCHAR" property="courseName" />-->
-<!--        <result column="case_name" jdbcType="VARCHAR" property="caseName" />-->
-<!--        <result column="case_desc" jdbcType="INTEGER" property="caseDesc" />-->
-<!--        <result column="creat_time" jdbcType="DATE" property="creatTime"/>-->
-<!--        <result column="creat_teacher" jdbcType="VARCHAR" property="creatTeacher" />-->
-<!--        <result column="med_history" jdbcType="VARCHAR" property="medHistory" />-->
-<!--        <result column="thinking" jdbcType="VARCHAR" property="thinking" />-->
-<!--    </resultMap>-->
-<!--    <resultMap id="CaseWithImgAndFileResultMap" type="com.example.medicalservice.domain.Case">-->
-<!--        <result column="id" jdbcType="INTEGER" property="id" />-->
-<!--        <result column="course_id" jdbcType="INTEGER" property="courseId" />-->
-<!--        <result column="case_id" jdbcType="INTEGER" property="caseId" />-->
-<!--        <result column="course_name" jdbcType="VARCHAR" property="courseName" />-->
-<!--        <result column="case_name" jdbcType="VARCHAR" property="caseName" />-->
-<!--        <result column="case_desc" jdbcType="INTEGER" property="caseDesc" />-->
-<!--        <result column="creat_time" jdbcType="DATE" property="creatTime"/>-->
-<!--        <result column="creat_teacher" jdbcType="VARCHAR" property="creatTeacher" />-->
-<!--        <result column="med_history" jdbcType="VARCHAR" property="medHistory" />-->
-<!--        <result column="thinking" jdbcType="VARCHAR" property="thinking" />-->
-<!--        <collection property="caseImages" javaType="list" ofType="com.example.medicalservice.domain.CaseImage">-->
-<!--            <id column="id" property="id"></id>-->
-<!--            <result column="id" property="id"></result>-->
-<!--            <result column="case_id" property="caseId"></result>-->
-<!--            <result column="image_url" property="imageUrl"></result>-->
-<!--        </collection>-->
-<!--        <collection property="caseFiles" javaType="list" ofType="com.example.medicalservice.domain.CaseFile">-->
-<!--            <id column="id2" property="id2"></id>-->
-<!--            <result column="id" property="id"></result>-->
-<!--            <result column="case_id" property="caseId"></result>-->
-<!--            <result column="file_url" property="fileUrl"></result>-->
-<!--        </collection>-->
-<!--    </resultMap>-->
-<!--    <resultMap id="CaseImageResultMap" type="com.example.medicalservice.domain.CaseImage">-->
-<!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
-<!--        <result column="case_id" jdbcType="INTEGER" property="caseId"/>-->
-<!--        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>-->
-<!--        <result column="creat_time" jdbcType="DATE" property="creatTime"/>-->
-<!--    </resultMap>-->
-<!--    <resultMap id="CaseFileResultMap" type="com.example.medicalservice.domain.CaseFile">-->
-<!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
-<!--        <result column="case_id" jdbcType="INTEGER" property="caseId"/>-->
-<!--        <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>-->
-<!--        <result column="creat_time" jdbcType="DATE" property="creatTime"/>-->
-<!--    </resultMap>-->
 
-    <!--查询案例，但是不涉及到案例图片及文件 -->
-<!--    <select id="findAllCase" resultMap="CaseResultMap">-->
-<!--        select a.id,a.case_id,a.case_name,a.course_id,a.creat_time,a.creat_teacher-->
-<!--        from case a-->
-<!--    </select>-->
-<!--    &lt;!&ndash;查询案例，包括案例图片及文件 &ndash;&gt;-->
-<!--    <select id="findCasebyId" parameterType="Integer" resultMap="CaseWithImgAndFileResultMap">-->
-<!--        select a.*,b.image_url,c.file_url from  case a-->
-<!--        left join case_image b on a.case_id=b.case_id-->
-<!--        left join case_file c on a.case_id=c.case_id-->
-<!--        where a.case_id={case_id}-->
-<!--    </select>-->
-<!--    <insert id="insertCase" useGeneratedKeys="false" keyProperty="id" parameterType="CaseResultMap">-->
-<!--        insert into case(case_id, case_name, course_id, course_name, case_desc, creat_teacher, creat_time, med_history, thinking) values (#{case_id},#{case_name},#{course_id},#{course_name},#{case_desc},#{creat_teacher},#{creat_time},#{med_history},#{thinking})-->
-<!--    </insert>-->
-<!--    <update id="updateCasebyId" parameterType="CaseResultMap">-->
-<!--        update  course-->
-<!--        set courseName = #{courseName},courseclass = #{courseclass},term = #{term},teacherName = #{teacherName},joinable = #{joinable},isschoolclass = #{isschoolclass},courseschool = #{courseschool},coursemajor = #{coursemajor},learningrequire = #{learningrequire},teachprogess = #{teachprogess},examarrange = #{examarrange},coursestate = #{coursestate}-->
-<!--        where courseId=#{courseId}-->
-<!--    </update>-->
+<mapper namespace="com.example.medicalservice.mapper.CasesMapper">
+    <resultMap id="CasesResultMap" type="com.example.medicalservice.domain.Cases">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="case_name" jdbcType="VARCHAR" property="caseName" />
+        <result column="course_id" jdbcType="INTEGER" property="courseId" />
+        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+        <result column="case_desc" jdbcType="VARCHAR" property="caseDesc" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+        <result column="creat_trecher" jdbcType="INTEGER" property="creatTeacher" />
+        <result column="med_history" jdbcType="VARCHAR" property="medHistory" />
+        <result column="thinking" jdbcType="VARCHAR" property="thinking" />
+        <result column="isPublish" jdbcType="INTEGER" property="isPublish" />
+    </resultMap>
+    <resultMap id="CasesImageResultMap" type="com.example.medicalservice.domain.CaseImage">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+    </resultMap>
+    <resultMap id="CasesFileResultMap" type="com.example.medicalservice.domain.CaseFile">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="case_id" jdbcType="INTEGER" property="caseId" />
+        <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
+        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+    </resultMap>
+    <select id="getAllCases" resultMap="CasesResultMap">
+        select * from cases
+    </select>
+    <select id="getcasesByCourseId" resultMap="CasesResultMap">
+        select * from cases
+        where course_id = #{courseId}
+    </select>
+    <select id="getcasesBycaseName" resultMap="CasesResultMap">
+        select * from cases
+        where case_name = #{caseName}
+    </select>
+    <select id="getcasesByteacherId" resultMap="CasesResultMap">
+        select * from cases
+        where creat_trecher = #{creatTeacher}
+    </select>
+    <select id="getcasebyId" resultMap="CasesResultMap">
+        select * from cases
+        where case_id = #{caseId}
+    </select>
+    <insert id="insertCases" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.Cases">
+        insert into cases(case_id,case_name,course_id,course_name,case_desc,creat_trecher,med_history,thinking,isPublish)
+        values (#{caseId},#{caseName},#{courseId},#{courseName},#{caseDesc},#{creatTeacher},#{medHistory},#{thinking},#{isPublish})
+    </insert>
+    <delete id="deleteCasesByid" parameterType="java.lang.Integer">
+        delete from cases where case_id=#{caseId}
+    </delete>
+    <update id="updateCases" parameterType="com.example.medicalservice.domain.Cases">
+        UPDATE cases
+        <set>
+            <if test="caseName!=null">case_name = #{caseName},</if>
+            <if test="caseDesc!=null">case_desc = #{caseDesc},</if>
+            <if test="medHistory!=null">med_history = #{medHistory},</if>
+            <if test="thinking!=null">thinking = #{thinking},</if>
+            <if test="isPublish!=0">isPublish = #{isPublish}</if>
+        </set>
+        where case_id = #{caseId}
+    </update>
+    <select id="getcaseimagebyId" resultMap="CasesImageResultMap">
+        select * from case_image
+        where case_id = #{caseId}
+    </select>
+    <insert id="insertCasesImage" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseImage">
+        insert into case_image(case_id,image_url)
+        values (#{caseId},#{imageUrl})
+    </insert>
+    <select id="getcasefilebyId" resultMap="CasesFileResultMap">
+        select * from case_file
+        where case_id = #{caseId}
+    </select>
+    <insert id="insertCasesFile" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseFile">
+        insert into case_file(case_id,file_url)
+        values (#{caseId},#{fileUrl})
+    </insert>
 </mapper>
