@@ -38,6 +38,10 @@ public interface CourseMapper {
     Integer updateAR(ApproveRequest approveRequest);
     List<CourseStudent> findCourseByStudentId(Integer studentId);
     List<Course> findUnjoinCourseByStudentId(Integer studentId);
-    List<CourseStudent> findCourseStudentByCourseId(Integer courseId);
+    List<CourseStudent> findInTeamStudentByCourseId(Integer courseId);
     List<CourseStudent> findNotTeamStudentByCId(Integer courseId);
+    int upadateCourseTeam(Integer courseId,Integer teamId);
+    int deleteOneStudentById(Integer courseId,Integer teamId,Integer studentId);
+    List<CourseStudent> findTeamStudent(Integer courseId,Integer teamId);
+    int updateOneStudentById(Integer courseId,Integer teamId,Integer studentId);
 }

@@ -131,7 +131,7 @@
             select course_id from course_student where student_id=#{studentId}
             )
     </select>
-    <select id="findCourseStudentByCourseId" resultMap="CourseStudentResultMap">
+    <select id="findInTeamStudentByCourseId" resultMap="CourseStudentResultMap">
         select * from course_student where student_id not in (
             select student_id from course_student where  course_id=#{courseId} and team_id=-1
             )
@@ -140,4 +140,28 @@
     <select id="findNotTeamStudentByCId" resultMap="CourseStudentResultMap">
         select * from course_student where course_id=#{courseId} and team_id=-1
     </select>
+    <update id="upadateCourseTeam" parameterType="com.example.medicalservice.domain.CourseStudent">
+        update course_student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="teamId!=null">team_id=-1,</if>
+        </trim>
+        where course_id = #{courseId} and team_id=#{teamId}
+    </update>
+    <update id="deleteOneStudentById" parameterType="com.example.medicalservice.domain.CourseStudent">
+        update course_student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="teamId!=null">team_id=-1,</if>
+        </trim>
+        where course_id = #{courseId}  and student_id=#{studentId}
+    </update>
+    <select id="findTeamStudent" resultMap="CourseStudentResultMap">
+        select * from course_student where course_id=#{courseId} and team_id=#{teamId}
+    </select>
+    <update id="updateOneStudentById" parameterType="com.example.medicalservice.domain.CourseStudent">
+        update course_student
+        <trim prefix="set" suffixOverrides=",">
+            <if test="teamId!=null">team_id=#{teamId},</if>
+        </trim>
+        where course_id = #{courseId} and student_id=#{studentId}
+    </update>
 </mapper>
