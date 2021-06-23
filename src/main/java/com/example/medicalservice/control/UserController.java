@@ -1,6 +1,7 @@
 package com.example.medicalservice.control;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.medicalservice.domain.DictionaryType;
 import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
@@ -125,9 +126,21 @@ public class UserController {
     @ResponseBody
     @PostMapping ("/selectAllUser/{pageNum}/{pageSize}")
     public Result selectAllUser(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        Page page = new Page();
+        page.setCurrentPage(pageNum);
+        page.setPageSize(pageSize);
+        JSONObject json = new JSONObject();
+        try {
+            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
+            PageInfo pageInfo= userService.selectAllUser(page);
+            //将查出的信息封装为json
+            json.put("pageInfo", pageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure(ResultCodeEnum.INQUIRE_FAILED);
+        }
+        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有字典类型和值成功！");
 
-        List<User> users = userService.selectAllUser(pageNum,pageSize);
-        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
@@ -175,8 +188,21 @@ public class UserController {
     @ResponseBody
     @PostMapping ("/selectAllTeacher/{pageNum}/{pageSize}")
     public Result selectAllTeacher(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
-        List<User> users = userService.selectAllTeacher(pageNum,pageSize);
-        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
+        Page page = new Page();
+        page.setCurrentPage(pageNum);
+        page.setPageSize(pageSize);
+        JSONObject json = new JSONObject();
+        try {
+            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
+            PageInfo pageInfo= userService.selectAllTeacher(page);
+            //将查出的信息封装为json
+            json.put("pageInfo", pageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure(ResultCodeEnum.INQUIRE_FAILED);
+        }
+        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有老师成功！");
+
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
@@ -187,8 +213,20 @@ public class UserController {
     @ResponseBody
     @PostMapping("/selectAllStudent/{pageNum}/{pageSize}")
     public Result selectAllStudent(@PathVariable Integer pageNum, @PathVariable Integer pageSize) {
-        List<User> users = userService.selectAllStudent(pageNum,pageSize);
-        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有用户成功");
+        Page page = new Page();
+        page.setCurrentPage(pageNum);
+        page.setPageSize(pageSize);
+        JSONObject json = new JSONObject();
+        try {
+            //调用查询所有信息方法，并将从页面接受的页面和每页显示的信息数传过去
+            PageInfo pageInfo= userService.selectAllStudent(page);
+            //将查出的信息封装为json
+            json.put("pageInfo", pageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure(ResultCodeEnum.INQUIRE_FAILED);
+        }
+        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询所有学生成功！");
     }
 
     @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
