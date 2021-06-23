@@ -5,6 +5,7 @@ import com.example.medicalservice.domain.CaseImage;
 import com.example.medicalservice.domain.Cases;
 import com.example.medicalservice.mapper.CasesMapper;
 import com.example.medicalservice.mapper.UserMapper;
+import com.example.medicalservice.util.RandomUtil;
 import org.apache.ibatis.annotations.Case;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @SpringBootTest
