@@ -13,4 +13,5 @@ import java.util.List;
 public interface StudentFileMapper {
     List<StudentFile> getFileByStudentId(Integer caseId,Integer studentId);
     void addFile(StudentFile studentFile);
+    StudentFile getFileById(Integer id);
 }

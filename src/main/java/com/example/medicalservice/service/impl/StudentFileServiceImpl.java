@@ -27,4 +27,9 @@ public class StudentFileServiceImpl implements StudentFileService {
     public void uploadFile(StudentFile studentFile) {
         studentFileMapper.addFile(studentFile);
     }
+
+    @Override
+    public StudentFile getFileById(Integer id) {
+        return studentFileMapper.getFileById(id);
+    }
 }
