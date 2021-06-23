@@ -126,7 +126,7 @@
     <select id="findCourseByStudentId" resultMap="CourseStudentResultMap">
         select * from course_student where student_id=#{studentId}
     </select>
-    <select id="findUnjoinCourseByStudentId" resultMap="CourseStudentResultMap">
+    <select id="findUnjoinCourseByStudentId" resultMap="CourseResultMap">
         select * from  course where course_id not in (
             select course_id from course_student where student_id=#{studentId}
             )

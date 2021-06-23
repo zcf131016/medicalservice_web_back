@@ -231,7 +231,7 @@ public class CourseControl {
     @ResponseBody
     @GetMapping("/findUnjoinCourseBySId/{studentId}")
     public Result getUnjoinCourseBySId(@PathVariable Integer studentId) {
-        List<CourseStudent> courseStudents=courseService.findUnjoinCourseByStudentId(studentId);
+        List<Course> courseStudents=courseService.findUnjoinCourseByStudentId(studentId);
         int Count =courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找请求成功");
     }
