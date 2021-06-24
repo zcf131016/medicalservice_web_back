@@ -27,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     CasesMapper casesMapper;
     @Override
-    public List<Course> findAllCourse(Integer pageNum, Integer pageSize) {
+    public PageInfo findAllCourse(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<Course> courses=courseMapper.findAllCourse();
         for (int i=0;i<courses.size();i++){
@@ -48,7 +48,8 @@ public class CourseServiceImpl implements CourseService {
             }
             courses.get(i).setTeacherNumbers(teacher);
         }
-        return courses;
+        PageInfo pageInfo=new PageInfo(courses);
+        return pageInfo;
     }
 
     @Override
@@ -225,14 +226,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseStudent> findInTeamStudentByCourseId(Integer courseId, Integer pageNum, Integer pageSize) {
+    public PageInfo findInTeamStudentByCourseId(Integer courseId, Integer pageNum, Integer pageSize) {
        PageHelper.startPage(pageNum,pageSize);
         List<CourseStudent> courses=courseMapper.findInTeamStudentByCourseId(courseId);
         for (int i=0;i<courses.size();i++){
             List<CourseStudent> courseStudents=courseMapper.findTeamStudent(courseId,courses.get(i).getTeamId());
             courses.get(i).setCourseStudents(courseStudents);
         }
-        return courses;
+       PageInfo pageInfo=new PageInfo(courses);
+        return pageInfo;
     }
 
     @Override
