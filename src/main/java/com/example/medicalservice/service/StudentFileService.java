@@ -2,6 +2,7 @@ package com.example.medicalservice.service;
 
 import com.example.medicalservice.domain.StudentFile;
 import com.github.pagehelper.PageInfo;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface StudentFileService {
     void uploadFile(StudentFile studentFile);
     StudentFile getFileById(Integer id);
     PageInfo getFileByCaseId(Integer caseId,Integer pageNum, Integer pageSize);
+    void deleteFileById(Integer id);
 }
