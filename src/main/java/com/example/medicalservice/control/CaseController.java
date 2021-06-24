@@ -63,7 +63,7 @@ public class CaseController {
         for (int i = 0; i < casesList.size(); i++) {
             casesList.get(i).setTeacherName(userService.getUserByUserId(casesList.get(i).getCreatTeacher()).getRealName());
         }
-        int count = casesList.size();
+        int count = caseService.getAllCasesCount();
         return Result.success().setData(casesList).setCode(ResultCodeEnum.OK.getCode()).setCount(count).setMsg("分页查找案例成功");
     }
 
@@ -76,44 +76,53 @@ public class CaseController {
 //        return Result.success().setData(casesList).setCode(ResultCodeEnum.OK.getCode()).setCount(count).setMsg("查询案例成功");
 //    }
     @ApiOperation(value = "根据courseId查找所有案例并分页")
-    @ApiParam(name = "courseId", type = "Integer")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "courseId",value = "课程id"),
+            @ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
     @GetMapping("/findCasesbycourseId/{courseId}/{pageNum}/{pageSize}")
     public Result findCasesbycourseId(@PathVariable Integer courseId, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
         List<Cases> casesList = caseService.getcasesByCourseId(courseId, pageNum, pageSize);
         for (int i = 0; i < casesList.size(); i++) {
             casesList.get(i).setTeacherName(userService.getUserByUserId(casesList.get(i).getCreatTeacher()).getRealName());
         }
-        int count = casesList.size();
+        int count = caseService.getcasesCountByCourseId(courseId);
         return Result.success().setData(casesList).setCode(ResultCodeEnum.OK.getCode()).setCount(count).setMsg("查询案例成功");
     }
 
-    @ApiOperation(value = "根据案例名称查找案例")
-    @ApiParam(name = "caseName", type = "String")
-    @GetMapping("/findCasesbycaseName/{caseName}")
-    public Result findCasesbycaseName(@PathVariable String caseName) {
-        List<Cases> casesList = caseService.getcasesBycaseName(caseName);
+    @ApiOperation(value = "根据案例名称查找案例并分页")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "caseName",value = "课程名称"),
+            @ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
+    @GetMapping("/findCasesbycaseName/{caseName}/{pageNum}/{pageSize}")
+    public Result findCasesbycaseName(@PathVariable String caseName, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        List<Cases> casesList = caseService.getcasesBycaseName(caseName, pageNum, pageSize);
         for (int i = 0; i < casesList.size(); i++) {
             casesList.get(i).setTeacherName(userService.getUserByUserId(casesList.get(i).getCreatTeacher()).getRealName());
         }
-        int count = casesList.size();
+        int count = caseService.getcasesCountBycaseName(caseName);
         return Result.success().setData(casesList).setCode(ResultCodeEnum.OK.getCode()).setCount(count).setMsg("查询案例成功");
     }
 
     @ApiOperation(value = "根据teacherId查找所有案例")
-    @ApiParam(name = "creatTeacher", type = "Integer")
-    @GetMapping("/findCasesbyteacherId/{creatTeacher}")
-    public Result findCasesbyteacherId(@PathVariable Integer creatTeacher) {
-        List<Cases> casesList = caseService.getcasesByteacherId(creatTeacher);
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "creatTeacher",value = "创建老师id"),
+            @ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
+            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    })
+    @GetMapping("/findCasesbyteacherId/{creatTeacher}/{pageNum}/{pageSize}")
+    public Result findCasesbyteacherId(@PathVariable Integer creatTeacher, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        List<Cases> casesList = caseService.getcasesByteacherId(creatTeacher, pageNum, pageSize);
         String teaName = userService.getUserByUserId(creatTeacher).getRealName();
         for (int i = 0; i < casesList.size(); i++) {
             casesList.get(i).setTeacherName(teaName);
         }
-        int count = casesList.size();
+        int count = caseService.getcasesCountByteacherId(creatTeacher);
         return Result.success().setData(casesList).setCode(ResultCodeEnum.OK.getCode()).setCount(count).setMsg("查询案例成功");
     }
 
     @ApiOperation(value = "根据caseId查找案例")
-    @ApiParam(name = "caseId", type = "Integer")
+    @ApiImplicitParam(required = true,name ="caseId",value = "案例id")
     @GetMapping("/findCasesbycaseId/{caseId}")
     public Result findCasesbycaseId(@PathVariable Integer caseId) {
         Cases cases = caseService.getcasebyId(caseId);
@@ -136,6 +145,7 @@ public class CaseController {
     }
 
     @ApiOperation(value = "根据caseId删除案例")
+    @ApiImplicitParam(required = true,name ="caseId",value = "案例id")
     @DeleteMapping("/deletecase/{caseId}")
     public Result deletecase(@PathVariable Integer caseId) {//存入路径里的图片和文件也要删除，这里暂未实现
         caseService.deleteCasesByid(caseId);
@@ -200,6 +210,14 @@ public class CaseController {
 //            outputSream.write(buf, 0, len);
 //        }
 //        outputSream.close();
+    }
+
+    @ApiOperation(value = "根据图片id删除图片")
+    @ApiImplicitParam(required = true,name ="id",value = "图片id")
+    @DeleteMapping("/deletecaseimage/{id}")
+    public Result deletecaseimage(@PathVariable Integer id){
+        caseService.deletecasesImageByid(id);
+        return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("根据id删除图片成功");
     }
 
     @ApiOperation(value = "上传文件（治疗或诊断方案）到指定案例")

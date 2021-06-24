@@ -10,17 +10,29 @@ public interface CaseService {
     //查找所有案例（无图片及文件）
     List<Cases> getAllCases();
 
+    //获取案例总数
+    int getAllCasesCount();
+
     //分页查找案例
     List<Cases> getCasesbyPage(Integer pageNum, Integer pageSize);
 
-    //根据courseId查找所有案例
+    //根据courseId查找所有案例并分页
     List<Cases> getcasesByCourseId(Integer courseId, Integer pageNum, Integer pageSize);
 
-    //根据案例名称查找所有案例
-    List<Cases> getcasesBycaseName(String caseName);
+    //根据courseId获取案例总数
+    int getcasesCountByCourseId(Integer courseId);
 
-    //根据老师id查找所有案例
-    List<Cases> getcasesByteacherId(Integer creatTeacher);
+    //根据案例名称查找所有案例并分页
+    List<Cases> getcasesBycaseName(String caseName, Integer pageNum, Integer pageSize);
+
+    //根据案例名称查找到的案例总数
+    int getcasesCountBycaseName(String caseName);
+
+    //根据老师id查找所有案例并分页
+    List<Cases> getcasesByteacherId(Integer creatTeacher, Integer pageNum, Integer pageSize);
+
+    //根据老师id查找到的案例总数
+    int getcasesCountByteacherId(Integer creatTeacher);
 
     //根据caseId查找案例（无图片及文件）
     Cases getcasebyId(Integer caseId);
@@ -42,6 +54,9 @@ public interface CaseService {
 
     //添加图片
     int insertCasesImage(CaseImage caseImage);
+
+    //根据图片id删除图片
+    int deletecasesImageByid(Integer id);
 
     //根据案例id获取所有文件
     List<CaseFile> getcasefilebyId(Integer caseId);
