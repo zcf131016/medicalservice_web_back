@@ -108,7 +108,10 @@ public class StudentFileController {
         StudentFile studentFile = studentFileService.getFileById(fileId);
         if(studentFile == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("文件不存在");
         boolean result = fileService.deleteFile(studentFile.getFilePath());
-        if(result) return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
+        if(result) {
+            studentFileService.deleteFileById(fileId);
+            return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
+        }
         return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
     }
 

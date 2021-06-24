@@ -44,4 +44,9 @@ public class StudentFileServiceImpl implements StudentFileService {
         PageInfo pageInfo = new PageInfo(list);
         return pageInfo;
     }
+
+    @Override
+    public void deleteFileById(Integer id) {
+        studentFileMapper.deleteFileById(id);
+    }
 }
