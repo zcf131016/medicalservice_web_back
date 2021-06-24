@@ -25,15 +25,6 @@ class MedicalserviceApplicationTests {
     UserMapper userMapper;
     @Test
     void contextLoads() {
-        Set<Integer> set = new HashSet<>();
-        for(int i = 0;i < 100;i++) {
-            Integer num = RandomUtil.getRandom(9);
-            System.out.println(num);
-            set.add(num);
-        }
-        if(set.size() != 100) {
-            System.out.println("出现重复");
-        }
     }
     @Test
     void test(){
