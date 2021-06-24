@@ -4,6 +4,7 @@ import com.example.medicalservice.domain.ApproveRequest;
 import com.example.medicalservice.domain.Course;
 import com.example.medicalservice.domain.CourseStudent;
 import com.example.medicalservice.domain.CourseTeacher;
+import com.github.pagehelper.PageInfo;
 import io.swagger.models.auth.In;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @date 2021/6/19 8:53
  */
 public interface CourseService {
-    List<Course> findAllCourse(Integer pageNum, Integer pageSize);//查找所有课程
+    PageInfo findAllCourse(Integer pageNum, Integer pageSize);//查找所有课程
     Course insertCourse(Course course);//新增课程
     Course updateCourse(Course course);//更新课程
     Integer deleteCourseById(Integer courseId);//根据课程id删除课程
@@ -34,7 +35,7 @@ public interface CourseService {
     List<CourseStudent> findCourseByStudentId(Integer studentId);//通过学生号查找课程
     List<Course> findUnjoinCourseByStudentId(Integer studentId);//通过学生号查找其未加入课程
     List<CourseStudent> findNotTeamStudentByCId(Integer courseId);//查看班级未分组学生名单
-    List<CourseStudent> findInTeamStudentByCourseId(Integer courseId,Integer pageNum,Integer pageSize);//分页查找已分组学生
+    PageInfo findInTeamStudentByCourseId(Integer courseId,Integer pageNum,Integer pageSize);//分页查找已分组学生
     Integer deleteTeamByCIdTId(Integer courseId,Integer teamId);//整组学生退出分组
     Integer deleteOneStudentById(Integer courseId,Integer teamId,Integer studentId);//删除小组里的单个学生
     List<CourseStudent> findTeamStudent(Integer courseId,Integer teamId);//查询分组里的学生

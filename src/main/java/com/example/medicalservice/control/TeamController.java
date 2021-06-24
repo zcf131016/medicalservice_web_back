@@ -1,9 +1,11 @@
 package com.example.medicalservice.control;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.medicalservice.domain.CourseStudent;
 import com.example.medicalservice.service.CourseService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -27,9 +29,10 @@ public class TeamController {
     @ResponseBody
     @GetMapping("/findInTeamStudentByCourseId/{courseId}/{pageNum}/{pageSize}")
     public Result getInTeamStudentByCId(@PathVariable Integer courseId, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
-        List<CourseStudent> courseStudents=courseService.findInTeamStudentByCourseId(courseId,pageNum,pageSize);
-        int Count = courseStudents.size();
-        return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找学生成功");
+        JSONObject json = new JSONObject();
+        PageInfo pageInfo =courseService.findInTeamStudentByCourseId(courseId,pageNum,pageSize);
+        json.put("pageInfo", pageInfo);
+        return Result.success().setData(pageInfo).setCode(ResultCodeEnum.OK.getCode()).setMsg("查找学生成功");
     }
     @ApiOperation(value = "删除整个学生分组" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程Id"),
