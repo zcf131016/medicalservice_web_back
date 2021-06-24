@@ -226,8 +226,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseStudent> findInTeamStudentByCourseId(Integer courseId, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+       PageHelper.startPage(pageNum,pageSize);
         List<CourseStudent> courses=courseMapper.findInTeamStudentByCourseId(courseId);
+        for (int i=0;i<courses.size();i++){
+            List<CourseStudent> courseStudents=courseMapper.findTeamStudent(courseId,courses.get(i).getTeamId());
+            courses.get(i).setCourseStudents(courseStudents);
+        }
         return courses;
     }
 
