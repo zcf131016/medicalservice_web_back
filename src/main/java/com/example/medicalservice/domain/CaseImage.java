@@ -2,22 +2,33 @@ package com.example.medicalservice.domain;
 
 import io.swagger.annotations.ApiModel;
 
+import java.util.Arrays;
 import java.util.Date;
 @ApiModel
 public class CaseImage {
     private Integer id;
     private Integer caseId;
-    private String imageUrl;
+    private byte[] image;
     private Date creatTime;
+    private String description;
 
     @Override
     public String toString() {
         return "CaseImage{" +
                 "id=" + id +
                 ", caseId=" + caseId +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", image=" + Arrays.toString(image) +
                 ", creatTime=" + creatTime +
+                ", description='" + description + '\'' +
                 '}';
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Date getCreatTime() {
@@ -28,12 +39,12 @@ public class CaseImage {
         this.creatTime = creatTime;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public byte[] getImage() {
+        return image;
     }
 
     public Integer getId() {

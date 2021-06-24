@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -104,7 +104,7 @@ public class CaseController {
     @GetMapping("/findCasesbyteacherId/{creatTeacher}")
     public Result findCasesbyteacherId(@PathVariable Integer creatTeacher) {
         List<Cases> casesList = caseService.getcasesByteacherId(creatTeacher);
-        String teaName=userService.getUserByUserId(creatTeacher).getRealName();
+        String teaName = userService.getUserByUserId(creatTeacher).getRealName();
         for (int i = 0; i < casesList.size(); i++) {
             casesList.get(i).setTeacherName(teaName);
         }
@@ -158,13 +158,57 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");
     }
 
+    @ApiOperation(value = "上传病例图片")
+    @RequestMapping (value = "/uploadimgetocase", produces = {"application/json;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8"}, method = RequestMethod.POST)
+    public Result uploadimgetocase(@RequestParam("file") MultipartFile file,
+                               @RequestParam("caseId") Integer caseId,
+                                   @RequestParam("description") String description) {
+        try {
+            CaseImage caseImage=new CaseImage();
+            InputStream inputStream = file.getInputStream();
+            byte[] pictureData = new byte[(int) file.getSize()];
+            inputStream.read(pictureData);
+            caseImage.setImage(pictureData);
+            caseImage.setCaseId(caseId);
+            caseImage.setDescription(description);
+            int i = caseService.insertCasesImage(caseImage);
+            CaseImage caseImage1=caseService.getcaseimagebymainId(i);
+            return Result.success().setData(caseImage1).setCode(ResultCodeEnum.OK.getCode()).setMsg("上传图片成功!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Result.failure(ResultCodeEnum.UPLOAD_FAILED).setMsg("上传失败");
+        }
+    }
+
+    @ApiOperation(value = "根据案例id读取病例图片")
+    @RequestMapping(value="/readimage/{caseId}",method=RequestMethod.GET)
+    public Result getPhotoById (@PathVariable("caseId")Integer caseId, final HttpServletResponse response) throws Exception{
+        List<CaseImage> caseImageList=caseService.getcaseimagebyId(caseId);
+        for (int i = 0; i < caseImageList.size(); i++) {
+            byte[] data = caseImageList.get(i).getImage();
+            response.setContentType("image/jpeg");
+            response.setCharacterEncoding("UTF-8");
+            OutputStream outputSream = response.getOutputStream();
+            outputSream.write(data);
+            outputSream.flush();
+        }
+        return Result.success().setData(caseImageList).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
+//        InputStream in = new ByteArrayInputStream(data);
+//        int len = 0;
+//        byte[] buf = new byte[1024];
+//        while ((len = in.read(buf, 0, 1024)) != -1) {
+//            outputSream.write(buf, 0, len);
+//        }
+//        outputSream.close();
+    }
+
     @ApiOperation(value = "上传文件（治疗或诊断方案）到指定案例")
     @RequestMapping(value = "/uploadFiletoCases", produces = {"application/json;charset=UTF-8", "application/pdf;charset=UTF-8", "application/zip;charset=UTF-8", "application/msword;charset=UTF-8", "application/vnd.ms-powerpoint;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8", "application/rar;charset=UTF-8"}, method = RequestMethod.POST)
     public Result uploadFile(@RequestParam("file") MultipartFile file,
                              @RequestParam("caseId") Integer caseId,
                              HttpServletRequest request) {
         String prefix = String.valueOf(caseId) + "_";
-        boolean result = fileService.uploadFile(file, prefix, baseConfig.getStudentFilePath());
+        boolean result = fileService.uploadFile(file, prefix, baseConfig.getCaseFilePath());
         if (result) {
             CaseFile caseFile = new CaseFile();
             caseFile.setCaseId(caseId);
