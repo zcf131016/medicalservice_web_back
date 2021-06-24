@@ -5,6 +5,7 @@ import com.example.medicalservice.domain.*;
 import com.example.medicalservice.service.CourseService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -28,9 +29,10 @@ public class CourseControl {
     @ResponseBody
     @GetMapping("/findAllCourse/{pageNum}/{pageSize}")
     public Result getAllCourse(@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
-         List<Course> courses=courseService.findAllCourse(pageNum,pageSize);
-        int Count = courses.size();
-        return Result.success().setData(courses).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("分页查找课程成功");
+        JSONObject json = new JSONObject();
+         PageInfo pageInfo =courseService.findAllCourse(pageNum,pageSize);
+        json.put("pageInfo", pageInfo);
+        return Result.success().setData(json).setCode(ResultCodeEnum.OK.getCode()).setMsg("分页查找课程成功");
     }
     @ApiOperation(value = "通过课程id查找课程" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId",dataType = "INTEGER",value="课程id"),
