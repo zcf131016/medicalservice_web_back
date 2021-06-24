@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 23/06/2021 16:15:15
+ Date: 24/06/2021 10:27:52
 */
 
 SET NAMES utf8mb4;
@@ -63,15 +63,16 @@ DROP TABLE IF EXISTS `case_image`;
 CREATE TABLE `case_image`  (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `case_id` int(16) NULL DEFAULT NULL COMMENT '案例id',
-  `image_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片资源',
+  `image` longblob NULL COMMENT '图片资源',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of case_image
 -- ----------------------------
-INSERT INTO `case_image` VALUES (1, 1000, './image/img.png', '2021-06-22 15:23:15.094094');
+INSERT INTO `case_image` VALUES (1, 1000, 0x2E2F696D6167652F696D672E706E67, '2021-06-22 15:23:15.094094', NULL);
 
 -- ----------------------------
 -- Table structure for cases
@@ -90,12 +91,13 @@ CREATE TABLE `cases`  (
   `thinking` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `isPublish` int(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cases
 -- ----------------------------
 INSERT INTO `cases` VALUES (1, 1000, '跳表', 10000, '数据结构', '跳表数据结构', '2021-06-22 14:44:16.000000', 888888888, '数据结构', '链表的一种', 1);
+INSERT INTO `cases` VALUES (2, 1001, '跳表biao', 10000, '数据结构', '跳表数据结构', '2021-06-22 14:44:16.000000', 888888888, '数据结构', '链表的一种', 1);
 
 -- ----------------------------
 -- Table structure for comment_reply
