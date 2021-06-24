@@ -18,6 +18,8 @@
         <result column="student_name" jdbcType="VARCHAR" property="studentName" />
         <result column="team_id" jdbcType="INTEGER" property="teamId" />
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+       <!-- <collection property="courseStudents" ofType="com.example.medicalservice.domain.CourseStudent" column="team_id" select="getTeamPeople">
+        </collection>-->
     </resultMap>
     <resultMap id="CourseTeacherResultMap" type="com.example.medicalservice.domain.CourseTeacher">
         <result column="id" jdbcType="INTEGER" property="id" />
@@ -132,10 +134,11 @@
             )
     </select>
     <select id="findInTeamStudentByCourseId" resultMap="CourseStudentResultMap">
-        select * from course_student where student_id not in (
+        select team_id from course_student where student_id not in (
             select student_id from course_student where  course_id=#{courseId} and team_id=-1
             )
-      order by team_id
+        group by team_id
+        order by team_id
     </select>
     <select id="findNotTeamStudentByCId" resultMap="CourseStudentResultMap">
         select * from course_student where course_id=#{courseId} and team_id=-1
