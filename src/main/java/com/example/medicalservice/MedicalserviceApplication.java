@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.MultipartConfigElement;
 
 @SpringBootApplication
-
-@MapperScan("com.example.medicalservice.mapper")
 public class MedicalserviceApplication {
 
     @Bean
