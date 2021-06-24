@@ -21,12 +21,19 @@
 	      #{fileType}
 	    )
     </insert>
+    <delete id="deleteFileById" parameterType="java.lang.Integer">
+        delete from student_file where id=#{id}
+    </delete>
     <select id="getFileByStudentId" resultType="com.example.medicalservice.domain.StudentFile">
         select * from student_file where case_id=#{caseId} and student_id=#{studentId}
     </select>
     <select id="getFileById" resultType="com.example.medicalservice.domain.StudentFile"
             parameterType="java.lang.Integer">
         select * from student_file where id = #{id}
+    </select>
+    <select id="getFileByCaseId" resultType="com.example.medicalservice.domain.StudentFile"
+            parameterType="java.lang.Integer">
+        select * from student_file where case_id=#{caseId}
     </select>
 
 

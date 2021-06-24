@@ -1,11 +1,15 @@
 package com.example.medicalservice.control;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.medicalservice.config.BaseConfig;
 import com.example.medicalservice.domain.StudentFile;
+import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.service.FileService;
 import com.example.medicalservice.service.StudentFileService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import java.io.IOException;
  * @author Lin YuHang
  * @date 2021/6/22 17:27
  */
+@Api(tags = "学生文件接口")
 @RestController
 @RequestMapping("/sfile")
 public class StudentFileController {
@@ -41,6 +46,22 @@ public class StudentFileController {
                               HttpServletRequest request,
                               HttpServletResponse response) {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setData(studentFileService.getFileByStudentId(caseId,studentId)).setMsg("获取成功");
+    }
+
+    @ApiOperation(value = "根据caseId获取该case下所有学生的上传文件")
+    @GetMapping("/getFileByCaseId/{caseId}/pageNum/pageSize")
+    public Result getFileByCaseId(@PathVariable("caseId") Integer caseId,
+                                  @PathVariable("pageNum") Integer pageNum,
+                                  @PathVariable("pageSize") Integer pageSize) {
+        JSONObject json = new JSONObject();
+        try {
+            PageInfo<StudentFile> pageInfo = studentFileService.getFileByCaseId(caseId,pageNum,pageSize);
+            json.put("pageInfo",pageInfo);
+        } catch (UserFriendException e) {
+            e.printStackTrace();
+            return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("没有数据");
+        }
+        return Result.success().setData(json.get("pageInfo"));
     }
 
     @ApiOperation(value="上传文件")
@@ -64,7 +85,7 @@ public class StudentFileController {
     }
 
     @ApiOperation(value="下载文件")
-    @RequestMapping(value = "/downloadFile/{fileId}", produces = {"application/json;charset=UTF-8","application/pdf;charset=UTF-8","application/zip;charset=UTF-8","application/msword;charset=UTF-8"},method = RequestMethod.POST)
+    @RequestMapping(value = "/downloadFile/{fileId}", produces = {"application/json;charset=UTF-8","application/octet-stream;charset=UTF-8"},method = RequestMethod.POST)
     public Result downloadFileByFileId(@PathVariable("fileId") Integer fileId,
                                        HttpServletRequest request,
                                        HttpServletResponse response) {
@@ -80,4 +101,15 @@ public class StudentFileController {
         if(result) return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("下载成功");
         return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("下载失败");
     }
+
+    @ApiOperation(value="根据文件id删除文件")
+    @DeleteMapping("/deleteFile/{fileId}")
+    public Result deleteFile(@PathVariable("fileId") Integer fileId) {
+        StudentFile studentFile = studentFileService.getFileById(fileId);
+        if(studentFile == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("文件不存在");
+        boolean result = fileService.deleteFile(studentFile.getFilePath());
+        if(result) return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
+        return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
+    }
+
 }

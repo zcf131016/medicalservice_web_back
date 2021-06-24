@@ -1,6 +1,7 @@
 package com.example.medicalservice.service;
 
 import com.example.medicalservice.domain.StudentFile;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ public interface StudentFileService {
     List<StudentFile> getFileByStudentId(Integer caseId, Integer studentId);
     void uploadFile(StudentFile studentFile);
     StudentFile getFileById(Integer id);
+    PageInfo getFileByCaseId(Integer caseId,Integer pageNum, Integer pageSize);
 }
