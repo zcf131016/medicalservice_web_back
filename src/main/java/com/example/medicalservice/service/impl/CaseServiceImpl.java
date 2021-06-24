@@ -80,13 +80,19 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public CaseImage getcaseimagebymainId(Integer id) {
+        return casesMapper.getcaseimagebymainId(id);
+    }
+
+    @Override
     public List<CaseImage> getcaseimagebyId(Integer caseId) {
         return casesMapper.getcaseimagebyId(caseId);
     }
 
     @Override
     public int insertCasesImage(CaseImage caseImage) {
-        return casesMapper.insertCasesImage(caseImage);
+        casesMapper.insertCasesImage(caseImage);
+        return caseImage.getId();
     }
 
     @Override
