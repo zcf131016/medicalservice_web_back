@@ -73,4 +73,17 @@ public class FileServiceImpl implements FileService {
         }
         return true;
     }
+
+    @Override
+    public boolean deleteFile(String filePath) {
+        File file = new File(filePath);
+        if(!file.exists()) return false;
+        try {
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

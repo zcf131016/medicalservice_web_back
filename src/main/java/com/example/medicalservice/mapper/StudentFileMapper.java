@@ -14,4 +14,6 @@ public interface StudentFileMapper {
     List<StudentFile> getFileByStudentId(Integer caseId,Integer studentId);
     void addFile(StudentFile studentFile);
     StudentFile getFileById(Integer id);
+    void deleteFileById(Integer id);
+    List<StudentFile> getFileByCaseId(Integer caseId);
 }

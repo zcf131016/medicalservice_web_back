@@ -12,4 +12,5 @@ import java.io.File;
 public interface FileService {
     boolean uploadFile(MultipartFile file,String prefix, String sourcePath);
     boolean downloadFile(String file, HttpServletResponse response);
+    boolean deleteFile(String file);
 }
