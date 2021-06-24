@@ -6,6 +6,7 @@ import com.example.medicalservice.domain.StudentFile;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.service.FileService;
 import com.example.medicalservice.service.StudentFileService;
+import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +39,9 @@ public class StudentFileController {
 
     @Autowired
     FileService fileService;
+
+    @Autowired
+    UserService userService;
 
     @ApiOperation(value="获取学生上传的文件列表")
     @GetMapping("/getFileById/{caseId}/{studentId}")
@@ -94,8 +98,9 @@ public class StudentFileController {
         String filePath = studentFile.getFilePath();
         File newFile = new File(filePath);
         if(!newFile.exists()) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("对应路径的文件不存在");
-        response.setHeader("Content-Disposition", "attachment;filename=" + filePath.substring(filePath.lastIndexOf("/")));
-        response.setContentType("application/octet-stream");
+        String fileType = studentFile.getFileType().substring(1);
+        response.setHeader("Content-Disposition", "attachment;filename=" + filePath.substring(filePath.lastIndexOf("/")+1));
+        response.setContentType("application/"+fileType);
         // 获取文件
         boolean result = fileService.downloadFile(filePath, response);
         if(result) return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("下载成功");
