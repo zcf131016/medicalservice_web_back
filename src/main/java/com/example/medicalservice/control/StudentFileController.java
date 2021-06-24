@@ -49,7 +49,7 @@ public class StudentFileController {
     }
 
     @ApiOperation(value = "根据caseId获取该case下所有学生的上传文件")
-    @GetMapping("/getFileByCaseId/{caseId}/pageNum/pageSize")
+    @GetMapping("/getFileByCaseId/{caseId}/{pageNum}/{pageSize}")
     public Result getFileByCaseId(@PathVariable("caseId") Integer caseId,
                                   @PathVariable("pageNum") Integer pageNum,
                                   @PathVariable("pageSize") Integer pageSize) {
