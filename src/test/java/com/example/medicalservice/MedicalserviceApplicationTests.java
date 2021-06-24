@@ -31,16 +31,16 @@ class MedicalserviceApplicationTests {
     }
     @Test
     void test(){
-        Cases cases=new Cases();
-        cases.setCaseId(987654321);
-        cases.setCaseName("zx的测试");
-        cases.setCourseId(10000);
-        Date date =new Date();
-        cases.setCreatTime(date);
-        cases.setCreatTeacher(1);
-        cases.setMedHistory("最近没吃药");
-        cases.setIsPublish(1);
-        casesMapper.insertCases(cases);
+//        Cases cases=new Cases();
+//        cases.setCaseId(987654321);
+//        cases.setCaseName("zx的测试");
+//        cases.setCourseId(10000);
+//        Date date =new Date();
+//        cases.setCreatTime(date);
+//        cases.setCreatTeacher(1);
+//        cases.setMedHistory("最近没吃药");
+//        cases.setIsPublish(1);
+//        casesMapper.insertCases(cases);
 //        CaseImage caseImage=new CaseImage();
 //        caseImage;
 //        caseImage.setImageUrl("./image/img2.png");
