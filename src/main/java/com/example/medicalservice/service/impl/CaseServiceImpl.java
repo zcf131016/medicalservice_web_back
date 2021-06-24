@@ -25,6 +25,11 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public int getAllCasesCount() {
+        return casesMapper.getAllCasesCount();
+    }
+
+    @Override
     public List<Cases> getCasesbyPage(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Cases> casesList = casesMapper.getAllCases();
@@ -39,13 +44,32 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public List<Cases> getcasesBycaseName(String caseName) {
-        return casesMapper.getcasesBycaseName(caseName);
+    public int getcasesCountByCourseId(Integer courseId) {
+        return casesMapper.getcasesCountByCourseId(courseId);
     }
 
     @Override
-    public List<Cases> getcasesByteacherId(Integer creatTeacher) {
-        return casesMapper.getcasesByteacherId(creatTeacher);
+    public List<Cases> getcasesBycaseName(String caseName, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Cases> casesList = casesMapper.getcasesBycaseName(caseName);
+        return casesList;
+    }
+
+    @Override
+    public int getcasesCountBycaseName(String caseName) {
+        return casesMapper.getcasesCountBycaseName(caseName);
+    }
+
+    @Override
+    public List<Cases> getcasesByteacherId(Integer creatTeacher, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Cases> casesList = casesMapper.getcasesByteacherId(creatTeacher);
+        return casesList;
+    }
+
+    @Override
+    public int getcasesCountByteacherId(Integer creatTeacher) {
+        return casesMapper.getcasesCountByteacherId(creatTeacher);
     }
 
     @Override
@@ -93,6 +117,11 @@ public class CaseServiceImpl implements CaseService {
     public int insertCasesImage(CaseImage caseImage) {
         casesMapper.insertCasesImage(caseImage);
         return caseImage.getId();
+    }
+
+    @Override
+    public int deletecasesImageByid(Integer id) {
+        return casesMapper.deletecasesImageByid(id);
     }
 
     @Override

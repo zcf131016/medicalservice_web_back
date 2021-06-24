@@ -27,8 +27,6 @@ public class Cases {
     private String caseDesc;
     @ApiModelProperty(value = "创建老师")
     private Integer creatTeacher;
-    @ApiModelProperty(value = "既往病史")
-    private String medHistory;
     @ApiModelProperty(value = "思考")
     private String thinking;
     @ApiModelProperty(value = "是否发布，1表示未发布，2表示已发布")
@@ -86,7 +84,6 @@ public class Cases {
                 ", creatTime=" + creatTime +
                 ", caseDesc='" + caseDesc + '\'' +
                 ", creatTeacher=" + creatTeacher +
-                ", medHistory='" + medHistory + '\'' +
                 ", thinking='" + thinking + '\'' +
                 ", isPublish=" + isPublish +
                 ", teacherName='" + teacherName + '\'' +
@@ -165,9 +162,6 @@ public class Cases {
         this.creatTeacher = creatTeacher;
     }
 
-    public void setMedHistory(String medHistory) {
-        this.medHistory = medHistory;
-    }
 
     public void setThinking(String thinking) {
         this.thinking = thinking;
@@ -211,10 +205,6 @@ public class Cases {
 
     public Integer getCreatTeacher() {
         return creatTeacher;
-    }
-
-    public String getMedHistory() {
-        return medHistory;
     }
 
     public String getThinking() {
