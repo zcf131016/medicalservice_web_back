@@ -37,7 +37,7 @@ public class FileServiceImpl implements FileService {
             // 文件存放路径
             String filePath = sourcePath;
             File dest = new File(new File(filePath) + "/" + fileName);
-            // 检查文件是否存在
+            // 检查文件路径是否存在
             if(!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();
             }
