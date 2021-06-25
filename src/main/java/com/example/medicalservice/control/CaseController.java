@@ -1,5 +1,7 @@
 package com.example.medicalservice.control;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.medicalservice.config.BaseConfig;
 import com.example.medicalservice.domain.CaseFile;
 import com.example.medicalservice.domain.CaseImage;
@@ -16,10 +18,13 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -140,7 +145,17 @@ public class CaseController {
         if (cases.getIsPublish() == 0) {
             cases.setIsPublish(1);//若为设置是否发布，默认设置为未发布
         }
-        caseService.insertCases(cases);
+        Integer caseId=caseService.insertCases(cases);
+        if(cases.getMultipartFiles().size()!=0){
+            for (int i = 0; i < cases.getMultipartFiles().size(); i++) {
+                String prefix = String.valueOf(caseId) + "_";
+                boolean result = fileService.uploadFile(cases.getMultipartFiles().get(i), prefix, baseConfig.getCaseFilePath());
+                CaseFile caseFile = new CaseFile();
+                caseFile.setCaseId(caseId);
+                caseFile.setFileUrl(baseConfig.getCaseFilePath() + prefix + cases.getMultipartFiles().get(i).getOriginalFilename());
+                caseService.insertCasesFile(caseFile);
+            }
+        }
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("新增案例成功！");
     }
 
@@ -198,15 +213,18 @@ public class CaseController {
     @RequestMapping(value="/readimage/{caseId}",method=RequestMethod.GET)
     public Result getPhotoById (@PathVariable("caseId")Integer caseId, final HttpServletResponse response) throws Exception{
         List<CaseImage> caseImageList=caseService.getcaseimagebyId(caseId);
+        JSONArray jsonArray =new JSONArray();
         for (int i = 0; i < caseImageList.size(); i++) {
+            JSONObject jsonObject=new JSONObject();
+            BASE64Encoder encoder = new BASE64Encoder();
             byte[] data = caseImageList.get(i).getImage();
-            response.setContentType("image/jpeg");
-            response.setCharacterEncoding("UTF-8");
-            OutputStream outputSream = response.getOutputStream();
-            outputSream.write(data);
-            outputSream.flush();
+            jsonObject.put("id",caseImageList.get(i).getId());
+            jsonObject.put("caseId",caseImageList.get(i).getCaseId());
+            jsonObject.put("imagebase",encoder.encode(data));
+            jsonObject.put("description",caseImageList.get(i).getDescription());
+            jsonArray.add(jsonObject);
         }
-        return Result.success().setData(caseImageList).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
+        return Result.success().setData(jsonArray).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
 //        InputStream in = new ByteArrayInputStream(data);
 //        int len = 0;
 //        byte[] buf = new byte[1024];
