@@ -23,7 +23,10 @@ import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.*;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,21 +195,39 @@ public class CaseController {
     public Result uploadimgetocase(@RequestParam("file") MultipartFile file,
                                @RequestParam("caseId") Integer caseId,
                                    @RequestParam("description") String description) {
+//        try {
+//            CaseImage caseImage=new CaseImage();
+//            InputStream inputStream = file.getInputStream();
+//            byte[] pictureData = new byte[(int) file.getSize()];
+//            inputStream.read(pictureData);
         try {
             CaseImage caseImage=new CaseImage();
-            InputStream inputStream = file.getInputStream();
-            byte[] pictureData = new byte[(int) file.getSize()];
-            inputStream.read(pictureData);
-            caseImage.setImage(pictureData);
+            Blob blob = new SerialBlob(file.getBytes());
             caseImage.setCaseId(caseId);
+            caseImage.setImage(blob);
             caseImage.setDescription(description);
             int i = caseService.insertCasesImage(caseImage);
             CaseImage caseImage1=caseService.getcaseimagebymainId(i);
             return Result.success().setData(caseImage1).setCode(ResultCodeEnum.OK.getCode()).setMsg("上传图片成功!");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return Result.failure(ResultCodeEnum.UPLOAD_FAILED).setMsg("上传失败");
         } catch (IOException e) {
             e.printStackTrace();
             return Result.failure(ResultCodeEnum.UPLOAD_FAILED).setMsg("上传失败");
         }
+
+//        byte imag[]=(byte[])bean.getBlobObject();
+//            caseImage.setImage(pictureData);
+//            caseImage.setCaseId(caseId);
+//            caseImage.setDescription(description);
+//            int i = caseService.insertCasesImage(caseImage);
+//            CaseImage caseImage1=caseService.getcaseimagebymainId(i);
+//            return Result.success().setData(caseImage1).setCode(ResultCodeEnum.OK.getCode()).setMsg("上传图片成功!");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return Result.failure(ResultCodeEnum.UPLOAD_FAILED).setMsg("上传失败");
+//        }
     }
 
     @ApiOperation(value = "根据案例id读取病例图片")
@@ -214,17 +235,22 @@ public class CaseController {
     public Result getPhotoById (@PathVariable("caseId")Integer caseId, final HttpServletResponse response) throws Exception{
         List<CaseImage> caseImageList=caseService.getcaseimagebyId(caseId);
         JSONArray jsonArray =new JSONArray();
+        List<String> strings=new ArrayList<>();
         for (int i = 0; i < caseImageList.size(); i++) {
             JSONObject jsonObject=new JSONObject();
             BASE64Encoder encoder = new BASE64Encoder();
-            byte[] data = caseImageList.get(i).getImage();
+            byte[] data = (byte[])caseImageList.get(i).getImage();
+            String imagebase=encoder.encode(data);
+            imagebase.replaceAll("\r|\n", "");
+            System.out.println(imagebase);
+            strings.add(imagebase);
             jsonObject.put("id",caseImageList.get(i).getId());
             jsonObject.put("caseId",caseImageList.get(i).getCaseId());
-            jsonObject.put("imagebase",encoder.encode(data));
+            jsonObject.put("imagebase",imagebase);
             jsonObject.put("description",caseImageList.get(i).getDescription());
             jsonArray.add(jsonObject);
         }
-        return Result.success().setData(jsonArray).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
+        return Result.success().setData(strings).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
 //        InputStream in = new ByteArrayInputStream(data);
 //        int len = 0;
 //        byte[] buf = new byte[1024];
