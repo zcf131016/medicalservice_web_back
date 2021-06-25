@@ -193,8 +193,7 @@ public class CaseController {
     @ApiOperation(value = "上传病例图片")
     @RequestMapping (value = "/uploadimgetocase", produces = {"application/json;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8"}, method = RequestMethod.POST)
     public Result uploadimgetocase(@RequestParam("file") MultipartFile file,
-                               @RequestParam("caseId") Integer caseId,
-                                   @RequestParam("description") String description) {
+                               @RequestParam("caseId") Integer caseId) {
 //        try {
 //            CaseImage caseImage=new CaseImage();
 //            InputStream inputStream = file.getInputStream();
@@ -205,7 +204,6 @@ public class CaseController {
             Blob blob = new SerialBlob(file.getBytes());
             caseImage.setCaseId(caseId);
             caseImage.setImage(blob);
-            caseImage.setDescription(description);
             int i = caseService.insertCasesImage(caseImage);
             CaseImage caseImage1=caseService.getcaseimagebymainId(i);
             return Result.success().setData(caseImage1).setCode(ResultCodeEnum.OK.getCode()).setMsg("上传图片成功!");
@@ -235,22 +233,20 @@ public class CaseController {
     public Result getPhotoById (@PathVariable("caseId")Integer caseId, final HttpServletResponse response) throws Exception{
         List<CaseImage> caseImageList=caseService.getcaseimagebyId(caseId);
         JSONArray jsonArray =new JSONArray();
-        List<String> strings=new ArrayList<>();
+        //List<String> strings=new ArrayList<>();
         for (int i = 0; i < caseImageList.size(); i++) {
             JSONObject jsonObject=new JSONObject();
             BASE64Encoder encoder = new BASE64Encoder();
             byte[] data = (byte[])caseImageList.get(i).getImage();
             String imagebase=encoder.encode(data);
             imagebase.replaceAll("\r|\n", "");
-            System.out.println(imagebase);
-            strings.add(imagebase);
+            //System.out.println(imagebase);
             jsonObject.put("id",caseImageList.get(i).getId());
             jsonObject.put("caseId",caseImageList.get(i).getCaseId());
             jsonObject.put("imagebase",imagebase);
-            jsonObject.put("description",caseImageList.get(i).getDescription());
             jsonArray.add(jsonObject);
         }
-        return Result.success().setData(strings).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
+        return Result.success().setData(jsonArray).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取病例图片成功!");
 //        InputStream in = new ByteArrayInputStream(data);
 //        int len = 0;
 //        byte[] buf = new byte[1024];
