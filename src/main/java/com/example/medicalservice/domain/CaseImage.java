@@ -10,7 +10,6 @@ public class CaseImage {
     private Integer caseId;
     private Object image;
     private Date creatTime;
-    private String description;
 
     @Override
     public String toString() {
@@ -19,7 +18,6 @@ public class CaseImage {
                 ", caseId=" + caseId +
                 ", image=" + image +
                 ", creatTime=" + creatTime +
-                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -29,14 +27,6 @@ public class CaseImage {
 
     public void setImage(Object image) {
         this.image = image;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Date getCreatTime() {
