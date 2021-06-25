@@ -61,10 +61,10 @@ public class TeamController {
     @GetMapping("/findTeamStudent/{courseId}/{studentId}")
     public Result findTeamStudent(@PathVariable Integer courseId,@PathVariable Integer studentId) {
         List<CourseStudent> courseStudents=courseService.findTeamStudent(courseId,studentId);
-        int Count = courseStudents.size();
-        if (Count==0){
+        if (courseStudents==null){
             return Result.failure(ResultCodeEnum.CREATED).setMsg("团里无人");
         }
+        int Count = courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("根据课程名查找课程成功");
     }
     @ApiOperation(value = "更新单个分组学生" )

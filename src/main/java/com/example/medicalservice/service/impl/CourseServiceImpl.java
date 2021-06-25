@@ -249,7 +249,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseStudent> findTeamStudent(Integer courseId, Integer studentId) {
+        CourseStudent courseStudent=courseMapper.findTeamId(courseId,studentId);
+        if (courseStudent ==null){
+            return null;
+        }
         Integer teamId=courseMapper.findTeamId(courseId,studentId).getTeamId();
+        if (teamId==-1){
+            return null;
+        }
         return courseMapper.findTeamStudent(courseId,teamId);
     }
 
