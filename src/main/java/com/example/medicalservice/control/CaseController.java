@@ -267,5 +267,50 @@ public class CaseController {
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("下载成功");
         return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("下载失败");
     }
+    @ApiOperation(value="根据案例Id获取文件列表")
+    @GetMapping("/getFileByCaseId/{caseId}")
+    public Result getFileByCaseId(@PathVariable("caseId") Integer caseId){
+        List<CaseFile> caseFileList = caseService.getcasefilebyId(caseId);
+        if(caseFileList.size()==0){
+            return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("该案例没有文件");
+        } else {
+            return Result.success().setData(caseFileList).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取文件列表成功");
+        }
+    }
 
+    @ApiOperation(value="根据文件id删除案例文件")
+    @DeleteMapping("/deleteCaseFileById/{id}")
+    public Result deleteCaseFileById(@PathVariable("id") Integer id) {
+        CaseFile caseFile = caseService.downloadcasefilebyId(id);
+        if(caseFile == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("文件不存在");
+        boolean result = fileService.deleteFile(caseFile.getFileUrl());
+        if(result) {
+            caseService.deletecasesFileByid(id);
+            return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
+        }
+        return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
+    }
+
+    @ApiOperation(value="根据案例id删除该案例的所有文件")
+    @DeleteMapping("/deleteCaseFileByCaseId/{caseId}")
+    public Result deleteCaseFileByCaseId(@PathVariable("caseId") Integer caseId) {
+        List<CaseFile> caseFileList = caseService.getcasefilebyId(caseId);
+        if(caseFileList.size()==0)
+            return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("该案例中没有文件");
+        boolean totalResult = true;
+        for (int i = 0; i < caseFileList.size(); i++) {
+            boolean result = fileService.deleteFile(caseFileList.get(i).getFileUrl());
+            if(result){
+                caseService.deletecasesFileByid(caseFileList.get(i).getId());
+            } else {
+                totalResult = false;
+                continue;
+            }
+        }
+        if (totalResult==true){
+            return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
+        } else {
+            return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("有文件删除失败");
+        }
+    }
 }
