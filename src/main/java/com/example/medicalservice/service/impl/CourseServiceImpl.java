@@ -248,7 +248,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseStudent> findTeamStudent(Integer courseId, Integer teamId) {
+    public List<CourseStudent> findTeamStudent(Integer courseId, Integer studentId) {
+        Integer teamId=courseMapper.findTeamId(courseId,studentId).getTeamId();
         return courseMapper.findTeamStudent(courseId,teamId);
     }
 
