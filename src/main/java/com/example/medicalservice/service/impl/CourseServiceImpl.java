@@ -257,4 +257,16 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.updateOneStudentById(courseId,teamId,studentId);
     }
 
+    @Override
+    public Integer updateStudentById(CourseStudent courseStudent) {
+        List<CourseStudent> courseStudents=courseStudent.getCourseStudents();
+        for (int i=0;i<courseStudents.size();i++){
+            Integer studentId=courseStudents.get(i).getStudentId();
+            Integer courseId=courseStudent.getCourseId();
+            Integer teamId=courseStudent.getTeamId();
+            courseMapper.updateOneStudentById(courseId,teamId,studentId);
+        }
+        return 1;
+    }
+
 }

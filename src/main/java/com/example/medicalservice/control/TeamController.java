@@ -67,7 +67,7 @@ public class TeamController {
         }
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("根据课程名查找课程成功");
     }
-    @ApiOperation(value = "更新分组学生" )
+    @ApiOperation(value = "更新单个分组学生" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程Id"),
             @ApiImplicitParam(required = true,name="studentId", value="学生Id"),
             @ApiImplicitParam(required = true,name="teamId", value="团队Id"),
@@ -86,5 +86,15 @@ public class TeamController {
         List<CourseStudent> courseStudents=courseService.findNotTeamStudentByCId(courseId);
         int Count = courseStudents.size();
         return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查找学生成功");
+    }
+    @ApiOperation(value = "更新多个分组学生" )
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程Id"),
+            @ApiImplicitParam(required = true,name="courseStudents", value="多个学生Id数组"),
+            @ApiImplicitParam(required = true,name="teamId", value="团队Id"),
+    })
+    @ResponseBody
+    @PostMapping("/updateStudentFromTeam")
+    public Result updateStudentFromTeam(@RequestBody CourseStudent courseStudent) {
+        return Result.success().setData(courseService.updateStudentById(courseStudent)).setCode(ResultCodeEnum.OK.getCode()).setMsg("更新分组成功");
     }
 }
