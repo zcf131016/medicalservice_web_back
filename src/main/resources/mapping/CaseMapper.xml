@@ -97,6 +97,10 @@
         select * from case_file
         where case_id = #{caseId}
     </select>
+    <select id="getcasefileCountbyId" resultType="java.lang.Integer">
+        select count(*) from case_file
+        where case_id = #{caseId}
+    </select>
     <select id="downloadcasefilebyId" resultMap="CasesFileResultMap">
         select * from case_file
         where id = #{id}
