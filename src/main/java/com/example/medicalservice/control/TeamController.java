@@ -55,12 +55,12 @@ public class TeamController {
     }
     @ApiOperation(value = "查找团队成员" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
-            @ApiImplicitParam(required = true,name="teamId", value="小组id"),
+            @ApiImplicitParam(required = true,name="studentId", value="学生id"),
     })
     @ResponseBody
-    @GetMapping("/findTeamStudent/{courseId}/{teamId}")
-    public Result findTeamStudent(@PathVariable Integer courseId,@PathVariable Integer teamId) {
-        List<CourseStudent> courseStudents=courseService.findTeamStudent(courseId,teamId);
+    @GetMapping("/findTeamStudent/{courseId}/{studentId}")
+    public Result findTeamStudent(@PathVariable Integer courseId,@PathVariable Integer studentId) {
+        List<CourseStudent> courseStudents=courseService.findTeamStudent(courseId,studentId);
         int Count = courseStudents.size();
         if (Count==0){
             return Result.failure(ResultCodeEnum.CREATED).setMsg("团里无人");

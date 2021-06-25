@@ -44,4 +44,5 @@ public interface CourseMapper {
     int deleteOneStudentById(Integer courseId,Integer teamId,Integer studentId);
     List<CourseStudent> findTeamStudent(Integer courseId,Integer teamId);
     int updateOneStudentById(Integer courseId,Integer teamId,Integer studentId);
+    CourseStudent findTeamId(Integer courseId,Integer studentId);
 }

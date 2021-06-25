@@ -167,4 +167,7 @@
         </trim>
         where course_id = #{courseId} and student_id=#{studentId}
     </update>
+    <select id="findTeamId" resultMap="CourseStudentResultMap">
+        select * from course_student where course_id=#{courseId} and student_id=#{studentId}
+    </select>
 </mapper>
