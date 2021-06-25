@@ -8,7 +8,7 @@ import java.util.Date;
 public class CaseImage {
     private Integer id;
     private Integer caseId;
-    private byte[] image;
+    private Object image;
     private Date creatTime;
     private String description;
 
@@ -17,10 +17,18 @@ public class CaseImage {
         return "CaseImage{" +
                 "id=" + id +
                 ", caseId=" + caseId +
-                ", image=" + Arrays.toString(image) +
+                ", image=" + image +
                 ", creatTime=" + creatTime +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public Object getImage() {
+        return image;
+    }
+
+    public void setImage(Object image) {
+        this.image = image;
     }
 
     public void setDescription(String description) {
@@ -39,13 +47,6 @@ public class CaseImage {
         this.creatTime = creatTime;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
 
     public Integer getId() {
         return id;

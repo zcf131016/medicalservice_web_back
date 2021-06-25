@@ -3,6 +3,7 @@ package com.example.medicalservice.domain;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,7 @@ public class Cases {
     private Integer isPublish;//1表示未发布，2表示已发布
     @ApiModelProperty(value = "教师名称")
     private String teacherName;
+    private List<MultipartFile> multipartFiles;
 
 //  @Override
 //  public String toString() {
@@ -88,6 +90,14 @@ public class Cases {
                 ", isPublish=" + isPublish +
                 ", teacherName='" + teacherName + '\'' +
                 '}';
+    }
+
+    public void setMultipartFiles(List<MultipartFile> multipartFiles) {
+        this.multipartFiles = multipartFiles;
+    }
+
+    public List<MultipartFile> getMultipartFiles() {
+        return multipartFiles;
     }
 
     public void setTeacherName(String teacherName) {

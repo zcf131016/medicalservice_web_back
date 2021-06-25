@@ -87,7 +87,8 @@ public class CaseServiceImpl implements CaseService {
             throw new UserFriendException("创建老师不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
         }
         cases.setCaseId(RandomUtil.getRandom(9));//生成9位的caseid
-        return casesMapper.insertCases(cases);
+        casesMapper.insertCases(cases);
+        return cases.getCaseId();//返回随机生成的caseId
     }
 
     @Override
