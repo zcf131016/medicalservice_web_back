@@ -105,4 +105,10 @@
         insert into case_file(case_id,file_url)
         values (#{caseId},#{fileUrl})
     </insert>
+    <delete id="deletecasesFileByid" parameterType="java.lang.Integer">
+        delete from case_file where id=#{id}
+    </delete>
+    <delete id="deletecasesFileByCaseid" parameterType="java.lang.Integer">
+        delete from case_file where case_id = #{caseId}
+    </delete>
 </mapper>

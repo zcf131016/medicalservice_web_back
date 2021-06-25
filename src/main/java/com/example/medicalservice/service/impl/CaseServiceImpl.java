@@ -137,4 +137,14 @@ public class CaseServiceImpl implements CaseService {
     public int insertCasesFile(CaseFile caseFile) {
         return casesMapper.insertCasesFile(caseFile);
     }
+
+    @Override
+    public int deletecasesFileByid(Integer id){
+        return casesMapper.deletecasesFileByid(id);
+    }
+
+    @Override
+    public int deletecasesFileByCaseid(Integer caseId){
+        return casesMapper.deletecasesFileByCaseid(caseId);
+    }
 }

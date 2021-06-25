@@ -69,4 +69,10 @@ public interface CasesMapper {
 
     //添加文件
     int insertCasesFile(CaseFile caseFile);
+
+    //根据文件id删除文件
+    int deletecasesFileByid(Integer id);
+
+    //根据案例id删除案例中的所有文件
+    int deletecasesFileByCaseid(Integer caseId);
 }
