@@ -14,6 +14,26 @@ public class StudentFile {
     private Date uploadTime;
     private String fileType;
 
+    private String studentName;
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getCaseName() {
+        return caseName;
+    }
+
+    public void setCaseName(String caseName) {
+        this.caseName = caseName;
+    }
+
+    private String caseName;
+
     public void setId(Integer id) {
         this.id = id;
     }
