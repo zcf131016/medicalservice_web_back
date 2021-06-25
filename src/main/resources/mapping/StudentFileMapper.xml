@@ -10,6 +10,9 @@
         <result column="file_path" property="filePath" />
         <result column="upload_time" property="uploadTime" />
         <result column="file_type" property="fileType" />
+        <result column="case_name" property="caseName" />
+        <result column="real_name" property="studentName" />
+
     </resultMap>
     <insert id="addFile" parameterType="com.example.medicalservice.domain.StudentFile">
         INSERT INTO  student_file(
@@ -24,16 +27,25 @@
     <delete id="deleteFileById" parameterType="java.lang.Integer">
         delete from student_file where id=#{id}
     </delete>
-    <select id="getFileByStudentId" resultType="com.example.medicalservice.domain.StudentFile">
-        select * from student_file where case_id=#{caseId} and student_id=#{studentId}
+    <select id="getFileByStudentId" resultMap="BaseResultMap">
+        select
+        sf.id, sf.case_id,sf.student_id,sf.file_path,sf.file_type,cs.case_name,u.real_name,sf.upload_time
+        from student_file sf, cases cs, users u
+        where sf.student_id=#{studentId} and sf.case_id=#{caseId} and sf.case_id=cs.case_id and sf.student_id=u.user_id
     </select>
-    <select id="getFileById" resultType="com.example.medicalservice.domain.StudentFile"
+    <select id="getFileById" resultMap="BaseResultMap"
             parameterType="java.lang.Integer">
-        select * from student_file where id = #{id}
+        select
+        sf.id, sf.case_id,sf.student_id,sf.file_path,sf.file_type,cs.case_name,u.real_name,sf.upload_time
+        from student_file sf, cases cs, users u
+        where sf.id=#{id} and sf.case_id=cs.case_id and sf.student_id=u.user_id
     </select>
-    <select id="getFileByCaseId" resultType="com.example.medicalservice.domain.StudentFile"
+    <select id="getFileByCaseId" resultMap="BaseResultMap"
             parameterType="java.lang.Integer">
-        select * from student_file where case_id=#{caseId}
+        select
+        sf.id, sf.case_id,sf.student_id,sf.file_path,sf.file_type,cs.case_name,u.real_name,sf.upload_time
+        from student_file sf, cases cs, users u
+        where sf.case_id=#{caseId} and sf.case_id=cs.case_id and sf.student_id=u.user_id
     </select>
 
 
