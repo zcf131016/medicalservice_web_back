@@ -250,6 +250,27 @@ public class DictionaryController {
 
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
+    @ApiOperation(value = "新增数据字典类型")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "typeCode",value = "类型编码"),
+            @ApiImplicitParam(required = true,name = "typeName",value = "类型名"),
+            @ApiImplicitParam(required = true,name = "value",value = "数据值"),
+            @ApiImplicitParam(required = true,name = "name",value = "数据名"),
+            @ApiImplicitParam(required = true,name = "isDefault",value = "是否默认")
+
+    })
+    @ResponseBody
+    @PostMapping("/insertDictionary")
+    public Result insertDictionary(@RequestBody DictionaryType dictionaryType) {
+
+            dictionaryService.insertDictionary(dictionaryType);
+        //dictionaryService.insertDictionaryType(dictionaryType);
+        return Result.success().setCode(ResultCodeEnum. Register.getCode()).setMsg("添加成功");
+
+    }
+
+
+
     /*@RequiresRoles(value={"teacher","admin"},logical= Logical.OR)
     @ApiOperation(value = "查询全部数据字典类型和值typeCode")
     @ApiImplicitParam(required = true,value = "typeCode",name = "类型编码")

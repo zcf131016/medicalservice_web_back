@@ -66,6 +66,9 @@ public interface DictionaryService {
     /*//查询所有数据类型包括值根据类型
     List<DictionaryType> getAllDictionaryByTypeCode(String typeCode);*/
 
+    //新增数据字典（类型和值）
+    int insertDictionary(DictionaryType dictionaryType);
+
 
 
 

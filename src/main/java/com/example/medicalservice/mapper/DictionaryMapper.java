@@ -71,6 +71,10 @@ public interface DictionaryMapper {
     //查询所有数据类型包括值根据类型
     List<DictionaryType> getAllDictionaryByTypeCode(String typeCode);
 
+    //
+
+
+
 
 
 

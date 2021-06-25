@@ -149,6 +149,19 @@ public class DictionaryServiceImpl implements DictionaryService {
         return pageInfo;
     }
 
+    @Override
+    public int insertDictionary(DictionaryType dictionaryType) {
+        List<DictionaryDetail> dictionaryDetails = dictionaryType.getDictionaryDetails();
+        for(int i = 0;i<dictionaryDetails.size();i++){
+            DictionaryDetail dictionaryDetail=dictionaryDetails.get(i);
+            dictionaryDetail.setTypeCode(dictionaryType.getTypeCode());
+
+            dictionaryMapper.insertDictionaryDetail(dictionaryDetail);
+        }
+        dictionaryMapper.insertDictionaryType(dictionaryType);
+        return 0;
+    }
+
     /*@Override
     public List<DictionaryType> getAllDictionaryByTypeCode(String typeCode) {
         if (dictionaryMapper.getDictionaryDetailByTypeCode(typeCode).size()==0) {
