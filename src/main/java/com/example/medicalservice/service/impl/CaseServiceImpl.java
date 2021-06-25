@@ -129,6 +129,9 @@ public class CaseServiceImpl implements CaseService {
         return casesMapper.getcasefilebyId(caseId);
     }
 
+    @Override
+    public int getcasefileCountbyId(Integer caseId){ return casesMapper.getcasefileCountbyId(caseId);}
+
     public CaseFile downloadcasefilebyId(Integer id) {
         return casesMapper.downloadcasefilebyId(id);
     }

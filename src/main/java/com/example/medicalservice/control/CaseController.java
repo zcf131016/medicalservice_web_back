@@ -144,18 +144,22 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("新增案例成功！");
     }
 
-    @ApiOperation(value = "根据caseId删除案例")
+    @ApiOperation(value = "根据caseId删除案例，若有文件和图片（外键级联，还未设置）也一并删除")
     @ApiImplicitParam(required = true,name ="caseId",value = "案例id")
     @DeleteMapping("/deletecase/{caseId}")
-    public Result deletecase(@PathVariable Integer caseId) {//存入路径里的图片和文件也要删除，这里暂未实现
+    public Result deletecase(@PathVariable Integer caseId) {
+        if(caseService.getcasefileCountbyId(caseId)!=0)
+            this.deleteCaseFileByCaseId(caseId);
         caseService.deleteCasesByid(caseId);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");
     }
 
-    @ApiOperation(value = "批量删除案例", notes = "前端提供名为caseIdList的Integer数组表示需要删除的案例id号")
+    @ApiOperation(value = "批量删除案例", notes = "前端提供名为caseIdList的Integer数组表示需要删除的案例id号，若有文件和图片则一并删除")
     @DeleteMapping("/batchdeletecase")
     public Result batchdeletecase(@RequestBody List<Integer> caseIdList) {
         for (int i = 0; i < caseIdList.size(); i++) {
+            if(caseService.getcasefileCountbyId(caseIdList.get(i))!=0)
+                this.deleteCaseFileByCaseId(caseIdList.get(i));
             caseService.deleteCasesByid(caseIdList.get(i));
         }
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");

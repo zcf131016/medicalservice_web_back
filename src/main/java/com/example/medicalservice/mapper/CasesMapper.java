@@ -64,6 +64,9 @@ public interface CasesMapper {
     //根据案例id获取所有文件
     List<CaseFile> getcasefilebyId(Integer caseId);
 
+    //根据案例id获取文件数目
+    int getcasefileCountbyId(Integer caseId);
+
     //根据id获取指定文件
     CaseFile downloadcasefilebyId(Integer id);
 

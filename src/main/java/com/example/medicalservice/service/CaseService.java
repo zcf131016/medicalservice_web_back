@@ -52,6 +52,9 @@ public interface CaseService {
     //根据案例id获取所有图片
     List<CaseImage> getcaseimagebyId(Integer caseId);
 
+    //根据案例id获取文件数目
+    int getcasefileCountbyId(Integer caseId);
+
     //添加图片
     int insertCasesImage(CaseImage caseImage);
 
