@@ -100,7 +100,7 @@ public class StudentFileController {
         if(!newFile.exists()) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("对应路径的文件不存在");
         String fileType = studentFile.getFileType().substring(1);
         response.setHeader("Content-Disposition", "attachment;filename=" + filePath.substring(filePath.lastIndexOf("/")+1));
-        response.setContentType("application/"+fileType);
+        response.setContentType("application/octet-stream;charset=UTF-8");
         // 获取文件
         boolean result = fileService.downloadFile(filePath, response);
         if(result) return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("下载成功");
