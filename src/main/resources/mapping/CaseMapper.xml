@@ -92,6 +92,9 @@
     <delete id="deletecasesImageByid" parameterType="java.lang.Integer">
         delete from case_image where id=#{id}
     </delete>
+    <delete id="deletecasesImageByCaseid" parameterType="java.lang.Integer">
+        delete from case_image where case_id = #{caseId}
+    </delete>
     <select id="getcasefilebyId" resultMap="CasesFileResultMap">
         select * from case_file
         where case_id = #{caseId}
