@@ -42,7 +42,7 @@ public interface DictionaryService {
     int deleteDictionaryDetailByTypeCode(DictionaryDetail dictionaryDetail);
 
     //删除数据字典值根据value
-    int deleteDictionaryDetailByValue(DictionaryDetail dictionaryDetail);
+    int deleteDictionaryDetailByValueAndTypeCode(DictionaryDetail dictionaryDetail);
 
     //修改数据字典值
     int updateDictionaryDetail(DictionaryDetail dictionaryDetail);
