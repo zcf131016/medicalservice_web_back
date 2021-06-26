@@ -47,8 +47,8 @@ public interface DictionaryMapper {
     //删除数据字典值根据typecode
     int deleteDictionaryDetailByTypeCode(DictionaryDetail dictionaryDetail);
 
-    //删除数据字典值根据value
-    int deleteDictionaryDetailByValue(DictionaryDetail dictionaryDetail);
+    //删除数据字典值根据value和typecode
+    int deleteDictionaryDetailByValueAndTypeCode(DictionaryDetail dictionaryDetail);
 
     //更新数据字典值
     int updateDictionaryDetail(DictionaryDetail dictionaryDetail);
@@ -70,6 +70,11 @@ public interface DictionaryMapper {
 
     //查询所有数据类型包括值根据类型
     List<DictionaryType> getAllDictionaryByTypeCode(String typeCode);
+
+    //查看字典数据值根据value和typecode
+    DictionaryDetail getDictionaryDetailByValueAndTypeCode(Integer value,String typeCode);
+
+
 
     //
 
