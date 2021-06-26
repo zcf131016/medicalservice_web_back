@@ -7,6 +7,10 @@ import com.example.medicalservice.domain.Cases;
 import java.util.List;
 
 public interface CaseService {
+
+    //进入创建案例，先返回一个caseId
+    Integer intoCreateCase();
+
     //查找所有案例（无图片及文件）
     List<Cases> getAllCases();
 
@@ -60,6 +64,9 @@ public interface CaseService {
 
     //根据图片id删除图片
     int deletecasesImageByid(Integer id);
+
+    //根据案例id删除该案例的所有图片
+    int deletecasesImageByCaseid(Integer caseId);
 
     //根据案例id获取所有文件
     List<CaseFile> getcasefilebyId(Integer caseId);

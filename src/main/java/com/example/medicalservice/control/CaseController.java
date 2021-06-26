@@ -84,9 +84,9 @@ public class CaseController {
 //        return Result.success().setData(casesList).setCode(ResultCodeEnum.OK.getCode()).setCount(count).setMsg("查询案例成功");
 //    }
     @ApiOperation(value = "根据courseId查找所有案例并分页")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "courseId",value = "课程id"),
-            @ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
-            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    @ApiImplicitParams({@ApiImplicitParam(required = true, name = "courseId", value = "课程id"),
+            @ApiImplicitParam(required = true, name = "pageNum", value = "当前页数"),
+            @ApiImplicitParam(required = true, name = "pageSize", value = "每页显示条数")
     })
     @GetMapping("/findCasesbycourseId/{courseId}/{pageNum}/{pageSize}")
     public Result findCasesbycourseId(@PathVariable Integer courseId, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
@@ -99,9 +99,9 @@ public class CaseController {
     }
 
     @ApiOperation(value = "根据案例名称查找案例并分页")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "caseName",value = "课程名称"),
-            @ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
-            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    @ApiImplicitParams({@ApiImplicitParam(required = true, name = "caseName", value = "课程名称"),
+            @ApiImplicitParam(required = true, name = "pageNum", value = "当前页数"),
+            @ApiImplicitParam(required = true, name = "pageSize", value = "每页显示条数")
     })
     @GetMapping("/findCasesbycaseName/{caseName}/{pageNum}/{pageSize}")
     public Result findCasesbycaseName(@PathVariable String caseName, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
@@ -114,9 +114,9 @@ public class CaseController {
     }
 
     @ApiOperation(value = "根据teacherId查找所有案例")
-    @ApiImplicitParams({@ApiImplicitParam(required = true,name = "creatTeacher",value = "创建老师id"),
-            @ApiImplicitParam(required = true,name = "pageNum",value = "当前页数"),
-            @ApiImplicitParam(required = true,name = "pageSize",value = "每页显示条数")
+    @ApiImplicitParams({@ApiImplicitParam(required = true, name = "creatTeacher", value = "创建老师id"),
+            @ApiImplicitParam(required = true, name = "pageNum", value = "当前页数"),
+            @ApiImplicitParam(required = true, name = "pageSize", value = "每页显示条数")
     })
     @GetMapping("/findCasesbyteacherId/{creatTeacher}/{pageNum}/{pageSize}")
     public Result findCasesbyteacherId(@PathVariable Integer creatTeacher, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
@@ -130,7 +130,7 @@ public class CaseController {
     }
 
     @ApiOperation(value = "根据caseId查找案例")
-    @ApiImplicitParam(required = true,name ="caseId",value = "案例id")
+    @ApiImplicitParam(required = true, name = "caseId", value = "案例id")
     @GetMapping("/findCasesbycaseId/{caseId}")
     public Result findCasesbycaseId(@PathVariable Integer caseId) {
         Cases cases = caseService.getcasebyId(caseId);
@@ -142,31 +142,30 @@ public class CaseController {
         return Result.success().setData(cases).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
     }
 
+    @ApiOperation(value = "进入新增案例，返回随机生成的caseId")
+    @PostMapping("/intoinsertcase")
+    public Result intoinsertcase() {
+        Integer caseId = caseService.intoCreateCase();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("caseId", caseId);
+        return Result.success().setData(jsonObject).setCode(ResultCodeEnum.OK.getCode()).setMsg("返回案例id成功!");
+    }
+
     @ApiOperation(value = "新增案例")
     @PostMapping("/insertcase")
     public Result insertcase(@RequestBody Cases cases) {
         if (cases.getIsPublish() == 0) {
             cases.setIsPublish(1);//若为设置是否发布，默认设置为未发布
         }
-        Integer caseId=caseService.insertCases(cases);
-        if(cases.getMultipartFiles().size()!=0){
-            for (int i = 0; i < cases.getMultipartFiles().size(); i++) {
-                String prefix = String.valueOf(caseId) + "_";
-                boolean result = fileService.uploadFile(cases.getMultipartFiles().get(i), prefix, baseConfig.getCaseFilePath());
-                CaseFile caseFile = new CaseFile();
-                caseFile.setCaseId(caseId);
-                caseFile.setFileUrl(baseConfig.getCaseFilePath() + prefix + cases.getMultipartFiles().get(i).getOriginalFilename());
-                caseService.insertCasesFile(caseFile);
-            }
-        }
+        Integer caseId = caseService.insertCases(cases);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("新增案例成功！");
     }
 
     @ApiOperation(value = "根据caseId删除案例，若有文件和图片（外键级联，还未设置）也一并删除")
-    @ApiImplicitParam(required = true,name ="caseId",value = "案例id")
+    @ApiImplicitParam(required = true, name = "caseId", value = "案例id")
     @DeleteMapping("/deletecase/{caseId}")
     public Result deletecase(@PathVariable Integer caseId) {
-        if(caseService.getcasefileCountbyId(caseId)!=0)
+        if (caseService.getcasefileCountbyId(caseId) != 0)
             this.deleteCaseFileByCaseId(caseId);
         caseService.deleteCasesByid(caseId);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");
@@ -176,7 +175,7 @@ public class CaseController {
     @DeleteMapping("/batchdeletecase")
     public Result batchdeletecase(@RequestBody List<Integer> caseIdList) {
         for (int i = 0; i < caseIdList.size(); i++) {
-            if(caseService.getcasefileCountbyId(caseIdList.get(i))!=0)
+            if (caseService.getcasefileCountbyId(caseIdList.get(i)) != 0)
                 this.deleteCaseFileByCaseId(caseIdList.get(i));
             caseService.deleteCasesByid(caseIdList.get(i));
         }
@@ -191,21 +190,21 @@ public class CaseController {
     }
 
     @ApiOperation(value = "上传病例图片")
-    @RequestMapping (value = "/uploadimgetocase", produces = {"application/json;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadimgetocase", produces = {"application/json;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8"}, method = RequestMethod.POST)
     public Result uploadimgetocase(@RequestParam("file") MultipartFile file,
-                               @RequestParam("caseId") Integer caseId) {
+                                   @RequestParam("caseId") Integer caseId) {
 //        try {
 //            CaseImage caseImage=new CaseImage();
 //            InputStream inputStream = file.getInputStream();
 //            byte[] pictureData = new byte[(int) file.getSize()];
 //            inputStream.read(pictureData);
         try {
-            CaseImage caseImage=new CaseImage();
+            CaseImage caseImage = new CaseImage();
             Blob blob = new SerialBlob(file.getBytes());
             caseImage.setCaseId(caseId);
             caseImage.setImage(blob);
             int i = caseService.insertCasesImage(caseImage);
-            CaseImage caseImage1=caseService.getcaseimagebymainId(i);
+            CaseImage caseImage1 = caseService.getcaseimagebymainId(i);
             return Result.success().setData(caseImage1).setCode(ResultCodeEnum.OK.getCode()).setMsg("上传图片成功!");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -229,21 +228,21 @@ public class CaseController {
     }
 
     @ApiOperation(value = "根据案例id读取病例图片")
-    @RequestMapping(value="/readimage/{caseId}",method=RequestMethod.GET)
-    public Result getPhotoById (@PathVariable("caseId")Integer caseId, final HttpServletResponse response) throws Exception{
-        List<CaseImage> caseImageList=caseService.getcaseimagebyId(caseId);
-        JSONArray jsonArray =new JSONArray();
+    @RequestMapping(value = "/readimage/{caseId}", method = RequestMethod.GET)
+    public Result getPhotoById(@PathVariable("caseId") Integer caseId, final HttpServletResponse response) throws Exception {
+        List<CaseImage> caseImageList = caseService.getcaseimagebyId(caseId);
+        JSONArray jsonArray = new JSONArray();
         //List<String> strings=new ArrayList<>();
         for (int i = 0; i < caseImageList.size(); i++) {
-            JSONObject jsonObject=new JSONObject();
+            JSONObject jsonObject = new JSONObject();
             BASE64Encoder encoder = new BASE64Encoder();
-            byte[] data = (byte[])caseImageList.get(i).getImage();
-            String imagebase=encoder.encode(data);
+            byte[] data = (byte[]) caseImageList.get(i).getImage();
+            String imagebase = encoder.encode(data);
             imagebase.replaceAll("\r|\n", "");
             //System.out.println(imagebase);
-            jsonObject.put("id",caseImageList.get(i).getId());
-            jsonObject.put("caseId",caseImageList.get(i).getCaseId());
-            jsonObject.put("imagebase",imagebase);
+            jsonObject.put("id", caseImageList.get(i).getId());
+            jsonObject.put("caseId", caseImageList.get(i).getCaseId());
+            jsonObject.put("imagebase", imagebase);
             jsonArray.add(jsonObject);
         }
         return Result.success().setData(jsonArray).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取病例图片成功!");
@@ -257,11 +256,19 @@ public class CaseController {
     }
 
     @ApiOperation(value = "根据图片id删除图片")
-    @ApiImplicitParam(required = true,name ="id",value = "图片id")
+    @ApiImplicitParam(required = true, name = "id", value = "图片id")
     @DeleteMapping("/deletecaseimage/{id}")
-    public Result deletecaseimage(@PathVariable Integer id){
+    public Result deletecaseimage(@PathVariable Integer id) {
         caseService.deletecasesImageByid(id);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("根据id删除图片成功");
+    }
+
+    @ApiOperation(value = "根据案例id删除该案例中的所有图片")
+    @ApiImplicitParam(required = true, name = "caseId", value = "案例id")
+    @DeleteMapping("/deletecaseimageByCaseId/{caseId}")
+    public Result deletecaseimageByCaseId(@PathVariable Integer caseId) {
+        caseService.deletecasesImageByCaseid(caseId);
+        return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("根据案例id删除所有图片成功");
     }
 
     @ApiOperation(value = "上传文件（治疗或诊断方案）到指定案例")
@@ -311,47 +318,48 @@ public class CaseController {
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("下载成功");
         return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("下载失败");
     }
-    @ApiOperation(value="根据案例Id获取文件列表")
+
+    @ApiOperation(value = "根据案例Id获取文件列表")
     @GetMapping("/getFileByCaseId/{caseId}")
-    public Result getFileByCaseId(@PathVariable("caseId") Integer caseId){
+    public Result getFileByCaseId(@PathVariable("caseId") Integer caseId) {
         List<CaseFile> caseFileList = caseService.getcasefilebyId(caseId);
-        if(caseFileList.size()==0){
+        if (caseFileList.size() == 0) {
             return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("该案例没有文件");
         } else {
             return Result.success().setData(caseFileList).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取文件列表成功");
         }
     }
 
-    @ApiOperation(value="根据文件id删除案例文件")
+    @ApiOperation(value = "根据文件id删除案例文件")
     @DeleteMapping("/deleteCaseFileById/{id}")
     public Result deleteCaseFileById(@PathVariable("id") Integer id) {
         CaseFile caseFile = caseService.downloadcasefilebyId(id);
-        if(caseFile == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("文件不存在");
+        if (caseFile == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("文件不存在");
         boolean result = fileService.deleteFile(caseFile.getFileUrl());
-        if(result) {
+        if (result) {
             caseService.deletecasesFileByid(id);
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
         }
         return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
     }
 
-    @ApiOperation(value="根据案例id删除该案例的所有文件")
+    @ApiOperation(value = "根据案例id删除该案例的所有文件")
     @DeleteMapping("/deleteCaseFileByCaseId/{caseId}")
     public Result deleteCaseFileByCaseId(@PathVariable("caseId") Integer caseId) {
         List<CaseFile> caseFileList = caseService.getcasefilebyId(caseId);
-        if(caseFileList.size()==0)
+        if (caseFileList.size() == 0)
             return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("该案例中没有文件");
         boolean totalResult = true;
         for (int i = 0; i < caseFileList.size(); i++) {
             boolean result = fileService.deleteFile(caseFileList.get(i).getFileUrl());
-            if(result){
+            if (result) {
                 caseService.deletecasesFileByid(caseFileList.get(i).getId());
             } else {
                 totalResult = false;
                 continue;
             }
         }
-        if (totalResult==true){
+        if (totalResult == true) {
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
         } else {
             return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("有文件删除失败");

@@ -20,6 +20,12 @@ public class CaseServiceImpl implements CaseService {
     CasesMapper casesMapper;
 
     @Override
+    public Integer intoCreateCase() {
+        Integer caseId = RandomUtil.getRandom(9);
+        return caseId;
+    }
+
+    @Override
     public List<Cases> getAllCases() {
         return casesMapper.getAllCases();
     }
@@ -83,12 +89,13 @@ public class CaseServiceImpl implements CaseService {
             throw new UserFriendException("案例名称不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
         } else if (cases.getCourseId() == 0) {
             throw new UserFriendException("课程id不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
+        } else if (cases.getCaseId() == 0) {
+            throw new UserFriendException("案例id不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
         } else if (cases.getCreatTeacher() == null) {
             throw new UserFriendException("创建老师不能为空!", ResultCodeEnum.PARAMS_MISS.getCode());
         }
-        cases.setCaseId(RandomUtil.getRandom(9));//生成9位的caseid
         casesMapper.insertCases(cases);
-        return cases.getCaseId();//返回随机生成的caseId
+        return cases.getCaseId();//返回caseId
     }
 
     @Override
@@ -126,12 +133,19 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public int deletecasesImageByCaseid(Integer caseId) {
+        return casesMapper.deletecasesImageByCaseid(caseId);
+    }
+
+    @Override
     public List<CaseFile> getcasefilebyId(Integer caseId) {
         return casesMapper.getcasefilebyId(caseId);
     }
 
     @Override
-    public int getcasefileCountbyId(Integer caseId){ return casesMapper.getcasefileCountbyId(caseId);}
+    public int getcasefileCountbyId(Integer caseId) {
+        return casesMapper.getcasefileCountbyId(caseId);
+    }
 
     public CaseFile downloadcasefilebyId(Integer id) {
         return casesMapper.downloadcasefilebyId(id);
@@ -143,12 +157,12 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public int deletecasesFileByid(Integer id){
+    public int deletecasesFileByid(Integer id) {
         return casesMapper.deletecasesFileByid(id);
     }
 
     @Override
-    public int deletecasesFileByCaseid(Integer caseId){
+    public int deletecasesFileByCaseid(Integer caseId) {
         return casesMapper.deletecasesFileByCaseid(caseId);
     }
 }

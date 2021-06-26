@@ -34,7 +34,6 @@ public class Cases {
     private Integer isPublish;//1表示未发布，2表示已发布
     @ApiModelProperty(value = "教师名称")
     private String teacherName;
-    private List<MultipartFile> multipartFiles;
 
 //  @Override
 //  public String toString() {
@@ -90,14 +89,6 @@ public class Cases {
                 ", isPublish=" + isPublish +
                 ", teacherName='" + teacherName + '\'' +
                 '}';
-    }
-
-    public void setMultipartFiles(List<MultipartFile> multipartFiles) {
-        this.multipartFiles = multipartFiles;
-    }
-
-    public List<MultipartFile> getMultipartFiles() {
-        return multipartFiles;
     }
 
     public void setTeacherName(String teacherName) {
