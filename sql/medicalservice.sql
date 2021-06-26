@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 24/06/2021 10:27:52
+ Date: 26/06/2021 11:03:17
 */
 
 SET NAMES utf8mb4;
@@ -228,6 +228,88 @@ CREATE TABLE `dictionary_type`  (
 INSERT INTO `dictionary_type` VALUES (1, 'sex', '性别', '2021-06-22 15:23:48.517211');
 
 -- ----------------------------
+-- Table structure for menu
+-- ----------------------------
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NOT NULL DEFAULT 0,
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `icon` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `sort` int(11) NULL DEFAULT NULL,
+  `component` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `hidden` tinyint(1) NULL DEFAULT 0,
+  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `role` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of menu
+-- ----------------------------
+INSERT INTO `menu` VALUES (1, 0, 'DashBoard', 'system-home', 'el-icon-house', 'manageBoard', 1, 'manageBoard', 0, '2021-04-16 20:40:01', NULL);
+INSERT INTO `menu` VALUES (2, 0, '角色管理', 'system-role', 'el-icon-user-solid', 'roleManage', 2, 'roleManage', 0, '2021-04-16 20:40:01', NULL);
+INSERT INTO `menu` VALUES (3, 0, '菜单管理', 'menu', 'el-icon-menu', 'menuManage', 3, 'menuManage', 0, '2021-04-28 15:57:03', NULL);
+INSERT INTO `menu` VALUES (4, 0, '用户管理', 'user', 'el-icon-user', '2', 4, NULL, 0, '2021-04-28 15:58:23', NULL);
+INSERT INTO `menu` VALUES (5, 4, '教师管理', 'teacher', 'el-icon-s-custom', 'teacherManage', 4, 'teacherManage', 0, '2021-04-28 15:59:12', NULL);
+INSERT INTO `menu` VALUES (6, 4, '学生管理', 'student', 'el-icon-s-custom', 'studentManage', 4, 'studentManage', 0, '2021-04-28 16:00:18', NULL);
+INSERT INTO `menu` VALUES (7, 0, '班课管理', 'classes', 'el-icon-tickets', 'lessonManage', 5, 'lessonManage', 0, '2021-04-28 16:01:16', NULL);
+INSERT INTO `menu` VALUES (8, 0, '数据字典', 'datadic', 'el-icon-s-data', 'dataDictionary', 6, 'dataDictionary', 0, '2021-04-28 16:01:49', NULL);
+INSERT INTO `menu` VALUES (9, 0, '参数管理', 'var', 'el-icon-s-data', 'sysParaManage', 7, 'sysParaManage', 0, '2021-04-28 16:02:31', NULL);
+INSERT INTO `menu` VALUES (10, 0, '测试页面', 'test', 'el-icon-tickets', 'test', 8, 'test', 1, '2021-04-28 16:03:19', NULL);
+INSERT INTO `menu` VALUES (11, 0, '表单相关', 'form', 'el-icon-files', '3', 9, NULL, 1, '2021-04-28 16:04:17', NULL);
+INSERT INTO `menu` VALUES (12, 11, '基础列表', 'basetable', 'el-icons-files', 'baseTable', 9, 'baseTable', 0, '2021-04-28 16:04:52', NULL);
+INSERT INTO `menu` VALUES (13, 11, '基础表单', 'baseform', 'el-icon-files', 'baseForm', 9, 'baseForm', 0, '2021-04-28 16:05:51', NULL);
+INSERT INTO `menu` VALUES (14, 11, '异常页面', 'errorpage', 'el-icon-files', 'errorPage', 9, 'errorPage', 0, '2021-04-28 16:08:31', NULL);
+INSERT INTO `menu` VALUES (15, 0, '签到管理', 'sign', 'el-icon-s-claim', 'signManage', 10, 'signManage', 0, '2021-04-28 17:39:53', NULL);
+INSERT INTO `menu` VALUES (16, 4, '用户管理', 'users', 'el-icon-user', 'usersManage', 4, 'usersManage', 0, '2021-05-11 13:50:18', NULL);
+INSERT INTO `menu` VALUES (19, 0, '1sdfsdfsdfssdf', '2', 'el-icon-s-help', '3', NULL, '6', 0, '2021-06-25 22:41:06', NULL);
+INSERT INTO `menu` VALUES (20, 0, '测试呀呀呀', 'string', 'fa fa-video-camera', 'string', NULL, 'sdfsdf', NULL, '2021-06-25 22:20:51', NULL);
+
+-- ----------------------------
+-- Table structure for role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `role_menu`;
+CREATE TABLE `role_menu`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` int(11) NOT NULL,
+  `menu_id` int(11) NOT NULL,
+  `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 144 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of role_menu
+-- ----------------------------
+INSERT INTO `role_menu` VALUES (17, 1, 4, '2021-04-28 17:34:32');
+INSERT INTO `role_menu` VALUES (18, 1, 6, '2021-04-28 17:35:31');
+INSERT INTO `role_menu` VALUES (19, 1, 7, '2021-04-28 17:35:42');
+INSERT INTO `role_menu` VALUES (20, 1, 15, '2021-04-28 17:41:27');
+INSERT INTO `role_menu` VALUES (24, 1, 1, '2021-06-11 20:03:33');
+INSERT INTO `role_menu` VALUES (31, 2, 7, '2021-06-15 15:14:24');
+INSERT INTO `role_menu` VALUES (32, 2, 8, '2021-06-15 15:14:24');
+INSERT INTO `role_menu` VALUES (33, 2, 10, '2021-06-15 15:14:24');
+INSERT INTO `role_menu` VALUES (47, 3, 2, '2021-06-24 17:18:25');
+INSERT INTO `role_menu` VALUES (48, 3, 9, '2021-06-24 17:18:25');
+INSERT INTO `role_menu` VALUES (129, 0, 1, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (130, 0, 2, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (131, 0, 3, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (132, 0, 4, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (133, 0, 6, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (134, 0, 16, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (135, 0, 7, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (136, 0, 8, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (137, 0, 9, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (138, 0, 10, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (139, 0, 11, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (140, 0, 12, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (141, 0, 13, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (142, 0, 14, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (143, 0, 20, '2021-06-25 22:22:57');
+
+-- ----------------------------
 -- Table structure for roles
 -- ----------------------------
 DROP TABLE IF EXISTS `roles`;
@@ -259,12 +341,13 @@ CREATE TABLE `student_file`  (
   `upload_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `file_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of student_file
 -- ----------------------------
-INSERT INTO `student_file` VALUES (1, 10000, 222222222, './helloword/hello.png', '2021-06-22 14:42:13', 'png');
+INSERT INTO `student_file` VALUES (1, 1000, 222222222, './helloword/hello.png', '2021-06-25 09:54:41', 'png');
+INSERT INTO `student_file` VALUES (2, 1000, 222222222, 'sdfsdf', '2021-06-25 11:02:31', 'sdf');
 
 -- ----------------------------
 -- Table structure for users
