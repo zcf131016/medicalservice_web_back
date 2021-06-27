@@ -31,6 +31,8 @@ class MedicalserviceApplicationTests {
     }
     @Test
     void test(){
+        CaseImage caseImage=casesMapper.getcaseimagebymainId(9);
+        System.out.println(caseImage.getCreatTime());
 //        Cases cases=new Cases();
 //        cases.setCaseId(987654321);
 //        cases.setCaseName("zx的测试");

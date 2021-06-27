@@ -19,6 +19,7 @@
         <result column="case_id" jdbcType="INTEGER" property="caseId" />
         <result column="image" jdbcType="BLOB" property="image" />
         <result column="creat_time" jdbcType="DATE" property="creatTime" />
+        <result column="image_name" jdbcType="VARCHAR" property="imageName" />
     </resultMap>
     <resultMap id="CasesFileResultMap" type="com.example.medicalservice.domain.CaseFile">
         <result column="id" jdbcType="INTEGER" property="id" />
@@ -86,8 +87,8 @@
         where case_id = #{caseId}
     </select>
     <insert id="insertCasesImage" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseImage">
-        insert into case_image(case_id,image)
-        values (#{caseId},#{image})
+        insert into case_image(case_id,image,image_name)
+        values (#{caseId},#{image},#{imageName})
     </insert>
     <delete id="deletecasesImageByid" parameterType="java.lang.Integer">
         delete from case_image where id=#{id}
