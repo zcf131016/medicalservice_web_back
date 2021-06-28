@@ -34,14 +34,17 @@
             <if test="icon != null">
                 icon = #{icon}
             </if>
-            <if test="sort != null">
-                sort = #{sort}
+            <if test="path != null">
+                path = #{path}
             </if>
             <if test="hidden != null">
                 hidden = #{hidden}
             </if>
-            <if test="role != null">
-                role = #{role}
+            <if test="component != null">
+                component = #{component}
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId}
             </if>
         </set>
         where id = #{id}

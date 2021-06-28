@@ -38,14 +38,14 @@ public class CommentController {
     @ApiOperation(value = "根据案例id获取评论")
     @ApiParam(name="caseId",type = "Integer")
     @GetMapping("/getComments/{caseId}")
-    Result getComments(@PathVariable Integer caseId) {
+    public Result getComments(@PathVariable Integer caseId) {
         List<Comment> comments = commentReplyService.getComments(caseId);
         return Result.success().setData(comments).setCode(ResultCodeEnum.OK.getCode()).setMsg("评论获取成功!");
     }
 
     @ApiOperation(value = "添加评论")
     @PostMapping("/addComment")
-    Result addComment(@RequestBody CommentReply commentReply) {
+    public Result addComment(@RequestBody CommentReply commentReply) {
         if(commentReply.getContent() == null || commentReply.getContent() == "") return Result.failure(ResultCodeEnum.CREATE_FAILED).setMsg("内容为空，评论失败");
         commentReplyService.insertComment(commentReply);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论成功！");
@@ -56,7 +56,7 @@ public class CommentController {
      */
     @ApiOperation(value="根据评论id删除评论",notes = "只有自己能删除自己的评论")
     @DeleteMapping("/deleteComment/{id}")
-    Result deleteComment(@PathVariable Integer id) {
+    public Result deleteComment(@PathVariable Integer id) {
         Subject subject = SecurityUtils.getSubject();
         User user = userService.getUser(subject.getPrincipal().toString());
         try {
@@ -74,7 +74,7 @@ public class CommentController {
 
     @ApiOperation(value="修改评论", notes = "只有自己能修改评论")
     @PutMapping("/modifyComment")
-    Result modifyComment(@RequestBody CommentReply commentReply) {
+    public Result modifyComment(@RequestBody CommentReply commentReply) {
         Subject subject = SecurityUtils.getSubject();
         User user = userService.getUser(subject.getPrincipal().toString());
         if(user.getId() == commentReply.getFromId() || subject.hasRole("admin")) {
