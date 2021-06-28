@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.medicalservice.mapper.DictionaryMapper">
     <resultMap type="com.example.medicalservice.domain.DictionaryType" id="DictionaryTypeResultMap">
-        <result property="id" jdbcType="INTEGER" column="id"/>
+        <result property="id" jdbcType="INTEGER" column="tid"/>
         <result property="typeName" jdbcType="VARCHAR" column="type_name"/>
         <result property="typeCode" jdbcType="VARCHAR" column="type_code"/>
         <result column="creat_time" jdbcType="DATE" property="creatTime"/>
         <collection property="dictionaryDetails" javaType="list" ofType="com.example.medicalservice.domain.DictionaryDetail">
             <id column="id" property="id"></id>
             <result property="typeCode" jdbcType="VARCHAR" column="type_code"></result>
-            <result property="id" jdbcType="INTEGER" column="id"></result>
+            <result property="id" jdbcType="INTEGER" column="did"></result>
             <result property="name" jdbcType="VARCHAR" column="name"></result>
             <result property="value" jdbcType="INTEGER" column="value"></result>
             <result property="isDefault" jdbcType="INTEGER" column="is_default"/>
@@ -65,6 +65,9 @@
     <delete id="deleteDictionaryDetailByTypeCode" parameterType="com.example.medicalservice.domain.DictionaryDetail">
         delete from dictionary_detail where type_code=#{typeCode}
     </delete>
+    <delete id="deleteDictionaryDetailById" parameterType="java.lang.Integer">
+        delete from dictionary_detail where id=#{Id}
+    </delete>
 
 
     <select id="getAllDictionaryType" resultType="com.example.medicalservice.domain.DictionaryType">
@@ -101,7 +104,7 @@
     </select>
 
     <select id="getAllDictionary" resultMap="DictionaryTypeResultMap">
-        select t.type_name,t.type_code,d.value,d.name,d.is_Default
+        select t.id as tid,t.type_name,t.type_code,d.id as did,d.value,d.name,d.is_Default
         from (
             select * from dictionary_type
                  )as t
@@ -109,7 +112,7 @@
     </select>
     <select id="selectAllDictionary" resultMap="DictionaryTypeResultMap"
             parameterType="com.example.medicalservice.domain.Page">
-        select t.type_name,t.type_code,d.value,d.name,d.is_default
+        select t.id as tid,t.type_name,t.type_code,d.id as did,d.value,d.name,d.is_default
         from (
                  select * from dictionary_type
              )as t
@@ -129,6 +132,10 @@
     <select id="getDictionaryDetailByValueAndTypeCode" resultType="com.example.medicalservice.domain.DictionaryDetail">
         select * from dictionary_detail
          where type_code = #{typeCode} and value =#{value}
+    </select>
+    <select id="findDictionaryDetailByTypeCodeAndIsDefault1" resultType="com.example.medicalservice.domain.DictionaryDetail"
+            parameterType="com.example.medicalservice.domain.DictionaryDetail">
+        select * from dictionary_detail where  type_code= #{typeCode} and is_default = 1
     </select>
 
 

@@ -104,14 +104,21 @@ public class DictionaryServiceImpl implements DictionaryService {
 
     @Override
     public int updateDictionaryDetail(DictionaryDetail dictionaryDetail) {
+        if (dictionaryDetail.getIsDefault()==1&&dictionaryMapper.getDictionaryDetailByTypeCode(dictionaryDetail.getTypeCode()).size()!=0) {
+            DictionaryDetail dictionaryDetail1 = dictionaryMapper.findDictionaryDetailByTypeCodeAndIsDefault1(dictionaryDetail);
+            if (dictionaryDetail1 != null) {
+                dictionaryDetail1.setIsDefault(0);
+                dictionaryMapper.updateDictionaryDetail(dictionaryDetail1);
+            }
+        }
         if(dictionaryMapper.getDictionaryDetailByValueAndTypeCode
                 (dictionaryDetail.getValue(),dictionaryDetail.getTypeCode())==null){
             return dictionaryMapper.insertDictionaryDetail(dictionaryDetail);
-        }else {
-            System.out.println(dictionaryDetail);
-            return dictionaryMapper.updateDictionaryDetail(dictionaryDetail);
-
         }
+            //System.out.println(dictionaryDetail);
+        return dictionaryMapper.updateDictionaryDetail(dictionaryDetail);
+
+
     }
 
     @Override
@@ -169,6 +176,11 @@ public class DictionaryServiceImpl implements DictionaryService {
         }
         dictionaryMapper.insertDictionaryType(dictionaryType);
         return 0;
+    }
+
+    @Override
+    public int deleteDictionaryDetailById(Integer Id) {
+        return dictionaryMapper.deleteDictionaryDetailById(Id);
     }
 
     /*@Override

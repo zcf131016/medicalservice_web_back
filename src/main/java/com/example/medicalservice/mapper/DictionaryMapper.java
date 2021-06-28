@@ -74,6 +74,13 @@ public interface DictionaryMapper {
     //查看字典数据值根据value和typecode
     DictionaryDetail getDictionaryDetailByValueAndTypeCode(Integer value,String typeCode);
 
+    //删除字典值根据id
+    int deleteDictionaryDetailById(Integer Id);
+
+    //查询默认值为1的字典值
+    DictionaryDetail findDictionaryDetailByTypeCodeAndIsDefault1(DictionaryDetail dictionaryDetail);
+
+
 
 
     //
