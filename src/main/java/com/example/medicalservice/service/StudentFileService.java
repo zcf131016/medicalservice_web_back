@@ -16,4 +16,5 @@ public interface StudentFileService {
     StudentFile getFileById(Integer id);
     PageInfo getFileByCaseId(Integer caseId,Integer pageNum, Integer pageSize);
     void deleteFileById(Integer id);
+    List<StudentFile> getFileByStudentName(String studentName);
 }
