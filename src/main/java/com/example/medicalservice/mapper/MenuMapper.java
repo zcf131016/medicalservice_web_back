@@ -22,6 +22,8 @@ public interface MenuMapper {
 
     List<Menu> selectAllByRoleId(Integer roleId);
 
+    List<Menu> selectAllMenu();
+
     int deleteByPrimaryKey(Integer menuId);
 
     int insert(Menu menu);

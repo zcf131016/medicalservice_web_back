@@ -22,6 +22,14 @@ public class MenuController {
     @Autowired
     IMenuService menuService;
 
+    @ApiOperation(value="获取所有菜单")
+    @GetMapping("/getAllMenu")
+    public Result getAllMenu() {
+        List<Menu> menuList = menuService.getAllMenu();
+        return Result.success().setData(menuList).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+    }
+
+
     @ApiOperation(value = "根据用户 id 获取菜单")
     @GetMapping("/getByUserId/{userId}")
     public Result getMenusByUserId(@PathVariable Integer userId) {
@@ -47,6 +55,4 @@ public class MenuController {
         menuService.insert(menu);
         return Result.success().setCode(ResultCodeEnum.CREATED.getCode()).setMsg("添加成功");
     }
-
-
 }

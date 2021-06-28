@@ -25,5 +25,7 @@ public interface IMenuService {
 
     public List<Menu> getAllByRoleId(Integer roleId);
 
+    public List<Menu> getAllMenu();
+
 
 }

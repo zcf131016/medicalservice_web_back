@@ -1,5 +1,7 @@
 package com.example.medicalservice.util;
 
+import io.swagger.annotations.ApiResponse;
+
 /**
  * @author cjbi
  */

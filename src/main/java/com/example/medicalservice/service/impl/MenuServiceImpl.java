@@ -46,6 +46,12 @@ public class MenuServiceImpl  implements IMenuService {
         return buildTree(menuList);
     }
 
+    @Override
+    public List<Menu> getAllMenu() {
+        List<Menu> menuList = menuMapper.selectAllMenu();
+        return buildTree(menuList);
+    }
+
     private List<Menu> buildTree(List<Menu> rawMenu) {
         List<Menu> menuTree = new LinkedList<>();
         for (Iterator<Menu> iterator = rawMenu.iterator(); iterator.hasNext(); ) {
