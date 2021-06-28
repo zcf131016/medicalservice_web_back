@@ -87,5 +87,8 @@
                          from users
                          where id = #{userId})
     </select>
+    <select id="selectAllMenu" resultType="com.example.medicalservice.domain.Menu">
+        select * from menu
+    </select>
 
 </mapper>
