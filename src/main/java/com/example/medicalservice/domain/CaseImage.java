@@ -1,7 +1,7 @@
 package com.example.medicalservice.domain;
 
 import io.swagger.annotations.ApiModel;
-import jdk.jfr.DataAmount;
+//import jdk.jfr.DataAmount;
 import lombok.Data;
 
 import java.sql.Date;
