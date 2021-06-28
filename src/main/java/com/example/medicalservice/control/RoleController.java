@@ -3,7 +3,10 @@ package com.example.medicalservice.control;
 import com.alibaba.fastjson.JSONObject;
 import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.Role;
+import com.example.medicalservice.domain.RoleMenuDto;
 import com.example.medicalservice.exception.UserFriendException;
+import com.example.medicalservice.mapper.RoleMenuMapper;
+import com.example.medicalservice.service.RoleMenuService;
 import com.example.medicalservice.service.RoleService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
@@ -26,6 +29,9 @@ public class RoleController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    RoleMenuService roleMenuService;
 
     @RequiresRoles("admin")
     @ApiOperation(value="根据角色id获取角色")
@@ -91,5 +97,13 @@ public class RoleController {
             return Result.failure(ResultCodeEnum.UPDATE_FAILED).setMsg("更新失败,请检查参数");
         }
         return Result.success().setCode(ResultCodeEnum.UPDATED.getCode()).setMsg("更新成功");
+    }
+
+    @ApiOperation(value="为角色分配菜单")
+    @PostMapping("/asignMenu")
+    public Result assignMenu(@RequestBody RoleMenuDto roleMenus) {
+        roleMenuService.deleteRoleMenuByRoleId(roleMenus.getRoleId());
+        roleMenuService.insertRoleMenu(roleMenus);
+        return Result.success();
     }
 }
