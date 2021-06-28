@@ -72,6 +72,13 @@ public interface DictionaryService {
     //删除字典值根据id
     int deleteDictionaryDetailById(Integer Id);
 
+    //根据Id批量删除字典
+    int deleteDictionaryAllById(List<Integer> Ids);
+
+
+
+
+
 
 
 

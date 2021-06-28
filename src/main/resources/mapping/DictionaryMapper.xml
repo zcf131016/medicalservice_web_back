@@ -69,6 +69,14 @@
         delete from dictionary_detail where id=#{Id}
     </delete>
 
+    <delete id="deleteDictionaryAllById" parameterType="java.util.List">
+        delete from
+        dictionary_type where id in
+        <foreach collection="Ids"  open="(" close=")" separator=","  item="item">
+            #{item}
+        </foreach>
+    </delete>
+
 
     <select id="getAllDictionaryType" resultType="com.example.medicalservice.domain.DictionaryType">
         select * from  dictionary_type
@@ -136,6 +144,10 @@
     <select id="findDictionaryDetailByTypeCodeAndIsDefault1" resultType="com.example.medicalservice.domain.DictionaryDetail"
             parameterType="com.example.medicalservice.domain.DictionaryDetail">
         select * from dictionary_detail where  type_code= #{typeCode} and is_default = 1
+    </select>
+    <select id="getDictionaryTypeById" resultType="com.example.medicalservice.domain.DictionaryType"
+            parameterType="java.lang.Integer">
+        select * from dictionary_type where id =#{Id}
     </select>
 
 

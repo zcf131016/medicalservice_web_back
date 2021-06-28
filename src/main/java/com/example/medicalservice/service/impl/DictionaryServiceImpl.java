@@ -183,6 +183,22 @@ public class DictionaryServiceImpl implements DictionaryService {
         return dictionaryMapper.deleteDictionaryDetailById(Id);
     }
 
+    @Override
+    public int deleteDictionaryAllById(List<Integer> Ids) {
+
+        //删除dictionary_detail表
+        for(int i=0;i<Ids.size();i++){
+            DictionaryType dictionaryType = dictionaryMapper.getDictionaryTypeById(Ids.get(i));
+            String typeCode = dictionaryType.getTypeCode();
+            DictionaryDetail dictionaryDetail = new DictionaryDetail();
+            dictionaryDetail.setTypeCode(typeCode);
+            dictionaryMapper.deleteDictionaryDetailByTypeCode(dictionaryDetail);
+        }
+        //删除dictionary_type表
+        return dictionaryMapper.deleteDictionaryAllById(Ids);
+    }
+
+
     /*@Override
     public List<DictionaryType> getAllDictionaryByTypeCode(String typeCode) {
         if (dictionaryMapper.getDictionaryDetailByTypeCode(typeCode).size()==0) {

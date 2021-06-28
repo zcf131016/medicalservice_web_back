@@ -291,6 +291,16 @@ public class DictionaryController {
         dictionaryService.deleteDictionaryDetailById(Id);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
     }
+
+    @ApiOperation("根据id批量删除字典")
+    @ApiImplicitParam(required = true,name ="Id",value = "id")
+    @ResponseBody
+    @DeleteMapping ("/deleteDictionaryAllById")
+    public Result deleteDictionaryAllById(@RequestParam List<Integer> Ids){
+
+        dictionaryService.deleteDictionaryAllById(Ids);
+        return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("批量删除成功");
+    }
 }
 
 
