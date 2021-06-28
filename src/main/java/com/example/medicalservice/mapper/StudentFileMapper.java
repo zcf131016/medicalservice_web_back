@@ -16,4 +16,5 @@ public interface StudentFileMapper {
     StudentFile getFileById(Integer id);
     void deleteFileById(Integer id);
     List<StudentFile> getFileByCaseId(Integer caseId);
+    List<StudentFile> getFileByStudentName(String studentName);
 }

@@ -3,6 +3,7 @@ package com.example.medicalservice.control;
 import com.alibaba.fastjson.JSONObject;
 import com.example.medicalservice.config.BaseConfig;
 import com.example.medicalservice.domain.StudentFile;
+import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.service.FileService;
 import com.example.medicalservice.service.StudentFileService;
@@ -132,5 +133,13 @@ public class StudentFileController {
             }
         }
         return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("共删除了 " + count + " 个文件" + (count==files.size() ? "!" : "，部分文件不存在！"));
+    }
+
+    @ApiOperation(value="根据真实姓名模糊搜索",notes = "只需要传递realName字段")
+    @GetMapping("/getFileByName")
+    public Result getFileByName(@RequestBody User user) {
+        String studentName = user.getRealName();
+        List<StudentFile> files = studentFileService.getFileByStudentName(studentName);
+        return Result.success().setData(files).setMsg("查询成功").setCount(files.size());
     }
 }

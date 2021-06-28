@@ -47,6 +47,14 @@
         from student_file sf, cases cs, users u
         where sf.case_id=#{caseId} and sf.case_id=cs.case_id and sf.student_id=u.user_id
     </select>
+    <select id="getFileByStudentName" resultType="com.example.medicalservice.domain.StudentFile"
+            parameterType="java.lang.String">
+        select * from
+        (select
+        sf.id, sf.case_id,sf.student_id,sf.file_path,sf.file_type,cs.case_name,u.real_name,sf.upload_time
+        from student_file sf, cases cs, users u
+        where sf.case_id=cs.case_id and sf.student_id=u.user_id) as r where r.real_name like concat('%',#{studentName},'%')
+    </select>
 
 
 </mapper>

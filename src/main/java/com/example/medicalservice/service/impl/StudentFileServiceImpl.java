@@ -49,4 +49,9 @@ public class StudentFileServiceImpl implements StudentFileService {
     public void deleteFileById(Integer id) {
         studentFileMapper.deleteFileById(id);
     }
+
+    @Override
+    public List<StudentFile> getFileByStudentName(String studentName) {
+        return studentFileMapper.getFileByStudentName(studentName);
+    }
 }
