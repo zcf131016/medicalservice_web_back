@@ -5,7 +5,6 @@ import com.example.medicalservice.domain.Page;
 import com.example.medicalservice.domain.Role;
 import com.example.medicalservice.domain.RoleMenuDto;
 import com.example.medicalservice.exception.UserFriendException;
-import com.example.medicalservice.mapper.RoleMenuMapper;
 import com.example.medicalservice.service.RoleMenuService;
 import com.example.medicalservice.service.RoleService;
 import com.example.medicalservice.util.Result;
@@ -13,7 +12,6 @@ import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +33,6 @@ public class RoleController {
 
     @RequiresRoles("admin")
     @ApiOperation(value="根据角色id获取角色")
-    @RequiresAuthentication
     @ResponseBody
     @GetMapping("/getRole/{roleId}")
     public Result getRole(@PathVariable Integer roleId) {
@@ -100,7 +97,8 @@ public class RoleController {
     }
 
     @ApiOperation(value="为角色分配菜单")
-    @PostMapping("/asignMenu")
+    @RequiresRoles("admin")
+    @PostMapping("/assignMenu")
     public Result assignMenu(@RequestBody RoleMenuDto roleMenus) {
         roleMenuService.deleteRoleMenuByRoleId(roleMenus.getRoleId());
         roleMenuService.insertRoleMenu(roleMenus);

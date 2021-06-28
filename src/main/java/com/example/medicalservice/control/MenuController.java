@@ -55,4 +55,20 @@ public class MenuController {
         menuService.insert(menu);
         return Result.success().setCode(ResultCodeEnum.CREATED.getCode()).setMsg("添加成功");
     }
+
+    @ApiOperation(value="更新菜单", notes = "需要菜单id")
+    @PutMapping("/updateMenu")
+    public Result updateMenu(@RequestBody Menu menu) {
+        menuService.update(menu);
+        return Result.success().setCode(ResultCodeEnum.UPDATED.getCode()).setMsg("更新菜单成功");
+    }
+
+    @ApiOperation(value="批量删除菜单")
+    @DeleteMapping("/deleteBatchMenus")
+    public Result deleteBatchMenus(@RequestBody List<Integer> menus) {
+        for(Integer menu : menus) {
+            menuService.delete(menu);
+        }
+        return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("删除成功!");
+    }
 }
