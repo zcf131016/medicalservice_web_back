@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.medicalservice.mapper.RoleMenuMapper">
+    <resultMap id="RoleResultMap" type="com.example.medicalservice.domain.RoleMenu">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="role_id" jdbcType="INTEGER" property="roleId" />
+        <result column="menu_id" jdbcType="INTEGER" property="menuId" />
+    </resultMap>
+    <insert id="insertRoleMenu" parameterType="com.example.medicalservice.domain.RoleMenuDto">
+        INSERT INTO  role_menu(
+        role_id, menu_id
+	    )VALUES
+	    <foreach collection="menuIds" item="menu" index="index" separator=",">
+	    (
+	      #{roleId},
+	      #{menu}
+	    )
+        </foreach>
+    </insert>
+    <delete id="deleteRoleMenuByRoleId" parameterType="java.lang.Integer">
+        delete from role_menu where role_id=#{roleId}
+    </delete>
+</mapper>

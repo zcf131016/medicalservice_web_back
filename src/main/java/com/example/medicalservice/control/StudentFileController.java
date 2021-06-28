@@ -12,15 +12,13 @@ import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Lin YuHang
@@ -42,6 +40,8 @@ public class StudentFileController {
 
     @Autowired
     UserService userService;
+
+
 
     @ApiOperation(value="获取学生上传的文件列表")
     @GetMapping("/getFileById/{caseId}/{studentId}")
@@ -120,4 +120,17 @@ public class StudentFileController {
         return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
     }
 
+    @ApiOperation(value="批量删除学生文件, 接收文件id的列表")
+    @DeleteMapping("/deleteBatchFiles")
+    public Result deleteBatchFile(@RequestBody List<Integer> files) {
+        Integer count = 0;
+        for(Integer file : files) {
+            StudentFile studentFile = studentFileService.getFileById(file);
+            if(studentFile != null && fileService.deleteFile(studentFile.getFilePath())) {
+                studentFileService.deleteFileById(file);
+                count++;
+            }
+        }
+        return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("共删除了 " + count + " 个文件" + (count==files.size() ? "!" : "，部分文件不存在！"));
+    }
 }
