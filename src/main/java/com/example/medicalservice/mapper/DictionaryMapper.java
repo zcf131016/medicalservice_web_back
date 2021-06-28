@@ -80,6 +80,18 @@ public interface DictionaryMapper {
     //查询默认值为1的字典值
     DictionaryDetail findDictionaryDetailByTypeCodeAndIsDefault1(DictionaryDetail dictionaryDetail);
 
+    //根据Id批量删除字典
+    int deleteDictionaryAllById(List<Integer> Ids);
+
+    //查看数据字典类型根据Id
+    DictionaryType getDictionaryTypeById(Integer Id);
+
+
+
+
+
+
+
 
 
 
