@@ -69,6 +69,9 @@ public interface DictionaryService {
     //新增数据字典（类型和值）
     int insertDictionary(DictionaryType dictionaryType);
 
+    //删除字典值根据id
+    int deleteDictionaryDetailById(Integer Id);
+
 
 
 

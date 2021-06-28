@@ -279,6 +279,18 @@ public class DictionaryController {
             return Result.success().setCode(ResultCodeEnum.CREATED.getCode()).setMsg("添加成功");
 
         }
+
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    @ApiOperation(value = "删除数据值根据id")
+    @ApiImplicitParam(required = true, value = "typeCode", name = "类型编码")
+
+    @ResponseBody
+    @DeleteMapping("/deleteDictionaryDetailById/{Id}")
+    public Result deleteDictionaryDetailById(@PathVariable("Id") Integer Id) {
+
+        dictionaryService.deleteDictionaryDetailById(Id);
+        return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除成功");
+    }
 }
 
 
