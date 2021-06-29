@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Lin YuHang//zcf
  * @date 2021/6/17 15:02
@@ -35,7 +37,7 @@ public class LoginController {
         User user = userService.getUser(username);
         if (user != null && user.getPassWord().equals(password)) {
             System.out.println("登录成功");
-            String token = JWTUtil.sign(username, password);
+            String token = JWTUtil.sign(username, password,user.getUserId());
             user.setPassWord(null);
             return Result.success().setToken(token).setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("登录成功！");
         } else {
@@ -58,6 +60,19 @@ public class LoginController {
             return Result.success().setCode(ResultCodeEnum.RegisterAlreadyExist.getCode()).setMsg(e.getMsg());
         }
         return Result.success().setCode(ResultCodeEnum.Register.getCode()).setMsg("注册成功");
+    }
+
+    @ApiOperation(value="注销用户", notes = "请提示用户是否注销，注销将删除所有用户数据")
+    @DeleteMapping("/logout")
+    public Result logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        Integer userId =  JWTUtil.getUserId(token);
+        try {
+            userService.deleteUserByUserId(userId);
+        } catch (Exception e) {
+            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("注销失败");
+        }
+        return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("注销成功");
     }
 
     @GetMapping("/401")

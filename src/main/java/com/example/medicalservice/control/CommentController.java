@@ -3,6 +3,7 @@ package com.example.medicalservice.control;
 import com.example.medicalservice.domain.Comment;
 import com.example.medicalservice.domain.CommentReply;
 import com.example.medicalservice.domain.User;
+import com.example.medicalservice.security.jwt.JWTUtil;
 import com.example.medicalservice.service.CommentReplyService;
 import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.Result;
@@ -11,12 +12,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -45,10 +48,9 @@ public class CommentController {
 
     @ApiOperation(value = "添加评论",notes = "不需要传userid")
     @PostMapping("/addComment")
-    public Result addComment(@RequestBody CommentReply commentReply) {
-        Subject subject = SecurityUtils.getSubject();
-        User user = userService.getUser(subject.getPrincipal().toString());
-        commentReply.setFromId(user.getUserId());
+    public Result addComment(@RequestBody CommentReply commentReply, HttpServletRequest request) {
+        Integer userId = JWTUtil.getUserId(request.getHeader("Authorization"));
+        commentReply.setFromId(userId);
         if(commentReply.getContent() == null || commentReply.getContent() == "") return Result.failure(ResultCodeEnum.CREATE_FAILED).setMsg("内容为空，评论失败");
         commentReplyService.insertComment(commentReply);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论成功！");
@@ -80,7 +82,7 @@ public class CommentController {
     public Result modifyComment(@RequestBody CommentReply commentReply) {
         Subject subject = SecurityUtils.getSubject();
         User user = userService.getUser(subject.getPrincipal().toString());
-        if(user.getId() == commentReply.getFromId() || subject.hasRole("admin")) {
+        if(user.getUserId() == commentReply.getFromId() || subject.hasRole("admin")) {
             commentReplyService.updateComment(commentReply);
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论修改成功!");
         }
@@ -89,10 +91,9 @@ public class CommentController {
 
     @ApiOperation(value="点赞接口", notes = "只需要评论id,用户id将根据token获取")
     @PostMapping("/likes/{commentId}")
-    public Result likes(@PathVariable Integer commentId) {
-        Subject subject = SecurityUtils.getSubject();
-        User user = userService.getUser(subject.getPrincipal().toString());
-        commentReplyService.likes(commentId, user.getUserId());
+    public Result likes(@PathVariable Integer commentId, HttpServletRequest request) {
+        Integer userId = JWTUtil.getUserId(request.getHeader("Authorization"));
+        commentReplyService.likes(commentId, userId);
         return Result.success().setMsg("点赞成功！");
     }
 }
