@@ -51,19 +51,31 @@ public class JWTUtil {
         }
     }
 
+    public static Integer getUserId(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            Integer userId = jwt.getClaim("userId").asInt();
+            return userId;
+        } catch (JWTDecodeException e) {
+            return null;
+        }
+    }
+
     /**
      * 生成签名,5min后过期
      * @param username 用户名
      * @param secret 用户的密码
      * @return 加密的token
      */
-    public static String sign(String username, String secret) {
+    public static String sign(String username, String secret,Integer userId) {
         try {
             Date date = new Date(System.currentTimeMillis()+EXPIRE_TIME);
             Algorithm algorithm = Algorithm.HMAC256(secret); // 密码作为加密用的秘钥
-            // 附带username信息
+            // 附带username, userId信息
+
             return JWT.create()
                     .withClaim("username", username)
+                    .withClaim("userId", userId)
                     .withExpiresAt(date)
                     .sign(algorithm);
         } catch (UnsupportedEncodingException e) {

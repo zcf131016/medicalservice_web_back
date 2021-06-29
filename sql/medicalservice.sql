@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 26/06/2021 11:03:17
+ Date: 29/06/2021 17:02:04
 */
 
 SET NAMES utf8mb4;
@@ -61,18 +61,13 @@ INSERT INTO `case_file` VALUES (1, 1000, './image/file.pdf', '2021-06-22 14:45:1
 -- ----------------------------
 DROP TABLE IF EXISTS `case_image`;
 CREATE TABLE `case_image`  (
-  `id` int(16) NOT NULL AUTO_INCREMENT,
-  `case_id` int(16) NULL DEFAULT NULL COMMENT '案例id',
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `case_id` int(11) NULL DEFAULT NULL COMMENT '案例id',
   `image` longblob NULL COMMENT '图片资源',
+  `image_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of case_image
--- ----------------------------
-INSERT INTO `case_image` VALUES (1, 1000, 0x2E2F696D6167652F696D672E706E67, '2021-06-22 15:23:15.094094', NULL);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for cases
@@ -98,6 +93,24 @@ CREATE TABLE `cases`  (
 -- ----------------------------
 INSERT INTO `cases` VALUES (1, 1000, '跳表', 10000, '数据结构', '跳表数据结构', '2021-06-22 14:44:16.000000', 888888888, '数据结构', '链表的一种', 1);
 INSERT INTO `cases` VALUES (2, 1001, '跳表biao', 10000, '数据结构', '跳表数据结构', '2021-06-22 14:44:16.000000', 888888888, '数据结构', '链表的一种', 1);
+
+-- ----------------------------
+-- Table structure for comment_like
+-- ----------------------------
+DROP TABLE IF EXISTS `comment_like`;
+CREATE TABLE `comment_like`  (
+  `id` int(16) NOT NULL AUTO_INCREMENT,
+  `user_id` int(16) NOT NULL,
+  `like_status` int(1) NOT NULL DEFAULT 1,
+  `comment_id` int(16) NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of comment_like
+-- ----------------------------
+INSERT INTO `comment_like` VALUES (1, 888888888, 1, 1);
+INSERT INTO `comment_like` VALUES (2, 222222222, 1, 1);
 
 -- ----------------------------
 -- Table structure for comment_reply
@@ -202,13 +215,14 @@ CREATE TABLE `dictionary_detail`  (
   `creat_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `is_default` int(1) UNSIGNED ZEROFILL NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dictionary_detail
 -- ----------------------------
 INSERT INTO `dictionary_detail` VALUES (1, 'sex', '男', 1, '2021-06-22 15:25:09', 1);
 INSERT INTO `dictionary_detail` VALUES (2, 'sex', '女', 0, '2021-06-22 15:26:06', 0);
+INSERT INTO `dictionary_detail` VALUES (3, 'dfsd', '钱钱钱', 1, '2021-06-27 15:46:50', 0);
 
 -- ----------------------------
 -- Table structure for dictionary_type
@@ -278,7 +292,7 @@ CREATE TABLE `role_menu`  (
   `menu_id` int(11) NOT NULL,
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 144 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_menu
@@ -308,6 +322,15 @@ INSERT INTO `role_menu` VALUES (140, 0, 12, '2021-06-25 22:22:57');
 INSERT INTO `role_menu` VALUES (141, 0, 13, '2021-06-25 22:22:57');
 INSERT INTO `role_menu` VALUES (142, 0, 14, '2021-06-25 22:22:57');
 INSERT INTO `role_menu` VALUES (143, 0, 20, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (144, 8, 1, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (145, 8, 2, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (146, 8, 3, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (147, 8, 4, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (148, 8, 5, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (149, 8, 6, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (150, 8, 7, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (151, 8, 8, '2021-06-28 09:55:53');
+INSERT INTO `role_menu` VALUES (152, 8, 9, '2021-06-28 09:55:53');
 
 -- ----------------------------
 -- Table structure for roles
@@ -346,8 +369,8 @@ CREATE TABLE `student_file`  (
 -- ----------------------------
 -- Records of student_file
 -- ----------------------------
-INSERT INTO `student_file` VALUES (1, 1000, 222222222, './helloword/hello.png', '2021-06-25 09:54:41', 'png');
-INSERT INTO `student_file` VALUES (2, 1000, 222222222, 'sdfsdf', '2021-06-25 11:02:31', 'sdf');
+INSERT INTO `student_file` VALUES (1, 1000, 888888888, '1', '2021-06-28 15:59:09', '1');
+INSERT INTO `student_file` VALUES (2, 1000, 888888888, '2', '2021-06-28 15:59:14', '2');
 
 -- ----------------------------
 -- Table structure for users
