@@ -2,6 +2,7 @@ package com.example.medicalservice.service;
 
 import com.example.medicalservice.domain.Comment;
 import com.example.medicalservice.domain.CommentReply;
+import com.example.medicalservice.domain.Like;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface CommentReplyService {
     void insertComment(CommentReply commentReply);
     void deleteComment(Integer id);
     void updateComment(CommentReply commentReply);
+    void likes(Integer commentId, Integer userId);
 }

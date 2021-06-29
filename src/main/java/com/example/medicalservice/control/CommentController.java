@@ -43,9 +43,12 @@ public class CommentController {
         return Result.success().setData(comments).setCode(ResultCodeEnum.OK.getCode()).setMsg("评论获取成功!");
     }
 
-    @ApiOperation(value = "添加评论")
+    @ApiOperation(value = "添加评论",notes = "不需要传userid")
     @PostMapping("/addComment")
     public Result addComment(@RequestBody CommentReply commentReply) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = userService.getUser(subject.getPrincipal().toString());
+        commentReply.setFromId(user.getUserId());
         if(commentReply.getContent() == null || commentReply.getContent() == "") return Result.failure(ResultCodeEnum.CREATE_FAILED).setMsg("内容为空，评论失败");
         commentReplyService.insertComment(commentReply);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论成功！");
@@ -82,5 +85,14 @@ public class CommentController {
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论修改成功!");
         }
         return Result.failure(ResultCodeEnum.UNAUTHORIZED);
+    }
+
+    @ApiOperation(value="点赞接口", notes = "只需要评论id,用户id将根据token获取")
+    @PostMapping("/likes/{commentId}")
+    public Result likes(@PathVariable Integer commentId) {
+        Subject subject = SecurityUtils.getSubject();
+        User user = userService.getUser(subject.getPrincipal().toString());
+        commentReplyService.likes(commentId, user.getUserId());
+        return Result.success().setMsg("点赞成功！");
     }
 }

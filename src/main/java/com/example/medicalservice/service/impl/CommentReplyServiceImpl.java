@@ -2,6 +2,7 @@ package com.example.medicalservice.service.impl;
 
 import com.example.medicalservice.domain.Comment;
 import com.example.medicalservice.domain.CommentReply;
+import com.example.medicalservice.domain.Like;
 import com.example.medicalservice.domain.User;
 import com.example.medicalservice.mapper.CommentMapper;
 import com.example.medicalservice.mapper.UserMapper;
@@ -45,10 +46,12 @@ public class CommentReplyServiceImpl implements CommentReplyService {
                 comment.setFromAvatar(curComment.getFromAvatar());
                 comment.setHaveReply(curComment.getHaveReply());
                 comment.setCreateTime(curComment.getCreatTime());
+                comment.setLikes(commentMapper.getLikes(curComment.getId()));
                 if(comment.getHaveReply() == 1) {
                     List<CommentReply> replies = new ArrayList<>();
                     for(CommentReply c : data) {
                         if(c.getParentId() != null && c.getParentId() == comment.getId()) {
+                            c.setLikes(commentMapper.getLikes(c.getId()));
                             replies.add(c);
                         }
                     }
@@ -93,5 +96,15 @@ public class CommentReplyServiceImpl implements CommentReplyService {
     @Override
     public void updateComment(CommentReply commentReply) {
         commentMapper.updateComment(commentReply);
+    }
+
+    @Override
+    public void likes(Integer commentId, Integer userId) {
+        Like like = commentMapper.getLike(commentId, userId);
+        if(like != null) { // 有点赞记录, 更新
+            commentMapper.updateLikes(like.getId());
+        } else { // 无点赞记录，添加
+            commentMapper.insertLikes(commentId, userId);
+        }
     }
 }

@@ -17,6 +17,15 @@ public class CommentReply implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
+    private Integer likes;
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
 
     @ApiModelProperty(value = "所属案例id")
     private Integer caseId;
