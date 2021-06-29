@@ -24,6 +24,14 @@
 	      #{parentId}
 	    )
     </insert>
+    <insert id="insertLikes">
+        insert into comment_like(
+            comment_id, user_id
+        )VALUES (
+            #{commentId},
+            #{userId}
+        )
+    </insert>
     <update id="updateComment" parameterType="com.example.medicalservice.domain.CommentReply">
         update comment_reply
         <trim prefix="set" suffixOverrides=",">
@@ -31,6 +39,9 @@
             <if test="haveReply!=null">have_reply=#{haveReply}</if>
         </trim>
         where id = #{id}
+    </update>
+    <update id="updateLikes">
+        update comment_like set like_status=abs(like_status-1) where id=#{id}
     </update>
     <delete id="deleteComment" parameterType="java.lang.Integer">
         delete from comment_reply where id=#{id}
@@ -42,6 +53,12 @@
     <select id="getCommentById" resultType="com.example.medicalservice.domain.CommentReply"
             parameterType="java.lang.Integer">
         select * from comment_reply where id=#{id}
+    </select>
+    <select id="getLikes" resultType="integer">
+        select count(*) from comment_like where comment_id=#{commentId} and like_status=1
+    </select>
+    <select id="getLike" resultType="com.example.medicalservice.domain.Like">
+        select * from comment_like where comment_id=#{commentId} and user_id=#{userId}
     </select>
 
 

@@ -19,6 +19,15 @@ public class Comment {
     String fromName;
     String fromAvatar;
     Integer haveReply;
+    Integer likes;
+
+    public Integer getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Integer likes) {
+        this.likes = likes;
+    }
 
     @Override
     public String toString() {

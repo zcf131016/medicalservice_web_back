@@ -1,8 +1,10 @@
 package com.example.medicalservice.service.impl;
 
 import com.example.medicalservice.domain.StudentFile;
+import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.mapper.StudentFileMapper;
+import com.example.medicalservice.mapper.UserMapper;
 import com.example.medicalservice.service.StudentFileService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +22,9 @@ public class StudentFileServiceImpl implements StudentFileService {
 
     @Autowired
     StudentFileMapper studentFileMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
     @Override
     public List<StudentFile> getFileByStudentId(Integer caseId, Integer studentId) {
@@ -52,6 +57,11 @@ public class StudentFileServiceImpl implements StudentFileService {
 
     @Override
     public List<StudentFile> getFileByStudentName(String studentName) {
-        return studentFileMapper.getFileByStudentName(studentName);
+        List<StudentFile> list = studentFileMapper.getFileByStudentName(studentName);
+        for(int i = 0;i < list.size();++i) {
+            User user = userMapper.getUserByUserId(list.get(i).getStudentId());
+            list.get(i).setStudentName(user.getRealName());
+        }
+        return list;
     }
 }

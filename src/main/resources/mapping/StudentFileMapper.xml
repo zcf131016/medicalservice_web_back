@@ -49,7 +49,7 @@
     </select>
     <select id="getFileByStudentName" resultType="com.example.medicalservice.domain.StudentFile"
             parameterType="java.lang.String">
-        select * from
+        select r.id, r.case_id,r.student_id,r.file_path,r.file_type,r.case_name,r.real_name,r.upload_time from
         (select
         sf.id, sf.case_id,sf.student_id,sf.file_path,sf.file_type,cs.case_name,u.real_name,sf.upload_time
         from student_file sf, cases cs, users u
