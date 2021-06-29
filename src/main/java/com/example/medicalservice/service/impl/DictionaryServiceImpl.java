@@ -188,7 +188,9 @@ public class DictionaryServiceImpl implements DictionaryService {
 
         //删除dictionary_detail表
         for(int i=0;i<Ids.size();i++){
+            System.out.println(Ids.get(i));
             DictionaryType dictionaryType = dictionaryMapper.getDictionaryTypeById(Ids.get(i));
+            System.out.println(dictionaryType);
             String typeCode = dictionaryType.getTypeCode();
             DictionaryDetail dictionaryDetail = new DictionaryDetail();
             dictionaryDetail.setTypeCode(typeCode);

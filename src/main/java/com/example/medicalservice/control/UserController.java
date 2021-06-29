@@ -263,7 +263,7 @@ public class UserController {
     @ApiImplicitParam(required = true,name ="userId",value = "用户id")
     @ResponseBody
     @DeleteMapping ("/deleteUserAllByuserId")
-    public Result deleteUserAllById(@RequestParam List<Integer> userIds){
+    public Result deleteUserAllById(@RequestBody List<Integer> userIds){
         System.out.println(userIds);
 
         return Result.success().setData(userService.deleteUserAllById(userIds)).setCode(ResultCodeEnum.OK.getCode()).setMsg("批量删除成功");
