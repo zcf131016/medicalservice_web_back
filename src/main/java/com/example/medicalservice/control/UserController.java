@@ -264,7 +264,6 @@ public class UserController {
     @ResponseBody
     @DeleteMapping ("/deleteUserAllByuserId")
     public Result deleteUserAllById(@RequestBody List<Integer> userIds){
-        System.out.println(userIds);
 
         return Result.success().setData(userService.deleteUserAllById(userIds)).setCode(ResultCodeEnum.OK.getCode()).setMsg("批量删除成功");
     }
