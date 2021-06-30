@@ -17,6 +17,24 @@ spring:
     validation-timeout: 3000
     idle-timeout: 60000
     connection-init-sql: SET NAMES utf8mb4
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    port: 465
+    username: 1024770542@qq.com
+    password: nrdogamjofxlbebf
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+
+  redis:
+    host: localhost
+    port: 6379
+
+
 mybatis:
   mapper-locations: classpath:mapping/*Mapper.xml
   type-aliases-package: com.example.medicalservice.domain

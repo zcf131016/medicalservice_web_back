@@ -61,12 +61,12 @@ public class CommentController {
      */
     @ApiOperation(value="根据评论id删除评论",notes = "只有自己能删除自己的评论")
     @DeleteMapping("/deleteComment/{id}")
-    public Result deleteComment(@PathVariable Integer id) {
+    public Result deleteComment(@PathVariable Integer id, HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
-        User user = userService.getUser(subject.getPrincipal().toString());
+        Integer userId = JWTUtil.getUserId(request.getHeader("Authorization"));
         try {
             CommentReply commentReply = commentReplyService.getComment(id);
-            if(commentReply != null && (user.getId() == commentReply.getFromId() || subject.hasRole("admin"))) {
+            if(commentReply != null && (userId == commentReply.getFromId() || subject.hasRole("admin"))) {
                 commentReplyService.deleteComment(id);
             } else {
                 throw new RuntimeException("删除失败");
@@ -79,10 +79,10 @@ public class CommentController {
 
     @ApiOperation(value="修改评论", notes = "只有自己能修改评论")
     @PutMapping("/modifyComment")
-    public Result modifyComment(@RequestBody CommentReply commentReply) {
+    public Result modifyComment(@RequestBody CommentReply commentReply, HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
-        User user = userService.getUser(subject.getPrincipal().toString());
-        if(user.getUserId() == commentReply.getFromId() || subject.hasRole("admin")) {
+        Integer userId = JWTUtil.getUserId(request.getHeader("Authorization"));
+        if(userId == commentReply.getFromId() || subject.hasRole("admin")) {
             commentReplyService.updateComment(commentReply);
             return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论修改成功!");
         }

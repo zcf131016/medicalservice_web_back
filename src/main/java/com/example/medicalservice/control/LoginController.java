@@ -3,7 +3,11 @@ package com.example.medicalservice.control;
 import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.security.jwt.JWTUtil;
+import com.example.medicalservice.security.mail.MailMessage;
+import com.example.medicalservice.security.mail.MailService;
+import com.example.medicalservice.service.RedisService;
 import com.example.medicalservice.service.UserService;
+import com.example.medicalservice.util.RandomUtil;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
 import io.swagger.annotations.Api;
@@ -14,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -26,6 +31,14 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private MailService mailService;
+
+    private static long CODE_ESPIRE_SECONDS = 600;
 
 
     @ApiOperation(value="登录接口")
@@ -74,6 +87,44 @@ public class LoginController {
         }
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("注销成功");
     }
+
+    @ApiOperation(value="获取邮件验证码")
+    @GetMapping("/getMail/{mail}")
+    public Result getMail(@PathVariable("mail") String mail) {
+        // 随机生成验证码
+        Integer validNumber = RandomUtil.getRandom(6);
+        // 发送验证码
+        try {
+            mailService.sendMail(mail, "医疗教学平台", "您的验证码为: " + validNumber.toString());
+
+            redisService.remove(mail);
+            redisService.set(mail, validNumber.toString());
+            redisService.expire(mail, CODE_ESPIRE_SECONDS);
+
+        } catch (MessagingException e) {
+            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("验证码发送失败");
+        }
+        return Result.success().setMsg("验证码发送成功,有效时长10分钟");
+    }
+
+    @ApiOperation(value="邮箱验证码登录")
+    @PostMapping("/loginByEmail")
+    public Result loginByMail(@RequestBody MailMessage mailMessage) {
+        // 先判断邮箱是否存在用户表中
+        User user = userService.getUserByEmail(mailMessage.getMail());
+        if(user == null) return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("用户不存在");
+        // 获取redis缓存中的验证码
+        String code = redisService.get(mailMessage.getMail());
+        if(code == mailMessage.getCode()) { // 验证码比对成功,签发token
+            String token = JWTUtil.sign(user.getUserName(), user.getPassWord(),user.getUserId());
+            user.setPassWord(null);
+            return Result.success().setData(user).setToken(token).setMsg("登录成功");
+        } else {
+            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("请输入正确的验证码");
+        }
+    }
+
+
 
     @GetMapping("/401")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
