@@ -44,6 +44,16 @@
 
     </update>
 
+
+    <update id="updatePasswordByEmail">
+        UPDATE users
+        <trim prefix="set" suffixOverrides=",">
+            <if test="passWord!=null">password=#{passWord},</if>
+        </trim>
+        where emial = #{email}
+
+    </update>
+
     <delete id="deleteUserByUserId" parameterType="java.lang.Integer">
         delete from users where user_id = #{userId}
     </delete>
