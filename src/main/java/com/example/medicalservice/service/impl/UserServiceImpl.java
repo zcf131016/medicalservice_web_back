@@ -176,5 +176,13 @@ public class UserServiceImpl implements UserService {
         return userMapper.getUserByPhone(phone);
     }
 
+    @Override
+    public int updatePasswordByEmail(String email, String passWord) {
+        if (userMapper.getUserByEmail(email)==null){
+            throw new UserFriendException("邮箱输入错误,用户不存在","103");
+        }
+        return userMapper.updatePasswordByEmail(email,passWord);
+    }
+
 
 }

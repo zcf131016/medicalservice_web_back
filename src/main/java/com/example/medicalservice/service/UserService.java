@@ -60,6 +60,9 @@ public interface UserService {
     //查询用户根据phone
     User getUserByPhone(String phone);
 
+    //更新密码
+    int updatePasswordByEmail(String email,String passWord);
+
 
 
 
