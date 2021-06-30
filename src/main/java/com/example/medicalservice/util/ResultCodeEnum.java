@@ -31,7 +31,9 @@ public enum ResultCodeEnum {
     FAILED_USER_ALREADY_EXIST("486", "该用户已存在"),
     INTERNAL_SERVER_ERROR("500", "服务器内部错误"),
     NOT_IMPLEMENTED("501", "业务异常"),
-    UPLOAD_FAILED("505", "上传失败");
+    UPLOAD_FAILED("505", "上传失败"),
+    VERIFICATION_CODE_EXPIRED("911", "验证码失效"),
+    VERIFICATION_CODE_ERROR("912","验证码错误");
 
 
 
