@@ -13,6 +13,7 @@ import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 @Api(tags = "学生文件接口")
 @RestController
+@RequiresAuthentication
 @RequestMapping("/sfile")
 public class StudentFileController {
 
@@ -132,7 +134,7 @@ public class StudentFileController {
                 count++;
             }
         }
-        return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("共删除了 " + count + " 个文件" + (count==files.size() ? "!" : "，部分文件不存在！"));
+        return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("共删除了 " + count + " 个文件" + (count==files.size() ? "!" : "，" + (files.size()-count) +"个文件不存在！"));
     }
 
     @ApiOperation(value="根据真实姓名模糊搜索",notes = "只需要传递realName字段")
