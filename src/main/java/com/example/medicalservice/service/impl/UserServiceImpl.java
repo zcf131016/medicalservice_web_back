@@ -155,5 +155,26 @@ public class UserServiceImpl implements UserService {
         return userMapper.deleteUserAllByUserIds(userIds);
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+
+        if (userMapper.getUserByEmail(email) == null) {
+            throw new UserFriendException("用户不存在!", "103");
+        }
+
+
+        return userMapper.getUserByEmail(email);
+    }
+
+    @Override
+    public User getUserByPhone(String phone) {
+
+        if(userMapper.getUserByPhone(phone)==null){
+            throw new UserFriendException("用户不存在!","103");
+        }
+
+        return userMapper.getUserByPhone(phone);
+    }
+
 
 }

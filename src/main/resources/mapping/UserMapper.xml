@@ -90,6 +90,13 @@
         select * from users where role_id = 1
     </select>
 
+    <select id="getUserByEmail" resultType="com.example.medicalservice.domain.User" parameterType="java.lang.String">
+        select * from users where email = #{email}
+    </select>
+    <select id="getUserByPhone" resultType="com.example.medicalservice.domain.User" parameterType="java.lang.String">
+        select * from users where phone = #{phone}
+    </select>
+
 
 </mapper>
 

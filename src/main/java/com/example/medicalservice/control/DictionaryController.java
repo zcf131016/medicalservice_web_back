@@ -298,7 +298,6 @@ public class DictionaryController {
     @DeleteMapping ("/deleteDictionaryAllById")
     public Result deleteDictionaryAllById(@RequestBody List<Integer> Ids){
 
-        System.out.println(Ids);
 
         dictionaryService.deleteDictionaryAllById(Ids);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("批量删除成功");

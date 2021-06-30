@@ -54,6 +54,13 @@ public interface UserService {
     //根据useId批量删除用户
     int deleteUserAllById(List<Integer> userIds);
 
+    //查询用户根据email
+    User getUserByEmail(String email);
+
+    //查询用户根据phone
+    User getUserByPhone(String phone);
+
+
 
 
 
