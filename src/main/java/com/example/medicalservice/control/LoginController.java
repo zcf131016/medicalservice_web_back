@@ -38,7 +38,7 @@ public class LoginController {
     @Autowired
     private MailService mailService;
 
-    private static long CODE_ESPIRE_SECONDS = 600;
+    private static long CODE_EXPIRE_SECONDS = 600;
 
 
     @ApiOperation(value="登录接口")
@@ -99,7 +99,7 @@ public class LoginController {
 
             redisService.remove(mail);
             redisService.set(mail, validNumber.toString());
-            redisService.expire(mail, CODE_ESPIRE_SECONDS);
+            redisService.expire(mail, CODE_EXPIRE_SECONDS);
 
         } catch (MessagingException e) {
             return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("验证码发送失败");
@@ -112,15 +112,17 @@ public class LoginController {
     public Result loginByMail(@RequestBody MailMessage mailMessage) {
         // 先判断邮箱是否存在用户表中
         User user = userService.getUserByEmail(mailMessage.getMail());
-        if(user == null) return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("用户不存在");
+        if(user == null) return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("请输入正确的邮箱！");
         // 获取redis缓存中的验证码
         String code = redisService.get(mailMessage.getMail());
-        if(code == mailMessage.getCode()) { // 验证码比对成功,签发token
+        System.out.println("验证码为：" + code);
+        System.out.println("发送过来的验证码：" + mailMessage.getCode());
+        if(mailMessage.getCode().equals(code)) { // 验证码比对成功,签发token
             String token = JWTUtil.sign(user.getUserName(), user.getPassWord(),user.getUserId());
             user.setPassWord(null);
             return Result.success().setData(user).setToken(token).setMsg("登录成功");
         } else {
-            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("请输入正确的验证码");
+            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("请输入正确的验证码！");
         }
     }
 
