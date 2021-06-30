@@ -31,4 +31,5 @@ public interface MenuMapper {
     int insertBatch(List<Menu> menuList);
 
     int update(Menu menu);
+
 }

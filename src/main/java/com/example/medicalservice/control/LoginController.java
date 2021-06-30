@@ -5,6 +5,8 @@ import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.security.jwt.JWTUtil;
 import com.example.medicalservice.security.mail.MailMessage;
 import com.example.medicalservice.security.mail.MailService;
+import com.example.medicalservice.security.shiro.IPasswordEncoder;
+import com.example.medicalservice.security.verifier.Verifier;
 import com.example.medicalservice.service.RedisService;
 import com.example.medicalservice.service.UserService;
 import com.example.medicalservice.util.RandomUtil;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author Lin YuHang//zcf
@@ -38,19 +41,24 @@ public class LoginController {
     @Autowired
     private MailService mailService;
 
+    @Autowired
+    private Verifier verifier;
+
+    @Autowired
+    IPasswordEncoder iPasswordEncoder;
+
     private static long CODE_EXPIRE_SECONDS = 600;
 
 
     @ApiOperation(value="登录接口")
     @ResponseBody
     @PostMapping("/login")
-    public Result login(@RequestBody User users) {
+    public Result login(@RequestBody User users) throws NoSuchAlgorithmException {
         String username = users.getUserName();
         String password = users.getPassWord();
         User user = userService.getUser(username);
-        if (user != null && user.getPassWord().equals(password)) {
-            System.out.println("登录成功");
-            String token = JWTUtil.sign(username, password,user.getUserId());
+        if (user != null && iPasswordEncoder.match(password, user.getPassWord())) {
+            String token = JWTUtil.sign(username, user.getPassWord(),user.getUserId());
             user.setPassWord(null);
             return Result.success().setToken(token).setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("登录成功！");
         } else {
@@ -68,9 +76,12 @@ public class LoginController {
     public Result register(@RequestBody User user) {
 
         try{
+            user.setPassWord(iPasswordEncoder.encode(user.getPassWord()));
             userService.insertUser(user);
         }catch (UserFriendException e){
             return Result.success().setCode(ResultCodeEnum.RegisterAlreadyExist.getCode()).setMsg(e.getMsg());
+        } catch (NoSuchAlgorithmException e) {
+            return Result.failure(ResultCodeEnum.INTERNAL_SERVER_ERROR).setMsg("服务器内部错误");
         }
         return Result.success().setCode(ResultCodeEnum.Register.getCode()).setMsg("注册成功");
     }
@@ -111,19 +122,25 @@ public class LoginController {
     @PostMapping("/loginByEmail")
     public Result loginByMail(@RequestBody MailMessage mailMessage) {
         // 先判断邮箱是否存在用户表中
-        User user = userService.getUserByEmail(mailMessage.getMail());
-        if(user == null) return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("请输入正确的邮箱！");
-        // 获取redis缓存中的验证码
-        String code = redisService.get(mailMessage.getMail());
-        System.out.println("验证码为：" + code);
-        System.out.println("发送过来的验证码：" + mailMessage.getCode());
-        if(mailMessage.getCode().equals(code)) { // 验证码比对成功,签发token
-            String token = JWTUtil.sign(user.getUserName(), user.getPassWord(),user.getUserId());
-            user.setPassWord(null);
-            return Result.success().setData(user).setToken(token).setMsg("登录成功");
-        } else {
-            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("请输入正确的验证码！");
+        User user = null;
+        try {
+            user = userService.getUserByEmail(mailMessage.getMail());
+        } catch (UserFriendException e) {
+            return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg(e.getMsg());
         }
+        // 验证验证码
+        try {
+            verifier.MailCodeCheck(mailMessage.getMail(), mailMessage.getCode());
+        } catch (UserFriendException e) {
+            if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
+            else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
+            else {
+                String token = JWTUtil.sign(user.getUserName(), user.getPassWord(),user.getUserId());
+                user.setPassWord(null);
+                return Result.success().setData(user).setToken(token).setMsg("登录成功");
+            }
+        }
+        return Result.success();
     }
 
 

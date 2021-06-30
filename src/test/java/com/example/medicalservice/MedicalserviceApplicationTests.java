@@ -5,6 +5,7 @@ import com.example.medicalservice.domain.CaseImage;
 import com.example.medicalservice.domain.Cases;
 import com.example.medicalservice.mapper.CasesMapper;
 import com.example.medicalservice.mapper.UserMapper;
+import com.example.medicalservice.security.shiro.IPasswordEncoder;
 import com.example.medicalservice.util.RandomUtil;
 import org.apache.ibatis.annotations.Case;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -26,8 +28,13 @@ class MedicalserviceApplicationTests {
     @Autowired
     CasesMapper casesMapper;
     UserMapper userMapper;
+    @Autowired
+    IPasswordEncoder iPasswordEncoder;
     @Test
-    void contextLoads() {
+    void contextLoads() throws NoSuchAlgorithmException {
+        System.out.println(iPasswordEncoder.encode("123456"));
+        System.out.println(iPasswordEncoder.encode("123456"));
+        System.out.println(iPasswordEncoder.encode("123456789"));
     }
     @Test
     void test(){
