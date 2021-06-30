@@ -55,6 +55,12 @@ public interface UserMapper {
     //根据userId批量删除
     int deleteUserAllByUserIds(List<Integer> userIds);
 
+    //查询用户根据email
+    User getUserByEmail(String email);
+
+    //查询用户根据phone
+    User getUserByPhone(String phone);
+
 
 
 

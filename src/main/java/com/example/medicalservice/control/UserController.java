@@ -268,6 +268,41 @@ public class UserController {
         return Result.success().setData(userService.deleteUserAllById(userIds)).setCode(ResultCodeEnum.OK.getCode()).setMsg("批量删除成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
+    @ApiOperation(value = "查询用户根据email")
+    @ApiImplicitParam(required = true,name ="email",value = "邮箱")
+    @ResponseBody
+    @GetMapping("/getUserByEmail/{email}")
+    public Result getUserByEmail(@PathVariable("email") String email){
+
+        try {
+            userService.getUserByEmail(email);
+        }catch (UserFriendException e){
+            return Result.failure(ResultCodeEnum.BAD_REQUEST).setMsg("用户不存在！");
+        }
+        User user1 = userService.getUserByEmail(email);
+        user1.setPassWord("密码不可见");
+        return Result.success().setData(user1).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+    }
+
+    @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
+    @ApiOperation(value = "查询用户根据phone")
+    @ApiImplicitParam(required = true,name ="phone",value = "手机号码")
+    @ResponseBody
+    @GetMapping("/getUserByPhone/{phone}")
+    public Result getUserByPhone(@PathVariable("phone") String phone){
+
+        try {
+            userService.getUserByPhone(phone);
+        }catch (UserFriendException e){
+            return Result.failure(ResultCodeEnum.BAD_REQUEST).setMsg("用户不存在！");
+        }
+        User user1 = userService.getUserByPhone(phone);
+        user1.setPassWord("密码不可见");
+        return Result.success().setData(user1).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+    }
+
+
 
 
 
