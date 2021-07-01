@@ -50,7 +50,7 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="passWord!=null">password=#{passWord},</if>
         </trim>
-        where emial = #{email}
+        where email = #{email}
 
     </update>
 
