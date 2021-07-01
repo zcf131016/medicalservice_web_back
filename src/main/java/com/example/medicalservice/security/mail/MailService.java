@@ -28,7 +28,7 @@ public final class MailService {
     /*
         发送富文本邮件
      */
-    void sendRichMail(String to, String subject, String text, String filePath) throws MessagingException{
+    public void sendRichMail(String to, String subject, String text, String filePath) throws MessagingException{
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper=new MimeMessageHelper(mimeMessage,true);
         helper.setFrom(from);
@@ -37,7 +37,7 @@ public final class MailService {
 
         helper.setText(text,true);
         // 图片占位写法  如果图片链接写入模板 注释下面这一行
-        helper.addInline("qr",new FileSystemResource(filePath));
+//        helper.addInline("qr",new FileSystemResource(filePath));
         javaMailSender.send(mimeMessage);
     }
 

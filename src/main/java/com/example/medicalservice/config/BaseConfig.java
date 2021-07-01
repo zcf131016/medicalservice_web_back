@@ -8,8 +8,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class BaseConfig {
-    private final String studentFilePath = "studentFile/";
-    private final String caseFilePath = "caseFile/";
+    private String studentFilePath = "studentFile/";
+    private String caseFilePath = "caseFile/";
+    private String emailTemplate = "classpath:Template.html";
 
     public String getStudentFilePath() {
         return studentFilePath;
@@ -20,4 +21,7 @@ public class BaseConfig {
         return caseFilePath;
     }
 
+    public String getEmailTemplate() {
+        return emailTemplate;
+    }
 }

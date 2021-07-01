@@ -1,5 +1,6 @@
 package com.example.medicalservice.control;
 
+import com.example.medicalservice.domain.ForgotPasswordDto;
 import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.security.jwt.JWTUtil;
@@ -100,18 +101,19 @@ public class LoginController {
     }
 
     @ApiOperation(value="获取邮件验证码")
-    @GetMapping("/getMail/{mail}")
+    @GetMapping("/getMail/{mail}/")
     public Result getMail(@PathVariable("mail") String mail) {
         // 随机生成验证码
         Integer validNumber = RandomUtil.getRandom(6);
         // 发送验证码
         try {
-            mailService.sendMail(mail, "医疗教学平台", "您的验证码为: " + validNumber.toString());
-
+            mailService.sendMail(mail,
+                    "医疗教学平台",
+                    "您的验证码为: " + validNumber.toString()
+                            +"\n 若非您本人操作，请忽略！并留心账号安全！");
             redisService.remove(mail);
             redisService.set(mail, validNumber.toString());
             redisService.expire(mail, CODE_EXPIRE_SECONDS);
-
         } catch (MessagingException e) {
             return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("验证码发送失败");
         }
@@ -153,6 +155,33 @@ public class LoginController {
                 String token = JWTUtil.sign(user.getUserName(), user.getPassWord(),user.getUserId());
                 user.setPassWord(null);
                 return Result.success().setData(user).setToken(token).setMsg("登录成功");
+            }
+        }
+        return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED);
+    }
+
+    @ApiOperation(value="更新密码", notes = "需要邮箱验证")
+    @PostMapping("/updatePassword")
+    public Result updatePassword(@RequestBody ForgotPasswordDto forgotPasswordDto) {
+        if(forgotPasswordDto.getPassword() == null) {
+            return Result.failure(ResultCodeEnum.PARAM_ERROR).setMsg("密码不能为空！");
+        }
+        try {
+            verifier.MailCodeCheck(forgotPasswordDto.getEmail(), forgotPasswordDto.getCode());
+        } catch (UserFriendException e) {
+            if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
+            else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
+            else {
+                // 更新密码
+                User user = userService.getUserByEmail(forgotPasswordDto.getEmail());
+                if(user == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("用户不存在！");
+                try {
+                    user.setPassWord(iPasswordEncoder.encode(forgotPasswordDto.getPassword()));
+                } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
+                    noSuchAlgorithmException.printStackTrace();
+                    return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("密码修改失败");
+                }
+                return  Result.success().setMsg("密码更新成功！");
             }
         }
         return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED);

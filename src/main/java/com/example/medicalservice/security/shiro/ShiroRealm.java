@@ -64,7 +64,7 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = userService.getUser(subject.getPrincipal().toString());
         Role userRole = roleService.getRole(user.getRoleId());
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole(userRole.getDescription());
+        simpleAuthorizationInfo.addRoles(Arrays.asList(userRole.getDescription().split(",")));
         Set<String> permission = new HashSet<>(Arrays.asList(userRole.getPerms().split(",")));
         simpleAuthorizationInfo.addStringPermissions(permission);
 
