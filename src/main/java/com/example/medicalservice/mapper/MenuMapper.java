@@ -2,7 +2,7 @@ package com.example.medicalservice.mapper;
 
 import com.example.medicalservice.domain.Menu;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+
 
 import java.util.List;
 

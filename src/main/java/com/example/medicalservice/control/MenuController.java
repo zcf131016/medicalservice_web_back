@@ -1,6 +1,7 @@
 package com.example.medicalservice.control;
 
 import com.example.medicalservice.domain.Menu;
+import com.example.medicalservice.domain.MenusDto;
 import com.example.medicalservice.service.IMenuService;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
@@ -63,10 +64,11 @@ public class MenuController {
         return Result.success().setCode(ResultCodeEnum.UPDATED.getCode()).setMsg("更新菜单成功");
     }
 
+
     @ApiOperation(value="批量删除菜单")
     @DeleteMapping("/deleteBatchMenus")
-    public Result deleteBatchMenus(@RequestBody List<Integer> menus) {
-        for(Integer menu : menus) {
+    public Result deleteBatchMenus(@RequestBody MenusDto menus) {
+        for(Integer menu : menus.getMenuIds()) {
             menuService.delete(menu);
         }
         return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("删除成功!");
