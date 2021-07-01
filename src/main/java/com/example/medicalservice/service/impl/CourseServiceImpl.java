@@ -207,7 +207,16 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseStudent> findCourseByStudentId(Integer studentId) {
-        return courseMapper.findCourseByStudentId(studentId);
+        List<CourseStudent> courseStudentList=courseMapper.findCourseByStudentId(studentId);
+        for (int i=0;i<courseStudentList.size();i++){
+            CourseStudent courseStudent=courseStudentList.get(i);
+            Course course=courseMapper.findCourseById(courseStudent.getCourseId());
+            Integer courseState=course.getCourseState();
+            String teacherName=userMapper.getUserByUserId(course.getTeacherId()).getUserName();
+            courseStudentList.get(i).setCourseState(courseState);
+            courseStudentList.get(i).setTeacherName(teacherName);
+        }
+        return courseStudentList;
     }
 
     @Override
