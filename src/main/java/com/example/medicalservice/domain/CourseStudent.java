@@ -15,6 +15,8 @@ public class CourseStudent {
     private Integer teamId;
     private Date creatTime;
     private List<CourseStudent> courseStudents;
+    private String creatTeacher;
+    private Integer courseState;
 
     @Override
     public String toString() {
@@ -27,7 +29,25 @@ public class CourseStudent {
                 ", teamId=" + teamId +
                 ", creatTime=" + creatTime +
                 ", courseStudents=" + courseStudents +
+                ", creatTeacher='" + creatTeacher + '\'' +
+                ", courseState=" + courseState +
                 '}';
+    }
+
+    public String getTeacherName() {
+        return creatTeacher;
+    }
+
+    public void setTeacherName(String creatTeacher) {
+        this.creatTeacher = creatTeacher;
+    }
+
+    public Integer getCourseState() {
+        return courseState;
+    }
+
+    public void setCourseState(Integer courseState) {
+        this.courseState = courseState;
     }
 
     public List<CourseStudent> getCourseStudents() {
