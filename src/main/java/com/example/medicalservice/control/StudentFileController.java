@@ -3,6 +3,7 @@ package com.example.medicalservice.control;
 import com.alibaba.fastjson.JSONObject;
 import com.example.medicalservice.config.BaseConfig;
 import com.example.medicalservice.domain.StudentFile;
+import com.example.medicalservice.domain.StudentFileDto;
 import com.example.medicalservice.domain.User;
 import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.service.FileService;
@@ -125,16 +126,16 @@ public class StudentFileController {
 
     @ApiOperation(value="批量删除学生文件, 接收文件id的列表")
     @DeleteMapping("/deleteBatchFiles")
-    public Result deleteBatchFile(@RequestBody List<Integer> files) {
+    public Result deleteBatchFile(@RequestBody StudentFileDto files) {
         Integer count = 0;
-        for(Integer file : files) {
+        for(Integer file : files.getFileIds()) {
             StudentFile studentFile = studentFileService.getFileById(file);
             if(studentFile != null && fileService.deleteFile(studentFile.getFilePath())) {
                 studentFileService.deleteFileById(file);
                 count++;
             }
         }
-        return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("共删除了 " + count + " 个文件" + (count==files.size() ? "!" : "，" + (files.size()-count) +"个文件不存在！"));
+        return Result.success().setCode(ResultCodeEnum.DELETED.getCode()).setMsg("共删除了 " + count + " 个文件" + (count==files.getFileIds().size() ? "!" : "，" + (files.getFileIds().size()-count) +"个文件不存在！"));
     }
 
     @ApiOperation(value="根据真实姓名模糊搜索",notes = "只需要传递realName字段")

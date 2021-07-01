@@ -8,22 +8,16 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class BaseConfig {
-    private String studentFilePath = "studentFile/";
-    private String caseFilePath = "caseFile/";
+    private final String studentFilePath = "studentFile/";
+    private final String caseFilePath = "caseFile/";
 
     public String getStudentFilePath() {
         return studentFilePath;
     }
 
-    public void setStudentFilePath(String studentFilePath) {
-        this.studentFilePath = studentFilePath;
-    }
 
     public String getCaseFilePath() {
         return caseFilePath;
     }
 
-    public void setCaseFilePath(String caseFilePath) {
-        this.caseFilePath = caseFilePath;
-    }
 }

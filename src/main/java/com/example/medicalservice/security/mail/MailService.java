@@ -17,7 +17,7 @@ import javax.mail.internet.MimeMessage;
  * @date 2021/6/30 8:56
  */
 @Service
-public class MailService {
+public final class MailService {
 
     @Resource
     private JavaMailSender javaMailSender;

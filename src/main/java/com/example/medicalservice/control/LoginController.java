@@ -118,6 +118,21 @@ public class LoginController {
         return Result.success().setMsg("验证码发送成功,有效时长10分钟");
     }
 
+    @ApiOperation(value="")
+    @PostMapping("/checkEmailCode")
+    public Result checkEmailCode(@RequestBody MailMessage mailMessage) {
+        try {
+            verifier.MailCodeCheck(mailMessage.getMail(), mailMessage.getCode());
+        } catch (UserFriendException e) {
+            if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
+            else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
+            else {
+                return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("验证码正确");
+            }
+        }
+        return Result.failure(ResultCodeEnum.INTERNAL_SERVER_ERROR);
+    }
+
     @ApiOperation(value="邮箱验证码登录")
     @PostMapping("/loginByEmail")
     public Result loginByMail(@RequestBody MailMessage mailMessage) {
@@ -140,9 +155,8 @@ public class LoginController {
                 return Result.success().setData(user).setToken(token).setMsg("登录成功");
             }
         }
-        return Result.success();
+        return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED);
     }
-
 
 
     @GetMapping("/401")
