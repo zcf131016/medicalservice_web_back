@@ -101,7 +101,7 @@ public class LoginController {
     }
 
     @ApiOperation(value="获取邮件验证码")
-    @GetMapping("/getMail/{mail}/")
+    @GetMapping("/getMail/{mail}")
     public Result getMail(@PathVariable("mail") String mail) {
         // 随机生成验证码
         Integer validNumber = RandomUtil.getRandom(6);
@@ -177,6 +177,7 @@ public class LoginController {
                 if(user == null) return Result.failure(ResultCodeEnum.INQUIRE_FAILED).setMsg("用户不存在！");
                 try {
                     user.setPassWord(iPasswordEncoder.encode(forgotPasswordDto.getPassword()));
+                    userService.updatePasswordByEmail(forgotPasswordDto.getEmail(), user.getPassWord());
                 } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
                     noSuchAlgorithmException.printStackTrace();
                     return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("密码修改失败");
