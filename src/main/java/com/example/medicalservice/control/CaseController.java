@@ -178,7 +178,7 @@ public class CaseController {
     @ApiOperation(value = "批量删除案例", notes = "前端提供名为caseIdList的Integer数组表示需要删除的案例id号，若有文件和图片则一并删除")
     @ApiImplicitParam(required = true, value = "需要删除的案例id数组",name = "caseIdList",paramType = "query",dataType = "Integer")
     @DeleteMapping("/batchdeletecase")
-    public Result batchdeletecase(@RequestParam List<Integer> caseIdList) {
+    public Result batchdeletecase(@RequestBody List<Integer> caseIdList) {
         for (int i = 0; i < caseIdList.size(); i++) {
             if (caseService.getcasefileCountbyId(caseIdList.get(i)) != 0)
                 this.deleteCaseFileByCaseId(caseIdList.get(i));
