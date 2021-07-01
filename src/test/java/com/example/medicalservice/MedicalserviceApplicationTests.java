@@ -1,25 +1,20 @@
 package com.example.medicalservice;
 
-import com.example.medicalservice.domain.CaseFile;
+import com.example.medicalservice.config.BaseConfig;
 import com.example.medicalservice.domain.CaseImage;
-import com.example.medicalservice.domain.Cases;
 import com.example.medicalservice.mapper.CasesMapper;
 import com.example.medicalservice.mapper.UserMapper;
+import com.example.medicalservice.security.mail.MailService;
 import com.example.medicalservice.security.shiro.IPasswordEncoder;
-import com.example.medicalservice.util.RandomUtil;
-import org.apache.ibatis.annotations.Case;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 @SpringBootTest
@@ -30,11 +25,14 @@ class MedicalserviceApplicationTests {
     UserMapper userMapper;
     @Autowired
     IPasswordEncoder iPasswordEncoder;
+    @Autowired
+    MailService mailService;
+
+    @Autowired
+    BaseConfig baseConfig;
+
     @Test
-    void contextLoads() throws NoSuchAlgorithmException {
-        System.out.println(iPasswordEncoder.encode("123456"));
-        System.out.println(iPasswordEncoder.encode("123456"));
-        System.out.println(iPasswordEncoder.encode("123456789"));
+    void contextLoads() throws NoSuchAlgorithmException, MessagingException, IOException {
     }
     @Test
     void test(){
