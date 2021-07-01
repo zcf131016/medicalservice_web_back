@@ -142,6 +142,7 @@ public class CaseController {
         return Result.success().setData(cases).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取案例成功!");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "进入新增案例，返回随机生成的caseId")
     @PostMapping("/intoinsertcase")
     public Result intoinsertcase() {
@@ -151,6 +152,7 @@ public class CaseController {
         return Result.success().setData(jsonObject).setCode(ResultCodeEnum.OK.getCode()).setMsg("返回案例id成功!");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "新增案例")
     @PostMapping("/insertcase")
     public Result insertcase(@RequestBody Cases cases) {
@@ -161,6 +163,7 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("新增案例成功！");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "根据caseId删除案例，若有文件和图片（外键级联，还未设置）也一并删除")
     @ApiImplicitParam(required = true, name = "caseId", value = "案例id")
     @DeleteMapping("/deletecase/{caseId}")
@@ -171,6 +174,7 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "批量删除案例", notes = "前端提供名为caseIdList的Integer数组表示需要删除的案例id号，若有文件和图片则一并删除")
     @ApiImplicitParam(required = true, value = "需要删除的案例id数组",name = "caseIdList",paramType = "query",dataType = "Integer")
     @DeleteMapping("/batchdeletecase")
@@ -183,6 +187,7 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "修改案例、发布案例")
     @PutMapping("/updatecase")
     public Result updatecase(@RequestBody Cases cases) {
@@ -190,6 +195,7 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("删除案例成功！");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "上传病例图片")
     @RequestMapping(value = "/uploadimgetocase", produces = {"application/json;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8"}, method = RequestMethod.POST)
     public Result uploadimgetocase(@RequestParam("file") MultipartFile file,
@@ -260,6 +266,7 @@ public class CaseController {
 //        outputSream.close();
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "根据图片id删除图片")
     @ApiImplicitParam(required = true, name = "id", value = "图片id")
     @DeleteMapping("/deletecaseimage/{id}")
@@ -268,6 +275,7 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("根据id删除图片成功");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "根据案例id删除该案例中的所有图片")
     @ApiImplicitParam(required = true, name = "caseId", value = "案例id")
     @DeleteMapping("/deletecaseimageByCaseId/{caseId}")
@@ -276,6 +284,7 @@ public class CaseController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("根据案例id删除所有图片成功");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "上传文件（治疗或诊断方案）到指定案例")
     @RequestMapping(value = "/uploadFiletoCases", produces = {"application/json;charset=UTF-8", "application/pdf;charset=UTF-8", "application/zip;charset=UTF-8", "application/msword;charset=UTF-8", "application/vnd.ms-powerpoint;charset=UTF-8", "image/png;charset=UTF-8", "image/jpeg;charset=UTF-8", "application/rar;charset=UTF-8"}, method = RequestMethod.POST)
     public Result uploadFile(@RequestParam("file") MultipartFile file,
@@ -335,6 +344,7 @@ public class CaseController {
         }
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "根据文件id删除案例文件")
     @DeleteMapping("/deleteCaseFileById/{id}")
     public Result deleteCaseFileById(@PathVariable("id") Integer id) {
@@ -348,6 +358,7 @@ public class CaseController {
         return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
     }
 
+    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "根据案例id删除该案例的所有文件")
     @DeleteMapping("/deleteCaseFileByCaseId/{caseId}")
     public Result deleteCaseFileByCaseId(@PathVariable("caseId") Integer caseId) {
