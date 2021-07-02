@@ -58,12 +58,13 @@ public class SMSService {
     public void sendMsg(String phoneNumber) throws Exception {
         com.aliyun.dysmsapi20170525.Client client = SMSService.createClient(accessKeyId, accessKeySecret);
         // 随机生成验证码
-        String code = RandomUtil.getRandom(6).toString();
+        String code = RandomUtil.getRandom(4).toString();
+        System.out.println(code);
         SendSmsRequest sendSmsRequest = new SendSmsRequest()
                 .setPhoneNumbers(phoneNumber)
                 .setSignName(signName)
                 .setTemplateCode(templateCode)
-                .setTemplateParam("{\"code\":\" " + code + " \"}");
+                .setTemplateParam("{\"code\":" + code + "}");
         // 复制代码运行请自行打印 API 的返回值
         client.sendSms(sendSmsRequest);
         // 将发送的内容存入redis
