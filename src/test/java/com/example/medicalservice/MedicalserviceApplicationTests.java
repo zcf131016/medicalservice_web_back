@@ -7,6 +7,7 @@ import com.example.medicalservice.mapper.UserMapper;
 import com.example.medicalservice.security.mail.MailService;
 import com.example.medicalservice.security.shiro.IPasswordEncoder;
 
+import com.example.medicalservice.security.sms.SMSService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,8 +32,12 @@ class MedicalserviceApplicationTests {
     @Autowired
     BaseConfig baseConfig;
 
+    @Autowired
+    SMSService smsService;
+
     @Test
-    void contextLoads() throws NoSuchAlgorithmException, MessagingException, IOException {
+    void contextLoads() throws Exception {
+        smsService.sendMsg("18359135336");
     }
     @Test
     void test(){
