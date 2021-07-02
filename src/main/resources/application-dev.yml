@@ -51,6 +51,6 @@ logging:
 
 aliyun:
   accessKeyId: LTAI4GExbyB7XnxERkPEi1RB
-  accessKeySecret: sdfsfdasf
+  accessKeySecret: otExqbtvBkDCX2o64kLcSKUgTdKOlq
   signName: syzjapp
   templateCode: SMS_205615865

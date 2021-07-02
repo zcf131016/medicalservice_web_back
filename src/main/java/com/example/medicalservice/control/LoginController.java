@@ -7,6 +7,7 @@ import com.example.medicalservice.security.jwt.JWTUtil;
 import com.example.medicalservice.security.mail.MailMessage;
 import com.example.medicalservice.security.mail.MailService;
 import com.example.medicalservice.security.shiro.IPasswordEncoder;
+import com.example.medicalservice.security.sms.PhoneMessage;
 import com.example.medicalservice.security.sms.SMSService;
 import com.example.medicalservice.security.verifier.Verifier;
 import com.example.medicalservice.service.RedisService;
@@ -160,7 +161,7 @@ public class LoginController {
         try {
             user = userService.getUserByEmail(mailMessage.getMail());
         } catch (UserFriendException e) {
-            return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg(e.getMsg());
+            return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("该邮箱未绑定任何用户！");
         }
         // 验证验证码
         try {
@@ -177,9 +178,34 @@ public class LoginController {
         return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED);
     }
 
-    @ApiOperation(value="更新密码", notes = "需要邮箱验证")
+    @ApiOperation(value="手机验证码登录")
+    @PostMapping("/loginByPhone")
+    public Result loginByPhone(@RequestBody PhoneMessage phoneMessage) {
+        // 先判断邮箱是否存在用户表中
+        User user = null;
+        try {
+            user = userService.getUserByPhone(phoneMessage.getPhone());
+        } catch (UserFriendException e) {
+            return Result.failure(ResultCodeEnum.ILLEGAL_REQUEST).setMsg("该手机号未绑定任何账户！");
+        }
+        // 验证验证码
+        try {
+            verifier.codeCheck(phoneMessage.getPhone(), phoneMessage.getCode());
+        } catch (UserFriendException e) {
+            if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
+            else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
+            else {
+                String token = JWTUtil.sign(user.getUserName(), user.getPassWord(),user.getUserId());
+                user.setPassWord(null);
+                return Result.success().setData(user).setToken(token).setMsg("登录成功");
+            }
+        }
+        return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED);
+    }
+
+    @ApiOperation(value="郵箱更新密码", notes = "需要邮箱验证")
     @PostMapping("/updatePassword")
-    public Result updatePassword(@RequestBody ForgotPasswordDto forgotPasswordDto) {
+    public Result updatePasswordByEmail(@RequestBody ForgotPasswordDto forgotPasswordDto) {
         if(forgotPasswordDto.getPassword() == null) {
             return Result.failure(ResultCodeEnum.PARAM_ERROR).setMsg("密码不能为空！");
         }
