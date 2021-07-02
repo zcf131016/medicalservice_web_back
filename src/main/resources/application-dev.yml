@@ -49,3 +49,8 @@ logging:
           mapper : debug
 
 
+aliyun:
+  accessKeyId: LTAI4GExbyB7XnxERkPEi1RB
+  accessKeySecret: sdfsfdasf
+  signName: syzjapp
+  templateCode: SMS_205615865

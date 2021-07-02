@@ -7,6 +7,7 @@ import com.example.medicalservice.security.jwt.JWTUtil;
 import com.example.medicalservice.security.mail.MailMessage;
 import com.example.medicalservice.security.mail.MailService;
 import com.example.medicalservice.security.shiro.IPasswordEncoder;
+import com.example.medicalservice.security.sms.SMSService;
 import com.example.medicalservice.security.verifier.Verifier;
 import com.example.medicalservice.service.RedisService;
 import com.example.medicalservice.service.UserService;
@@ -48,6 +49,9 @@ public class LoginController {
     @Autowired
     IPasswordEncoder iPasswordEncoder;
 
+    @Autowired
+    SMSService smsService;
+
     private static long CODE_EXPIRE_SECONDS = 600;
 
 
@@ -63,7 +67,7 @@ public class LoginController {
             user.setPassWord(null);
             return Result.success().setToken(token).setData(user).setCode(ResultCodeEnum.OK.getCode()).setMsg("登录成功！");
         } else {
-            return Result.success().setCode(ResultCodeEnum.LoginError.getCode()).setMsg("登录失败！");
+            return Result.success().setCode(ResultCodeEnum.LoginError.getCode()).setMsg("登录失败，请检查账号密码！");
         }
     }
 
@@ -100,6 +104,19 @@ public class LoginController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("注销成功");
     }
 
+    @ApiOperation(value="获取短信验证码")
+    @GetMapping("/sms/{phoneNumber}")
+    public Result getMsg(@PathVariable("phoneNumber") String phoneNumber) {
+        if(!verifier.checkPhone(phoneNumber)) return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("手机号无效！");
+        try {
+            smsService.sendMsg(phoneNumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("验证码发送失败");
+        }
+        return Result.success().setMsg("发送成功");
+    }
+
     @ApiOperation(value="获取邮件验证码")
     @GetMapping("/getMail/{mail}")
     public Result getMail(@PathVariable("mail") String mail) {
@@ -120,11 +137,11 @@ public class LoginController {
         return Result.success().setMsg("验证码发送成功,有效时长10分钟");
     }
 
-    @ApiOperation(value="")
+    @ApiOperation(value="检测邮箱验证码是否正确")
     @PostMapping("/checkEmailCode")
     public Result checkEmailCode(@RequestBody MailMessage mailMessage) {
         try {
-            verifier.MailCodeCheck(mailMessage.getMail(), mailMessage.getCode());
+            verifier.codeCheck(mailMessage.getMail(), mailMessage.getCode());
         } catch (UserFriendException e) {
             if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
             else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
@@ -147,7 +164,7 @@ public class LoginController {
         }
         // 验证验证码
         try {
-            verifier.MailCodeCheck(mailMessage.getMail(), mailMessage.getCode());
+            verifier.codeCheck(mailMessage.getMail(), mailMessage.getCode());
         } catch (UserFriendException e) {
             if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
             else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
@@ -167,7 +184,7 @@ public class LoginController {
             return Result.failure(ResultCodeEnum.PARAM_ERROR).setMsg("密码不能为空！");
         }
         try {
-            verifier.MailCodeCheck(forgotPasswordDto.getEmail(), forgotPasswordDto.getCode());
+            verifier.codeCheck(forgotPasswordDto.getEmail(), forgotPasswordDto.getCode());
         } catch (UserFriendException e) {
             if(e.getCode().equals("901")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_EXPIRED).setMsg(e.getMsg());
             else if(e.getCode().equals("912")) return Result.failure(ResultCodeEnum.VERIFICATION_CODE_ERROR).setMsg(e.getMsg());
