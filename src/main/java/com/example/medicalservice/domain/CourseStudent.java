@@ -34,11 +34,11 @@ public class CourseStudent {
                 '}';
     }
 
-    public String getTeacherName() {
+    public String getCreatTeacher() {
         return creatTeacher;
     }
 
-    public void setTeacherName(String creatTeacher) {
+    public void setCreatTeacher(String creatTeacher) {
         this.creatTeacher = creatTeacher;
     }
 
