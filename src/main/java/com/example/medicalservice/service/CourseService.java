@@ -41,4 +41,5 @@ public interface CourseService {
     List<CourseStudent> findTeamStudent(Integer courseId,Integer studentId);//查询分组里的学生
     Integer updateOneStudentById(Integer courseId,Integer teamId,Integer studentId);//变更单个小组成员
     Integer updateStudentById(CourseStudent courseStudent);//变更多个小组成员
+    List<CourseStudent> findCourseTeamStudent(Integer courseId,Integer teamId);
 }

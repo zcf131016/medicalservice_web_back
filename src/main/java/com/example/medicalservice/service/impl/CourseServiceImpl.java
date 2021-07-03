@@ -212,9 +212,9 @@ public class CourseServiceImpl implements CourseService {
             CourseStudent courseStudent=courseStudentList.get(i);
             Course course=courseMapper.findCourseById(courseStudent.getCourseId());
             Integer courseState=course.getCourseState();
-            String teacherName=userMapper.getUserByUserId(course.getTeacherId()).getUserName();
+            String creatTeacher=userMapper.getUserByUserId(course.getTeacherId()).getUserName();
             courseStudentList.get(i).setCourseState(courseState);
-            courseStudentList.get(i).setTeacherName(teacherName);
+            courseStudentList.get(i).setCreatTeacher(creatTeacher);
         }
         return courseStudentList;
     }
@@ -284,6 +284,11 @@ public class CourseServiceImpl implements CourseService {
             courseMapper.updateOneStudentById(courseId,teamId,studentId);
         }
         return 1;
+    }
+
+    @Override
+    public List<CourseStudent> findCourseTeamStudent(Integer courseId, Integer teamId) {
+        return courseMapper.findTeamStudent(courseId,teamId);
     }
 
 }

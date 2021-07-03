@@ -53,7 +53,7 @@ public class TeamController {
     public Result deleteOneStudentFromTeam(@PathVariable Integer courseId, @PathVariable Integer teamId,@PathVariable Integer studentId) {
         return Result.success().setData(courseService.deleteOneStudentById(courseId,teamId,studentId)).setCode(ResultCodeEnum.OK.getCode()).setMsg("删除单个学生成功");
     }
-    @ApiOperation(value = "查找团队成员" )
+    @ApiOperation(value = "学生查找自己团队成员" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
             @ApiImplicitParam(required = true,name="studentId", value="学生id"),
     })
@@ -61,6 +61,20 @@ public class TeamController {
     @GetMapping("/findTeamStudent/{courseId}/{studentId}")
     public Result findTeamStudent(@PathVariable Integer courseId,@PathVariable Integer studentId) {
         List<CourseStudent> courseStudents=courseService.findTeamStudent(courseId,studentId);
+        if (courseStudents==null){
+            return Result.failure(ResultCodeEnum.CREATED).setMsg("团里无人");
+        }
+        int Count = courseStudents.size();
+        return Result.success().setData(courseStudents).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("根据课程名查找课程成功");
+    }
+    @ApiOperation(value = "根据课程查找团队成员" )
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
+            @ApiImplicitParam(required = true,name="teamId", value="团队id"),
+    })
+    @ResponseBody
+    @GetMapping("/findCourseTeamStudent/{courseId}/{teamId}")
+    public Result findCourseTeamStudent(@PathVariable Integer courseId,@PathVariable Integer teamId) {
+        List<CourseStudent> courseStudents=courseService.findCourseTeamStudent(courseId,teamId);
         if (courseStudents==null){
             return Result.failure(ResultCodeEnum.CREATED).setMsg("团里无人");
         }
