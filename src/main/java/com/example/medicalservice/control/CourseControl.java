@@ -77,7 +77,15 @@ public class CourseControl {
     @ResponseBody
     @PostMapping("/deleteCourse/{courseId}")
     public Result deleteCourseById(@PathVariable Integer courseId) {
-        return Result.success().setData(courseService.deleteCourseById(courseId)).setCode(ResultCodeEnum.OK.getCode()).setMsg("课程成功");
+        return Result.success().setData(courseService.deleteCourseById(courseId)).setCode(ResultCodeEnum.OK.getCode()).setMsg("删除课程成功");
+    }
+    @ApiOperation(value = "批量删除课程")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseIds", value="课程id"),
+    })
+    @ResponseBody
+    @PostMapping("/deleteMultipleCourseById")
+    public Result deleteMultipleCourseById(@RequestBody List<Integer> courseIds) {
+        return Result.success().setData(courseService.deleteMultipleCourse(courseIds)).setCode(ResultCodeEnum.OK.getCode()).setMsg("删除课程成功");
     }
     @ApiOperation(value = "添加课程老师")
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
