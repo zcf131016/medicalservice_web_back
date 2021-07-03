@@ -291,4 +291,12 @@ public class CourseServiceImpl implements CourseService {
         return courseMapper.findTeamStudent(courseId,teamId);
     }
 
+    @Override
+    public Integer deleteMultipleCourse(List<Integer> coreseIds) {
+        for (int i=0;i<coreseIds.size();i++){
+            courseMapper.deleteCourseById(coreseIds.get(i));
+        }
+        return 1;
+    }
+
 }
