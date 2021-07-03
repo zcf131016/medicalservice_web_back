@@ -51,7 +51,7 @@ public class DictionaryController {
 
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询全部数据字典类型")
     @ResponseBody
     @GetMapping("/getAllDictionaryType")
@@ -62,7 +62,7 @@ public class DictionaryController {
         return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询所有数据类型成功");
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询字典类型根据typecode")
     @ApiImplicitParam(required = true, value = "typeCode", name = "类型编码")
     @ResponseBody
@@ -78,7 +78,7 @@ public class DictionaryController {
 
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询字典类型根据typename")
     @ApiImplicitParam(required = true, value = "typeName", name = "类型名")
     @ResponseBody
@@ -94,7 +94,7 @@ public class DictionaryController {
     }
 
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "分页查找所有字典类型")
     @ApiImplicitParams({@ApiImplicitParam(required = true, name = "pageNum", value = "当前页数"),
             @ApiImplicitParam(required = true, name = "pageSize", value = "每页显示条数")
@@ -175,7 +175,7 @@ public class DictionaryController {
 
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询数据值根据value")
     @ApiImplicitParam(required = true, value = "value", name = "值")
     @ResponseBody
@@ -191,7 +191,7 @@ public class DictionaryController {
 
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+   // @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询数据值根据name")
     @ApiImplicitParam(required = true, value = "name", name = "数据名")
     @ResponseBody
@@ -206,7 +206,7 @@ public class DictionaryController {
         return Result.success().setData(dictionaryDetail).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询数据值根据typeCode")
     @ApiImplicitParam(required = true, value = "typeCode", name = "类型编码")
     @ResponseBody
@@ -221,7 +221,7 @@ public class DictionaryController {
         return Result.success().setData(dictionaryDetails).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "查询全部数据字典类型和值")
     @ResponseBody
     @GetMapping("/getAllDictionary")
@@ -231,7 +231,7 @@ public class DictionaryController {
         return Result.success().setData(dictionaryTypes).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询所有数据类型成功");
     }
 
-    @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
+    //@RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "分页查询全部数据字典类型和值")
     @ApiImplicitParams({@ApiImplicitParam(required = true, name = "pageNum", value = "当前页数"),
             @ApiImplicitParam(required = true, name = "pageSize", value = "每页显示条数")
