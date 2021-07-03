@@ -134,7 +134,7 @@
             )
     </select>
     <select id="findInTeamStudentByCourseId" resultMap="CourseStudentResultMap">
-        select team_id from course_student where student_id not in (
+        select * from course_student where  course_id=#{courseId} and student_id not in (
             select student_id from course_student where  course_id=#{courseId} and team_id=-1
             )
         group by team_id
