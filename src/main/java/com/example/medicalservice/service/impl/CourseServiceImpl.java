@@ -132,6 +132,8 @@ public class CourseServiceImpl implements CourseService {
             one.setCourseId(courseStudent.getCourseId());
             one.setCourseName(courseStudent.getCourseName());
             one.setTeamId(-1);
+            String user=userMapper.getUserByUserId(one.getStudentId()).getRealName();
+            one.setStudentName(user);
             if(courseMapper.findStudentBySIdCId(one)==null)
               courseMapper.insertCourseStudent(one);
         }
@@ -174,6 +176,7 @@ public class CourseServiceImpl implements CourseService {
         }
         approveRequest.setArId(RandomUtil.getRandom(9));
         approveRequest.setIsApproved(1);
+        approveRequest.setStudentName(userMapper.getUserByUserId(approveRequest.getStudentId()).getRealName());
         courseMapper.insertApproveRequest(approveRequest);
         return 1;
     }
