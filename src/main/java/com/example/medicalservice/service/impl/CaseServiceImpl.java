@@ -138,6 +138,11 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public int getcaseimageCountbyId(Integer caseId) {
+        return casesMapper.getcaseimageCountbyId(caseId);
+    }
+
+    @Override
     public List<CaseFile> getcasefilebyId(Integer caseId) {
         return casesMapper.getcasefilebyId(caseId);
     }

@@ -164,10 +164,12 @@ public class CaseController {
     }
 
     @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
-    @ApiOperation(value = "根据caseId删除案例，若有文件和图片（外键级联，还未设置）也一并删除")
+    @ApiOperation(value = "根据caseId删除案例，若有文件和图片则一并删除")
     @ApiImplicitParam(required = true, name = "caseId", value = "案例id")
     @DeleteMapping("/deletecase/{caseId}")
     public Result deletecase(@PathVariable Integer caseId) {
+        if (caseService.getcaseimageCountbyId(caseId) != 0)
+            caseService.deletecasesImageByCaseid(caseId);
         if (caseService.getcasefileCountbyId(caseId) != 0)
             this.deleteCaseFileByCaseId(caseId);
         caseService.deleteCasesByid(caseId);
@@ -176,10 +178,12 @@ public class CaseController {
 
     @RequiresRoles(value = {"teacher", "admin"}, logical = Logical.OR)
     @ApiOperation(value = "批量删除案例", notes = "前端提供名为caseIdList的Integer数组表示需要删除的案例id号，若有文件和图片则一并删除")
-    @ApiImplicitParam(required = true, value = "需要删除的案例id数组",name = "caseIdList",paramType = "query",dataType = "Integer")
+    @ApiImplicitParam(required = true, value = "需要删除的案例id数组", name = "caseIdList", paramType = "query", dataType = "Integer")
     @DeleteMapping("/batchdeletecase")
     public Result batchdeletecase(@RequestBody List<Integer> caseIdList) {
         for (int i = 0; i < caseIdList.size(); i++) {
+            if (caseService.getcaseimageCountbyId(caseIdList.get(i)) != 0)
+                caseService.deletecasesImageByCaseid(caseIdList.get(i));
             if (caseService.getcasefileCountbyId(caseIdList.get(i)) != 0)
                 this.deleteCaseFileByCaseId(caseIdList.get(i));
             caseService.deleteCasesByid(caseIdList.get(i));
@@ -206,7 +210,7 @@ public class CaseController {
 //            byte[] pictureData = new byte[(int) file.getSize()];
 //            inputStream.read(pictureData);
         try {
-            String originalfileName=file.getOriginalFilename();
+            String originalfileName = file.getOriginalFilename();
             CaseImage caseImage = new CaseImage();
             Blob blob = new SerialBlob(file.getBytes());
             caseImage.setImageName(originalfileName);
@@ -252,8 +256,8 @@ public class CaseController {
             jsonObject.put("id", caseImageList.get(i).getId());
             jsonObject.put("caseId", caseImageList.get(i).getCaseId());
             jsonObject.put("imagebase", imagebase);
-            jsonObject.put("creatTime",caseImageList.get(i).getCreatTime());
-            jsonObject.put("imageName",caseImageList.get(i).getImageName());
+            jsonObject.put("creatTime", caseImageList.get(i).getCreatTime());
+            jsonObject.put("imageName", caseImageList.get(i).getImageName());
             jsonArray.add(jsonObject);
         }
         return Result.success().setData(jsonArray).setCode(ResultCodeEnum.OK.getCode()).setMsg("获取病例图片成功!");

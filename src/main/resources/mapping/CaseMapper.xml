@@ -3,70 +3,83 @@
 
 <mapper namespace="com.example.medicalservice.mapper.CasesMapper">
     <resultMap id="CasesResultMap" type="com.example.medicalservice.domain.Cases">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="case_id" jdbcType="INTEGER" property="caseId" />
-        <result column="case_name" jdbcType="VARCHAR" property="caseName" />
-        <result column="course_id" jdbcType="INTEGER" property="courseId" />
-        <result column="course_name" jdbcType="VARCHAR" property="courseName" />
-        <result column="case_desc" jdbcType="VARCHAR" property="caseDesc" />
-        <result column="creat_time" jdbcType="DATE" property="creatTime" />
-        <result column="creat_trecher" jdbcType="INTEGER" property="creatTeacher" />
-        <result column="thinking" jdbcType="VARCHAR" property="thinking" />
-        <result column="isPublish" jdbcType="INTEGER" property="isPublish" />
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="case_id" jdbcType="INTEGER" property="caseId"/>
+        <result column="case_name" jdbcType="VARCHAR" property="caseName"/>
+        <result column="course_id" jdbcType="INTEGER" property="courseId"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="case_desc" jdbcType="VARCHAR" property="caseDesc"/>
+        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+        <result column="creat_trecher" jdbcType="INTEGER" property="creatTeacher"/>
+        <result column="thinking" jdbcType="VARCHAR" property="thinking"/>
+        <result column="isPublish" jdbcType="INTEGER" property="isPublish"/>
     </resultMap>
     <resultMap id="CasesImageResultMap" type="com.example.medicalservice.domain.CaseImage">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="case_id" jdbcType="INTEGER" property="caseId" />
-        <result column="image" jdbcType="BLOB" property="image" />
-        <result column="creat_time" jdbcType="DATE" property="creatTime" />
-        <result column="image_name" jdbcType="VARCHAR" property="imageName" />
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="case_id" jdbcType="INTEGER" property="caseId"/>
+        <result column="image" jdbcType="BLOB" property="image"/>
+        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
     </resultMap>
     <resultMap id="CasesFileResultMap" type="com.example.medicalservice.domain.CaseFile">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="case_id" jdbcType="INTEGER" property="caseId" />
-        <result column="file_url" jdbcType="VARCHAR" property="fileUrl" />
-        <result column="creat_time" jdbcType="DATE" property="creatTime" />
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="case_id" jdbcType="INTEGER" property="caseId"/>
+        <result column="file_url" jdbcType="VARCHAR" property="fileUrl"/>
+        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
     </resultMap>
     <select id="getAllCases" resultMap="CasesResultMap">
-        select * from cases
+        select *
+        from cases
     </select>
     <select id="getAllCasesCount" resultType="java.lang.Integer">
-        select count(*) from cases
+        select count(*)
+        from cases
     </select>
     <select id="getcasesByCourseId" resultMap="CasesResultMap">
-        select * from cases
+        select *
+        from cases
         where course_id = #{courseId}
     </select>
     <select id="getcasesCountByCourseId" resultType="java.lang.Integer">
-        select count(*) from cases
+        select count(*)
+        from cases
         where course_id = #{courseId}
     </select>
     <select id="getcasesBycaseName" resultMap="CasesResultMap">
-        select * from cases
+        select *
+        from cases
         where case_name = #{caseName}
     </select>
     <select id="getcasesCountBycaseName" resultType="java.lang.Integer">
-        select count(*) from cases
+        select count(*)
+        from cases
         where case_name = #{caseName}
     </select>
     <select id="getcasesByteacherId" resultMap="CasesResultMap">
-        select * from cases
+        select *
+        from cases
         where creat_trecher = #{creatTeacher}
     </select>
     <select id="getcasesCountByteacherId" resultType="java.lang.Integer">
-        select count(*) from cases
+        select count(*)
+        from cases
         where creat_trecher = #{creatTeacher}
     </select>
     <select id="getcasebyId" resultMap="CasesResultMap">
-        select * from cases
+        select *
+        from cases
         where case_id = #{caseId}
     </select>
-    <insert id="insertCases" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.Cases">
-        insert into cases(case_id,case_name,course_id,course_name,case_desc,creat_trecher,thinking,isPublish)
-        values (#{caseId},#{caseName},#{courseId},#{courseName},#{caseDesc},#{creatTeacher},#{thinking},#{isPublish})
+    <insert id="insertCases" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.example.medicalservice.domain.Cases">
+        insert into cases(case_id, case_name, course_id, course_name, case_desc, creat_trecher, thinking, isPublish)
+        values (#{caseId}, #{caseName}, #{courseId}, #{courseName}, #{caseDesc}, #{creatTeacher}, #{thinking},
+                #{isPublish})
     </insert>
     <delete id="deleteCasesByid" parameterType="java.lang.Integer">
-        delete from cases where case_id=#{caseId}
+        delete
+        from cases
+        where case_id = #{caseId}
     </delete>
     <update id="updateCases" parameterType="com.example.medicalservice.domain.Cases">
         UPDATE cases
@@ -79,43 +92,63 @@
         where case_id = #{caseId}
     </update>
     <select id="getcaseimagebymainId" resultMap="CasesImageResultMap">
-        select * from case_image
+        select *
+        from case_image
         where id = #{id}
     </select>
     <select id="getcaseimagebyId" resultMap="CasesImageResultMap">
-        select * from case_image
+        select *
+        from case_image
         where case_id = #{caseId}
     </select>
-    <insert id="insertCasesImage" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseImage">
-        insert into case_image(case_id,image,image_name)
-        values (#{caseId},#{image},#{imageName})
+    <insert id="insertCasesImage" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.example.medicalservice.domain.CaseImage">
+        insert into case_image(case_id, image, image_name)
+        values (#{caseId}, #{image}, #{imageName})
     </insert>
     <delete id="deletecasesImageByid" parameterType="java.lang.Integer">
-        delete from case_image where id=#{id}
+        delete
+        from case_image
+        where id = #{id}
     </delete>
     <delete id="deletecasesImageByCaseid" parameterType="java.lang.Integer">
-        delete from case_image where case_id = #{caseId}
+        delete
+        from case_image
+        where case_id = #{caseId}
     </delete>
+    <select id="getcaseimageCountbyId" resultType="java.lang.Integer">
+        select count(*)
+        from case_image
+        where case_id = #{caseId}
+    </select>
     <select id="getcasefilebyId" resultMap="CasesFileResultMap">
-        select * from case_file
+        select *
+        from case_file
         where case_id = #{caseId}
     </select>
     <select id="getcasefileCountbyId" resultType="java.lang.Integer">
-        select count(*) from case_file
+        select count(*)
+        from case_file
         where case_id = #{caseId}
     </select>
     <select id="downloadcasefilebyId" resultMap="CasesFileResultMap">
-        select * from case_file
+        select *
+        from case_file
         where id = #{id}
     </select>
-    <insert id="insertCasesFile" useGeneratedKeys="true" keyProperty="id" parameterType="com.example.medicalservice.domain.CaseFile">
-        insert into case_file(case_id,file_url)
-        values (#{caseId},#{fileUrl})
+    <insert id="insertCasesFile" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.example.medicalservice.domain.CaseFile">
+        insert into case_file(case_id, file_url)
+        values (#{caseId}, #{fileUrl})
     </insert>
     <delete id="deletecasesFileByid" parameterType="java.lang.Integer">
-        delete from case_file where id=#{id}
+        delete
+        from case_file
+        where id = #{id}
     </delete>
     <delete id="deletecasesFileByCaseid" parameterType="java.lang.Integer">
-        delete from case_file where case_id = #{caseId}
+        delete
+        from case_file
+        where case_id = #{caseId}
     </delete>
 </mapper>
