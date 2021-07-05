@@ -61,6 +61,9 @@ public interface CasesMapper {
     //根据案例id删除该案例的所有图片
     int deletecasesImageByCaseid(Integer caseId);
 
+    //根据案例id获取图片数目
+    int getcaseimageCountbyId(Integer caseId);
+
     //根据图片id获取图片
     CaseImage getcaseimagebymainId(Integer id);
 

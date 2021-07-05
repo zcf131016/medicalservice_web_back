@@ -68,6 +68,9 @@ public interface CaseService {
     //根据案例id删除该案例的所有图片
     int deletecasesImageByCaseid(Integer caseId);
 
+    //根据案例id获取图片数目
+    int getcaseimageCountbyId(Integer caseId);
+
     //根据案例id获取所有文件
     List<CaseFile> getcasefilebyId(Integer caseId);
 
