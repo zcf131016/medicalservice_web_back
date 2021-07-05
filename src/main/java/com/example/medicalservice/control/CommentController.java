@@ -30,8 +30,7 @@ import java.util.List;
 @RestController
 @RequiresRoles(value = {"admin","teacher","student"}, logical = Logical.OR)
 @RequestMapping("/comment")
-public class
-CommentController {
+public class CommentController {
     @Autowired
     CommentReplyService commentReplyService;
 
