@@ -36,7 +36,6 @@ public class CourseServiceImpl implements CourseService {
             for (int j=0;j<courseTeachers.size();j++){
                 if (courseTeachers.get(j).getIsCreater()==1){
                     courses.get(i).setCreatTeacher(courseTeachers.get(j).getTeacherName());
-                    System.out.println(courses.get(i).getCreatTeacher());
                     continue;
                 }
                 if (j<courseTeachers.size()-1){
@@ -116,7 +115,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Integer deleteCourseTeacher(CourseTeacher courseTeacher) {
-        return courseMapper.deleteCourseTeacher(courseTeacher);
+        List<CourseTeacher> courseTeachers=courseTeacher.getCourseTeachers();
+        for (int i=0;i<courseTeachers.size();i++){
+            CourseTeacher teacher=courseTeachers.get(i);
+            teacher.setCourseId(courseTeacher.getCourseId());
+            courseMapper.deleteCourseTeacher(teacher);
+        }
+        return 1;
     }
 
     @Override
