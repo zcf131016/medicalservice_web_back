@@ -178,7 +178,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 
         return 0;
-    }clea
+    }
 
     @Override
     public int deleteDictionaryDetailById(Integer Id) {
