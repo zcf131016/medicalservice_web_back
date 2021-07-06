@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : 65001
 
- Date: 01/07/2021 09:55:06
+ Date: 06/07/2021 09:46:15
 */
 
 SET NAMES utf8mb4;
@@ -24,20 +24,22 @@ DROP TABLE IF EXISTS `approve_request`;
 CREATE TABLE `approve_request`  (
   `id` int(16) NOT NULL AUTO_INCREMENT,
   `course_id` int(16) NOT NULL,
-  `course_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `course_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `student_id` int(16) NOT NULL,
   `student_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `is_approved` int(1) UNSIGNED ZEROFILL NOT NULL,
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `ar_id` int(16) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of approve_request
--- ----------------------------
-INSERT INTO `approve_request` VALUES (1, 10000, '数据结构', 999999999, '申请者', 0, '2021-06-22 15:21:35', 10000);
-INSERT INTO `approve_request` VALUES (2, 10001, '操作系统', 999999999, '申请者', 0, '2021-06-22 15:22:45', 10001);
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_ids`(`course_id`) USING BTREE,
+  INDEX `fk_ssss`(`course_name`) USING BTREE,
+  INDEX `fk_aid`(`student_id`) USING BTREE,
+  INDEX `fk_aname`(`student_name`) USING BTREE,
+  CONSTRAINT `fk_aid` FOREIGN KEY (`student_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_aname` FOREIGN KEY (`student_name`) REFERENCES `users` (`real_name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_ids` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_ssss` FOREIGN KEY (`course_name`) REFERENCES `course` (`course_name`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for case_file
@@ -49,12 +51,7 @@ CREATE TABLE `case_file`  (
   `file_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文件资源',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of case_file
--- ----------------------------
-INSERT INTO `case_file` VALUES (1, 1000, './image/file.pdf', '2021-06-22 14:45:14.000000');
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for case_image
@@ -66,7 +63,8 @@ CREATE TABLE `case_image`  (
   `image` longblob NULL COMMENT '图片资源',
   `image_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_case_id`(`case_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -85,14 +83,9 @@ CREATE TABLE `cases`  (
   `med_history` varchar(800) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `thinking` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `isPublish` int(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of cases
--- ----------------------------
-INSERT INTO `cases` VALUES (1, 1000, '跳表', 10000, '数据结构', '跳表数据结构', '2021-06-22 14:44:16.000000', 888888888, '数据结构', '链表的一种', 1);
-INSERT INTO `cases` VALUES (2, 1001, '跳表biao', 10000, '数据结构', '跳表数据结构', '2021-06-22 14:44:16.000000', 888888888, '数据结构', '链表的一种', 1);
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `case_id`(`case_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for comment_like
@@ -103,14 +96,10 @@ CREATE TABLE `comment_like`  (
   `user_id` int(16) NOT NULL,
   `like_status` int(1) NOT NULL DEFAULT 1,
   `comment_id` int(16) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of comment_like
--- ----------------------------
-INSERT INTO `comment_like` VALUES (1, 888888888, 1, 1);
-INSERT INTO `comment_like` VALUES (2, 222222222, 1, 1);
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_com_id`(`comment_id`) USING BTREE,
+  CONSTRAINT `fk_com_id` FOREIGN KEY (`comment_id`) REFERENCES `comment_reply` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for comment_reply
@@ -126,17 +115,10 @@ CREATE TABLE `comment_reply`  (
   `from_avatar` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '评论者头像',
   `have_reply` int(1) UNSIGNED ZEROFILL NULL DEFAULT 0 COMMENT '是否有回复内容',
   `parent_id` int(16) NULL DEFAULT NULL COMMENT '父评论id',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of comment_reply
--- ----------------------------
-INSERT INTO `comment_reply` VALUES (1, 1, '< 该评论已被作者删除！>', 222222222, '2021-06-22 14:46:40.101945', 'ewertewr', NULL, 1, NULL);
-INSERT INTO `comment_reply` VALUES (2, 1, 'ewfwefwefwf', 333333333, '2021-06-22 14:46:47.025916', 'sdgr', NULL, 0, 1);
-INSERT INTO `comment_reply` VALUES (3, 1, 'fasfrggera', 222222222, '2021-06-22 14:46:50.604389', 'sdfsdf', NULL, 1, NULL);
-INSERT INTO `comment_reply` VALUES (5, 1, 'sdfsdlfjsdlfsdofjdsoif', 222222222, '2021-06-22 14:46:53.708152', 'yuhang', NULL, 0, 3);
-INSERT INTO `comment_reply` VALUES (6, 1, 'sdfsdlfjsdlfsdofjdsoif', 333333333, '2021-06-22 14:47:12.402283', 'yuhang', NULL, 0, 3);
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_case_co_id`(`case_id`) USING BTREE,
+  CONSTRAINT `fk_case_co_id` FOREIGN KEY (`case_id`) REFERENCES `cases` (`case_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for course
@@ -144,13 +126,15 @@ INSERT INTO `comment_reply` VALUES (6, 1, 'sdfsdlfjsdlfsdofjdsoif', 333333333, '
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course`  (
   `id` int(16) NOT NULL AUTO_INCREMENT,
-  `course_id` int(16) NULL DEFAULT NULL COMMENT '课程id',
+  `course_id` int(16) NOT NULL COMMENT '课程id',
   `course_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程名',
   `teacher_id` int(16) NULL DEFAULT NULL COMMENT '创建老师id',
   `course_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程描述',
   `course_state` int(1) NULL DEFAULT NULL COMMENT '课程状态',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`, `course_id`) USING BTREE,
+  INDEX `course_id`(`course_id`) USING BTREE,
+  INDEX `course_name`(`course_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -169,10 +153,18 @@ CREATE TABLE `course_student`  (
   `course_id` int(16) NULL DEFAULT NULL COMMENT '课程id',
   `course_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '课程名称',
   `student_id` int(16) NULL DEFAULT NULL COMMENT '学生id',
-  `student_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '学生名称',
+  `student_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '学生名称',
   `team_id` int(16) NULL DEFAULT NULL COMMENT '队伍id',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_courseid`(`course_id`) USING BTREE,
+  INDEX `fk_coursename`(`course_name`) USING BTREE,
+  INDEX `fk_studentid`(`student_id`) USING BTREE,
+  INDEX `fk_studentNAME`(`student_name`) USING BTREE,
+  CONSTRAINT `fk_courseid` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_coursename` FOREIGN KEY (`course_name`) REFERENCES `course` (`course_name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_studentNAME` FOREIGN KEY (`student_name`) REFERENCES `users` (`real_name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_studentid` FOREIGN KEY (`student_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -195,7 +187,15 @@ CREATE TABLE `course_teacher`  (
   `teacher_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '老师姓名',
   `iscreater` int(1) NULL DEFAULT NULL COMMENT '是否创建者',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_courseids`(`course_id`) USING BTREE,
+  INDEX `fk_coursenames`(`course_name`) USING BTREE,
+  INDEX `fk_teacherid`(`teacher_id`) USING BTREE,
+  INDEX `fk_teachername`(`teacher_name`) USING BTREE,
+  CONSTRAINT `fk_courseids` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_coursenames` FOREIGN KEY (`course_name`) REFERENCES `course` (`course_name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_teacherid` FOREIGN KEY (`teacher_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_teachername` FOREIGN KEY (`teacher_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -214,15 +214,20 @@ CREATE TABLE `dictionary_detail`  (
   `value` int(16) NULL DEFAULT NULL COMMENT '字典值数字如1，2',
   `creat_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `is_default` int(1) UNSIGNED ZEROFILL NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_code`(`type_code`) USING BTREE,
+  CONSTRAINT `fk_code` FOREIGN KEY (`type_code`) REFERENCES `dictionary_type` (`type_code`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dictionary_detail
 -- ----------------------------
 INSERT INTO `dictionary_detail` VALUES (1, 'sex', '男', 1, '2021-06-22 15:25:09', 1);
 INSERT INTO `dictionary_detail` VALUES (2, 'sex', '女', 0, '2021-06-22 15:26:06', 0);
-INSERT INTO `dictionary_detail` VALUES (3, 'dfsd', '钱钱钱', 1, '2021-06-27 15:46:50', 0);
+INSERT INTO `dictionary_detail` VALUES (3, 'title', '住院医师', 1, '2021-07-05 16:26:34', 0);
+INSERT INTO `dictionary_detail` VALUES (4, 'title', '主治医师', 2, '2021-07-05 16:27:06', 0);
+INSERT INTO `dictionary_detail` VALUES (5, 'title', '副主任医师', 3, '2021-07-05 16:27:36', 0);
+INSERT INTO `dictionary_detail` VALUES (6, 'title', '主任医师', 4, '2021-07-05 16:27:54', 0);
 
 -- ----------------------------
 -- Table structure for dictionary_type
@@ -233,13 +238,16 @@ CREATE TABLE `dictionary_type`  (
   `type_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典编码如sex',
   `type_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典名称如性别',
   `creat_time` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `type_code`(`type_code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of dictionary_type
 -- ----------------------------
 INSERT INTO `dictionary_type` VALUES (1, 'sex', '性别', '2021-06-22 15:23:48.517211');
+INSERT INTO `dictionary_type` VALUES (2, 'title', '职称', '2021-07-05 16:25:58.237021');
+INSERT INTO `dictionary_type` VALUES (3, 'department', '科室', '2021-07-05 17:35:31.610800');
 
 -- ----------------------------
 -- Table structure for menu
@@ -258,17 +266,17 @@ CREATE TABLE `menu`  (
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
   `role` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES (1, 0, '系统首页', 'system-home', 'el-icon-house', 'manage', 1, 'manageBoard', 0, '2021-04-16 20:40:01', NULL);
-INSERT INTO `menu` VALUES (2, 0, '学生首页', 'student-home', 'el-icon-user-solid', 'studentHome', 2, 'roleManage', 0, '2021-04-16 20:40:01', NULL);
-INSERT INTO `menu` VALUES (3, 0, '用户管理', 'user-manage', 'el-icon-menu', 'userManage', 3, 'userManage', 0, '2021-04-28 15:57:03', NULL);
-INSERT INTO `menu` VALUES (4, 0, '课程管理', 'course-manage', 'el-icon-user', 'courseManage', 4, 'courseManage', 0, '2021-04-28 15:58:23', NULL);
-INSERT INTO `menu` VALUES (5, 0, '案例管理', 'case-manage', 'el-icon-s-custom', 'caseManage', 4, 'caseManage', 0, '2021-04-28 15:59:12', NULL);
-INSERT INTO `menu` VALUES (6, 0, '字典管理', 'dictionary', 'el-icon-s-custom', 'dictionary', 4, 'dictionaryManage', 0, '2021-04-28 16:00:18', NULL);
+INSERT INTO `menu` VALUES (1, 0, '系统首页', 'system-home', 'el-icon-s-home', 'manage', 1, 'manageBoard', 0, '2021-04-16 20:40:01', NULL);
+INSERT INTO `menu` VALUES (2, 0, '学生首页', 'student-home', 'el-icon-s-custom', 'studentHome', 2, 'roleManage', 0, '2021-04-16 20:40:01', NULL);
+INSERT INTO `menu` VALUES (3, 0, '用户管理', 'user-manage', 'el-icon-user-solid', 'userManage', 3, 'userManage', 0, '2021-04-28 15:57:03', NULL);
+INSERT INTO `menu` VALUES (4, 0, '课程管理', 'course-manage', 'el-icon-s-management', 'courseManage', 4, 'courseManage', 0, '2021-04-28 15:58:23', NULL);
+INSERT INTO `menu` VALUES (5, 0, '案例管理', 'case-manage', 'el-icon-s-order', 'caseManage', 4, 'caseManage', 0, '2021-04-28 15:59:12', NULL);
+INSERT INTO `menu` VALUES (6, 0, '字典管理', 'dictionary', 'el-icon-s-data', 'dictionary', 4, 'dictionaryManage', 0, '2021-04-28 16:00:18', NULL);
 INSERT INTO `menu` VALUES (7, 0, '测试页面', 'test', 'el-icon-tickets', 'test', 8, 'test', 1, '2021-04-28 16:03:19', NULL);
 
 -- ----------------------------
@@ -280,8 +288,10 @@ CREATE TABLE `role_menu`  (
   `role_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
   `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 153 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `fk_menu_id`(`menu_id`) USING BTREE,
+  CONSTRAINT `fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 140 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_menu
@@ -292,6 +302,11 @@ INSERT INTO `role_menu` VALUES (131, 0, 3, '2021-06-25 22:22:57');
 INSERT INTO `role_menu` VALUES (132, 0, 4, '2021-06-25 22:22:57');
 INSERT INTO `role_menu` VALUES (133, 0, 6, '2021-06-25 22:22:57');
 INSERT INTO `role_menu` VALUES (134, 0, 7, '2021-06-25 22:22:57');
+INSERT INTO `role_menu` VALUES (135, 1, 2, '2021-07-05 16:04:22');
+INSERT INTO `role_menu` VALUES (136, 2, 2, '2021-07-05 16:04:32');
+INSERT INTO `role_menu` VALUES (137, 0, 5, '2021-07-06 09:44:42');
+INSERT INTO `role_menu` VALUES (138, 1, 5, '2021-07-06 09:44:59');
+INSERT INTO `role_menu` VALUES (139, 1, 4, '2021-07-06 09:45:17');
 
 -- ----------------------------
 -- Table structure for roles
@@ -325,13 +340,7 @@ CREATE TABLE `student_file`  (
   `upload_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `file_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of student_file
--- ----------------------------
-INSERT INTO `student_file` VALUES (1, 1000, 888888888, '1', '2021-06-28 15:59:09', '1');
-INSERT INTO `student_file` VALUES (2, 1000, 888888888, '2', '2021-06-28 15:59:14', '2');
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for users
@@ -352,7 +361,10 @@ CREATE TABLE `users`  (
   `creat_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `real_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '真名',
   `avatar` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '头像',
-  PRIMARY KEY (`id`, `username`) USING BTREE
+  PRIMARY KEY (`id`, `username`) USING BTREE,
+  INDEX `user_id`(`user_id`) USING BTREE,
+  INDEX `username`(`username`) USING BTREE,
+  INDEX `real_name`(`real_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
