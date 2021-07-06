@@ -167,6 +167,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         if(dictionaryMapper.getDictionaryTypeBytypeCode(dictionaryType.getTypeCode())!=null){
             throw new UserFriendException("该数据类型存在","102");
         }
+        dictionaryMapper.insertDictionaryType(dictionaryType);
         List<DictionaryDetail> dictionaryDetails = dictionaryType.getDictionaryDetails();
         for(int i = 0;i<dictionaryDetails.size();i++){
             DictionaryDetail dictionaryDetail=dictionaryDetails.get(i);
@@ -174,9 +175,10 @@ public class DictionaryServiceImpl implements DictionaryService {
 
             dictionaryMapper.insertDictionaryDetail(dictionaryDetail);
         }
-        dictionaryMapper.insertDictionaryType(dictionaryType);
+
+
         return 0;
-    }
+    }clea
 
     @Override
     public int deleteDictionaryDetailById(Integer Id) {
