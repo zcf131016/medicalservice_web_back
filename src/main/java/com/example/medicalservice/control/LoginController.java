@@ -80,7 +80,9 @@ public class LoginController {
     @ResponseBody
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-
+        if(user.getEmail() != null && userService.getUserByEmail(user.getEmail()) != null) return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("邮箱已被绑定！");
+        if(user.getPhone() != null && userService.getUserByPhone(user.getPhone()) != null) return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("手机号已被绑定！");
+        if(user.getUserName() != null && userService.getUser(user.getUserName()) != null) return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("用户名已存在！");
         try{
             user.setPassWord(iPasswordEncoder.encode(user.getPassWord()));
             userService.insertUser(user);
