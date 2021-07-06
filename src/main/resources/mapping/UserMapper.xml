@@ -107,6 +107,13 @@
         select * from users where phone = #{phone}
     </select>
 
+    <select id="findAllTeacherNotInCourse" resultType="com.example.medicalservice.domain.User"
+            parameterType="java.lang.Integer">
+        select * from users where role_id=1 and user_id not in (
+            select student_id from course_student where course_id=#{courseId}
+        )
+    </select>
+
 
 </mapper>
 

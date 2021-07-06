@@ -302,6 +302,18 @@ public class UserController {
         return Result.success().setData(user1).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
+    @ApiOperation(value = "//查询不在这门课的老师信息")
+    @ApiImplicitParam(required = true,name ="courseId",value = "课程id")
+    @ResponseBody
+    @GetMapping("/findAllTeacherNotInCourse/{courseId}")
+    public Result findAllTeacherNotInCourse(@PathVariable("courseId") Integer courseId){
+
+        List<User> users = userService.findAllTeacherNotInCourse(courseId);
+        int Count = users.size();
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+    }
+
 
 
 
