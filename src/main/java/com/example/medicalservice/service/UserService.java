@@ -63,6 +63,9 @@ public interface UserService {
     //更新密码
     int updatePasswordByEmail(String email,String passWord);
 
+    //查询不在这门课的老师信息
+    List<User> findAllTeacherNotInCourse(Integer courseId);
+
 
 
 

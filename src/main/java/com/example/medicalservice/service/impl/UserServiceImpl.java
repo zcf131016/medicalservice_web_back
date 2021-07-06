@@ -184,5 +184,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.updatePasswordByEmail(email,passWord);
     }
 
+    @Override
+    public List<User> findAllTeacherNotInCourse(Integer courseId) {
+        return userMapper.findAllTeacherNotInCourse(courseId);
+    }
 
 }
