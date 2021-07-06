@@ -311,9 +311,22 @@ public class UserController {
 
         List<User> users = userService.findAllTeacherNotInCourse(courseId);
         int Count = users.size();
-        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setMsg("查询成功");
+        System.out.println(users);
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询成功");
     }
 
+    @RequiresRoles(value={"teacher","admin"},logical=Logical.OR)
+    @ApiOperation(value = "//查询不在这门课的学生信息")
+    @ApiImplicitParam(required = true,name ="courseId",value = "课程id")
+    @ResponseBody
+    @GetMapping("/findAllStudentNotInCourse/{courseId}")
+    public Result findAllStudentNotInCourse(@PathVariable("courseId") Integer courseId){
+
+        List<User> users = userService.findAllStudentNotInCourse(courseId);
+        int Count = users.size();
+
+        return Result.success().setData(users).setCode(ResultCodeEnum.OK.getCode()).setCount(Count).setMsg("查询成功");
+    }
 
 
 

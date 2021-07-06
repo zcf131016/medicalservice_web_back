@@ -189,4 +189,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.findAllTeacherNotInCourse(courseId);
     }
 
+    @Override
+    public List<User> findAllStudentNotInCourse(Integer courseId) {
+        return userMapper.findAllStudentNotInCourse(courseId);
+    }
+
 }

@@ -66,6 +66,9 @@ public interface UserService {
     //查询不在这门课的老师信息
     List<User> findAllTeacherNotInCourse(Integer courseId);
 
+    //查询不在这门课的老师信息
+    List<User> findAllStudentNotInCourse(Integer courseId);
+
 
 
 
