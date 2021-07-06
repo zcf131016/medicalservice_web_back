@@ -114,7 +114,7 @@ public class CourseControl {
     }
     @ApiOperation(value = "通过课程id以及老师id退出课程" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程名称"),
-            @ApiImplicitParam(required = true,name="teacherId", value="课程名称"),
+            @ApiImplicitParam(required = true,name="courseTeachers", value="一个老师数组包含teacherId"),
     })
     @ResponseBody
     @PostMapping("/deleteCourseTeacher")
@@ -176,7 +176,6 @@ public class CourseControl {
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
             @ApiImplicitParam(required = true,name="courseName", value="课程名称"),
             @ApiImplicitParam(required = true,name="studentId", value="学生id"),
-            @ApiImplicitParam(required = true,name="studentName", value="学生名称"),
     })
     @ResponseBody
     @PostMapping ("/insertApproveRequest")
