@@ -110,6 +110,13 @@
     <select id="findAllTeacherNotInCourse" resultType="com.example.medicalservice.domain.User"
             parameterType="java.lang.Integer">
         select * from users where role_id=1 and user_id not in (
+            select teacher_id from course_teacher where course_id=#{courseId}
+        )
+    </select>
+
+    <select id="findAllStudentNotInCourse" resultType="com.example.medicalservice.domain.User"
+            parameterType="java.lang.Integer">
+        select * from users where role_id=2 and user_id not in (
             select student_id from course_student where course_id=#{courseId}
         )
     </select>
