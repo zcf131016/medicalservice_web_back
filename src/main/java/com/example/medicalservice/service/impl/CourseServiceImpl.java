@@ -313,7 +313,7 @@ public class CourseServiceImpl implements CourseService {
         for (int i=0;i<courseStudents.size();i++){
             CourseStudent one=courseStudents.get(i);
             one.setCourseId(courseStudent.getCourseId());
-            courseMapper.deleteCourseStudent(courseStudent);
+            courseMapper.deleteCourseStudent(one);
         }
         return 1;
     }
