@@ -8,7 +8,7 @@
         <result column="course_name" jdbcType="VARCHAR" property="courseName" />
         <result column="course_desc" jdbcType="VARCHAR" property="courseDesc" />
         <result column="course_state" jdbcType="INTEGER" property="courseState" />
-        <result column="creat_time" jdbcType="DATE" property="creatTime"/>
+        <result column="creat_time" jdbcType="VARCHAR" property="creatTime"/>
     </resultMap>
     <resultMap id="CourseStudentResultMap" type="com.example.medicalservice.domain.CourseStudent">
         <result column="id" jdbcType="INTEGER" property="id" />

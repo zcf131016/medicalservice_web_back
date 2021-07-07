@@ -12,6 +12,8 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +57,10 @@ public class CourseServiceImpl implements CourseService {
     public Course insertCourse(Course course) {
         course.setCourseId(RandomUtil.getRandom(9));
         course.setCourseState(1);
+        Date d = new Date();
+        SimpleDateFormat sbf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String c= sbf.format(d);
+        course.setCreatTime(c);
         courseMapper.insertCourse(course);
         CourseTeacher courseTeacher=new CourseTeacher();
         courseTeacher.setCourseId(course.getCourseId());
