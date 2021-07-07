@@ -12,7 +12,7 @@ public class Course {
     private Integer teacherId;
     private String  courseDesc;
     private Integer courseState;
-    private Date creatTime;
+    private String creatTime;
     private String teacherNumbers;
     private String creatTeacher;
     @Override
@@ -46,11 +46,11 @@ public class Course {
         this.creatTeacher = creatTeacher;
     }
 
-    public Date getCreatTime() {
+    public String getCreatTime() {
         return creatTime;
     }
 
-    public void setCreatTime(Date creatTime) {
+    public void setCreatTime(String creatTime) {
         this.creatTime = creatTime;
     }
 
