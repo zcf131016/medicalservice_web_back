@@ -9,6 +9,7 @@ import com.example.medicalservice.exception.UserFriendException;
 import com.example.medicalservice.service.FileService;
 import com.example.medicalservice.service.StudentFileService;
 import com.example.medicalservice.service.UserService;
+import com.example.medicalservice.util.RandomUtil;
 import com.example.medicalservice.util.Result;
 import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
@@ -78,7 +79,8 @@ public class StudentFileController {
                              @RequestParam("caseId") Integer caseId,
                              @RequestParam("studentId") Integer studentId,
                              HttpServletRequest request) {
-        String prefix = String.valueOf(caseId) + "_" + String.valueOf(studentId) + "_";
+        // 文件名加上随机值，防止重复
+        String prefix = String.valueOf(caseId) + "_" + String.valueOf(studentId) + "_" + RandomUtil.getRandom(6).toString() + "_";
         boolean result =  fileService.uploadFile(file,prefix,baseConfig.getStudentFilePath());
         if(result) {
             StudentFile studentFile = new StudentFile();
