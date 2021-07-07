@@ -15,7 +15,9 @@ import com.example.medicalservice.util.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,7 +49,7 @@ public class StudentFileController {
     UserService userService;
 
 
-
+    @RequiresRoles(value = {"admin","teacher"}, logical = Logical.OR)
     @ApiOperation(value="获取学生上传的文件列表")
     @GetMapping("/getFileById/{caseId}/{studentId}")
     public Result getFileById(@PathVariable("caseId") Integer caseId,
@@ -57,6 +59,7 @@ public class StudentFileController {
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setData(studentFileService.getFileByStudentId(caseId,studentId)).setMsg("获取成功");
     }
 
+    @RequiresRoles(value = {"admin","teacher"}, logical = Logical.OR)
     @ApiOperation(value = "根据caseId获取该case下所有学生的上传文件")
     @GetMapping("/getFileByCaseId/{caseId}/{pageNum}/{pageSize}")
     public Result getFileByCaseId(@PathVariable("caseId") Integer caseId,
@@ -113,6 +116,7 @@ public class StudentFileController {
         return Result.failure(ResultCodeEnum.NOT_IMPLEMENTED).setMsg("下载失败");
     }
 
+    @RequiresRoles(value = {"admin","teacher"}, logical = Logical.OR)
     @ApiOperation(value="根据文件id删除文件")
     @DeleteMapping("/deleteFile/{fileId}")
     public Result deleteFile(@PathVariable("fileId") Integer fileId) {
@@ -126,6 +130,7 @@ public class StudentFileController {
         return Result.failure(ResultCodeEnum.DELETE_FAILED).setMsg("删除失败");
     }
 
+    @RequiresRoles(value = {"admin","teacher"}, logical = Logical.OR)
     @ApiOperation(value="批量删除学生文件, 接收文件id的列表")
     @DeleteMapping("/deleteBatchFiles")
     public Result deleteBatchFile(@RequestBody StudentFileDto files) {
