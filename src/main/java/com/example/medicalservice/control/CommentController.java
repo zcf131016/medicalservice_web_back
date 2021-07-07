@@ -51,7 +51,7 @@ public class CommentController {
     public Result addComment(@RequestBody CommentReply commentReply, HttpServletRequest request) {
         Integer userId = JWTUtil.getUserId(request.getHeader("Authorization"));
         commentReply.setFromId(userId);
-        if(commentReply.getContent() == null || commentReply.getContent() == "") return Result.failure(ResultCodeEnum.CREATE_FAILED).setMsg("内容为空，评论失败");
+        if(commentReply.getContent() == null || commentReply.getContent().equals("")) return Result.failure(ResultCodeEnum.CREATE_FAILED).setMsg("内容为空，评论失败");
         commentReplyService.insertComment(commentReply);
         return Result.success().setCode(ResultCodeEnum.OK.getCode()).setMsg("评论成功！");
     }
