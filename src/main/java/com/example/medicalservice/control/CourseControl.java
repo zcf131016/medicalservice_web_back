@@ -152,6 +152,15 @@ public class CourseControl {
     public Result deleteCourseStudent(@RequestBody CourseStudent courseStudent) {
         return Result.success().setData(courseService.deleteCourseStudent(courseStudent)).setCode(ResultCodeEnum.OK.getCode()).setMsg("删除学生成功");
     }
+    @ApiOperation(value = "批量删除课程学生")
+    @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程id"),
+            @ApiImplicitParam(required = true,name="courseStudents", value="一个studentId的数组"),
+    })
+    @ResponseBody
+    @PostMapping("/deleteMultipleCourseStudent")
+    public Result deleteMultipleCourseStudent(@RequestBody CourseStudent courseStudent) {
+        return Result.success().setData(courseService.deleteMultipleCourseStudent(courseStudent)).setCode(ResultCodeEnum.OK.getCode()).setMsg("删除学生成功");
+    }
     @ApiOperation(value = "通过课程号查看所选学生" )
     @ApiImplicitParams({@ApiImplicitParam(required = true,name="courseId", value="课程Id"),
     })

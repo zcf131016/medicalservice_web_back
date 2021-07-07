@@ -43,4 +43,5 @@ public interface CourseService {
     Integer updateStudentById(CourseStudent courseStudent);//变更多个小组成员
     List<CourseStudent> findCourseTeamStudent(Integer courseId,Integer teamId);
     Integer deleteMultipleCourse(List<Integer> coreseIds);//删除多个课程
+    Integer deleteMultipleCourseStudent(CourseStudent courseStudent);
 }

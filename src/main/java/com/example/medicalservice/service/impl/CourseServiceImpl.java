@@ -60,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
         courseTeacher.setCourseId(course.getCourseId());
         courseTeacher.setCourseName(course.getCourseName());
         courseTeacher.setIsCreater(1);
-        courseTeacher.setTeacherName(userMapper.getUserByUserId(course.getTeacherId()).getUserName());//需调用用户mapper
+        courseTeacher.setTeacherName(userMapper.getUserByUserId(course.getTeacherId()).getRealName());//需调用用户mapper
         courseTeacher.setTeacherId(course.getTeacherId());
         courseMapper.insertCourseTeacher(courseTeacher);
         return course;
@@ -93,7 +93,7 @@ public class CourseServiceImpl implements CourseService {
         for (int i=0;i<courseTeachers.size();i++){
             CourseTeacher courseTeacher=courseTeachers.get(i);
             courseTeacher.setIsCreater(0);
-            courseTeacher.setTeacherName(userMapper.getUserByUserId(courseTeacher.getTeacherId()).getUserName());
+            courseTeacher.setTeacherName(userMapper.getUserByUserId(courseTeacher.getTeacherId()).getRealName());
             courseTeacher.setCourseId(courseTeacher1.getCourseId());
             courseTeacher.setCourseName(courseTeacher1.getCourseName());
             CourseTeacher courseTeacher2=courseMapper.findCourseTeacherByTeacherIdAndCId(courseTeacher.getTeacherId(),courseTeacher1.getCourseId());
@@ -303,6 +303,17 @@ public class CourseServiceImpl implements CourseService {
     public Integer deleteMultipleCourse(List<Integer> coreseIds) {
         for (int i=0;i<coreseIds.size();i++){
             courseMapper.deleteCourseById(coreseIds.get(i));
+        }
+        return 1;
+    }
+
+    @Override
+    public Integer deleteMultipleCourseStudent(CourseStudent courseStudent) {
+        List<CourseStudent> courseStudents=courseStudent.getCourseStudents();
+        for (int i=0;i<courseStudents.size();i++){
+            CourseStudent one=courseStudents.get(i);
+            one.setCourseId(courseStudent.getCourseId());
+            courseMapper.deleteCourseStudent(courseStudent);
         }
         return 1;
     }
