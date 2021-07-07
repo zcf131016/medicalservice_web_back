@@ -158,9 +158,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByEmail(String email) {
 
-        if (userMapper.getUserByEmail(email) == null) {
-            throw new UserFriendException("用户不存在!", "103");
-        }
+//        if (userMapper.getUserByEmail(email) == null) {
+//            throw new UserFriendException("用户不存在!", "103");
+//        }
 
 
         return userMapper.getUserByEmail(email);
@@ -169,9 +169,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByPhone(String phone) {
 
-        if(userMapper.getUserByPhone(phone)==null){
-            throw new UserFriendException("用户不存在!","103");
-        }
+//        if(userMapper.getUserByPhone(phone)==null){
+//            throw new UserFriendException("用户不存在!","103");
+//        }
 
         return userMapper.getUserByPhone(phone);
     }
