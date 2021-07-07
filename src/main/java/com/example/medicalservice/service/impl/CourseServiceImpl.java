@@ -40,7 +40,7 @@ public class CourseServiceImpl implements CourseService {
                 }
                 if (j<courseTeachers.size()-1){
                 teacher+=courseTeachers.get(j).getTeacherName();
-                teacher+="\n";
+                teacher+=" ";
                 }
                 else
                     teacher+=courseTeachers.get(j).getTeacherName();
